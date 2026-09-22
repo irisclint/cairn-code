@@ -1,0 +1,101 @@
+@use "variables" as *;
+
+/// Centres content on both axes.
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/// Flex row with a consistent gap.
+@mixin flex-row($gap: $space-2) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+/// Single line with an ellipsis.
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Themed scrollbars. Applied to every scrollable region so the platform
+/// default never shows through in a dark theme.
+@mixin themed-scrollbar($size: 12px) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-slider-background) transparent;
+
+  &::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-slider-background);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: $size;
+
+    &:hover {
+      background: var(--scrollbar-slider-hover-background);
+      background-clip: padding-box;
+    }
+
+    &:active {
+      background: var(--scrollbar-slider-active-background);
+      background-clip: padding-box;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/// Keyboard focus ring. Uses :focus-visible so a mouse click does not draw it.
+@mixin focus-ring($offset: -1px) {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--focus-border);
+    outline-offset: $offset;
+  }
+}
+
+/// Surface that floats above the workbench, such as a dialog or a toast.
+@mixin floating-surface {
+  background: var(--editor-widget-background);
+  color: var(--editor-widget-foreground);
+  border: 1px solid var(--editor-widget-border);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+}
+
+/// Resets a button to plain text, used for rows and list items.
+@mixin bare-button {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/// Disables animation when the user asked the system to reduce motion.
+@mixin respect-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    transition: none !important;
+    animation: none !important;
+  }
+}

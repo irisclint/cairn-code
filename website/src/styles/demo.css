@@ -1,0 +1,559 @@
+/*
+ * The editable editor in the hero.
+ *
+ * Painted with the Dark Modern theme's own colours rather than the site
+ * palette, so that what the visitor types into here looks the way it will look
+ * after installing.
+ *
+ * The whole thing rests on one constraint: the textarea and the highlighted
+ * copy behind it must lay text out identically, to the pixel. Every property
+ * that affects glyph position is set once, on .demo, and inherited by both.
+ */
+
+.demo {
+  --d-bg: #1a1b26;
+  --d-alt: #16161e;
+  --d-deep: #13131a;
+  --d-fg: #c8d0e0;
+  --d-muted: #7a819b;
+  --d-line: #282a3a;
+  --d-accent: #3b82f6;
+  --d-error: #f45c6a;
+  --d-warning: #e0af68;
+
+  /* Shared text metrics. Changing one of these without the other breaks the
+     alignment between what you type and what you see. */
+  --d-font: var(--font-mono);
+  --d-size: 13px;
+  --d-leading: 1.65;
+  --d-pad-y: 12px;
+  --d-pad-x: 14px;
+
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  box-shadow: var(--shadow-lg);
+  color: var(--d-fg);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Chrome and tabs                                                             */
+/* -------------------------------------------------------------------------- */
+
+.demo__chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding-inline: 13px;
+  background: var(--d-deep);
+  border-bottom: 1px solid var(--d-line);
+}
+
+.demo__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #33374a;
+}
+
+.demo__dot:nth-child(1) {
+  background: #3f4458;
+}
+
+.demo__title {
+  flex: 1;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--d-muted);
+  /* Optically centred against the dots on the left. */
+  margin-left: -20px;
+}
+
+.demo__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.12);
+  color: #9ec1ff;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.demo__live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: demo-pulse 2.4s var(--ease) infinite;
+}
+
+@keyframes demo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.demo__tabs {
+  display: flex;
+  background: var(--d-alt);
+  border-bottom: 1px solid var(--d-line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.demo__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.demo__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  height: 34px;
+  flex: 0 0 auto;
+  color: var(--d-muted);
+  border-right: 1px solid var(--d-line);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  white-space: nowrap;
+  transition:
+    color var(--fast) var(--ease),
+    background-color var(--fast) var(--ease);
+}
+
+.demo__tab:hover {
+  color: var(--d-fg);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.demo__tab--active {
+  position: relative;
+  background: var(--d-bg);
+  color: var(--d-fg);
+}
+
+.demo__tab--active::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--d-accent);
+}
+
+.demo__tile {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  border-radius: 3.5px;
+  font-family: var(--font-sans);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* The editing surface                                                         */
+/* -------------------------------------------------------------------------- */
+
+.demo__editor {
+  display: flex;
+  height: 316px;
+  background: var(--d-bg);
+}
+
+@media (max-width: 620px) {
+  .demo__editor {
+    height: 260px;
+  }
+}
+
+.demo__gutter {
+  flex: 0 0 auto;
+  width: 52px;
+  padding-block: var(--d-pad-y);
+  overflow: hidden;
+  background: var(--d-bg);
+  border-right: 1px solid var(--d-line);
+  font-family: var(--d-font);
+  font-size: var(--d-size);
+  line-height: var(--d-leading);
+  color: #545a70;
+  user-select: none;
+}
+
+.demo__line-number {
+  position: relative;
+  padding-right: 12px;
+  text-align: right;
+  white-space: pre;
+}
+
+.demo__mark {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.demo__mark--error {
+  background: var(--d-error);
+}
+
+.demo__mark--warning {
+  background: var(--d-warning);
+}
+
+.demo__surface {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/*
+ * Both layers share every metric. They are declared together so that an edit
+ * to one cannot silently miss the other.
+ */
+.demo__paint,
+.demo__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: var(--d-pad-y) var(--d-pad-x);
+  border: 0;
+  font-family: var(--d-font);
+  font-size: var(--d-size);
+  line-height: var(--d-leading);
+  letter-spacing: normal;
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+  box-sizing: border-box;
+}
+
+.demo__paint {
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--d-fg);
+}
+
+.demo__paint code {
+  font: inherit;
+}
+
+.demo__input {
+  overflow: auto;
+  resize: none;
+  background: transparent;
+  /* The text itself is invisible; the painted layer underneath supplies the
+     colour. The caret and the selection stay native, which is the whole reason
+     for using a textarea rather than a contenteditable div. */
+  color: transparent;
+  caret-color: var(--d-fg);
+  outline: none;
+}
+
+.demo__input::selection {
+  background: rgba(59, 130, 246, 0.32);
+}
+
+.demo__input:focus-visible {
+  outline: 2px solid var(--d-accent);
+  outline-offset: -2px;
+}
+
+/* Token colours, from the Dark Modern theme. */
+.tok--keyword {
+  color: #8b5cf6;
+}
+.tok--type {
+  color: #2dd4bf;
+}
+.tok--string {
+  color: #9ece6a;
+}
+.tok--number {
+  color: #ff9e64;
+}
+.tok--function {
+  color: #7aa2f7;
+}
+.tok--comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.tok--operator {
+  color: #89ddff;
+}
+.tok--punct,
+.tok--plain {
+  color: var(--d-fg);
+}
+
+.tok--mark {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.tok--mark-error {
+  text-decoration-color: var(--d-error);
+}
+
+.tok--mark-warning {
+  text-decoration-color: var(--d-warning);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Problems panel                                                              */
+/* -------------------------------------------------------------------------- */
+
+.demo__panel {
+  border-top: 1px solid var(--d-line);
+  background: var(--d-alt);
+}
+
+.demo__panel-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: 0 14px;
+  min-height: 38px;
+  border-bottom: 1px solid var(--d-line);
+}
+
+.demo__panel-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--d-fg);
+}
+
+.demo__count {
+  min-width: 17px;
+  padding-inline: 5px;
+  border-radius: 8px;
+  background: var(--d-error);
+  color: #fff;
+  font-size: 9px;
+  line-height: 15px;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+.demo__count--clear {
+  background: var(--success);
+}
+
+.demo__chips {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+  padding-block: 6px;
+}
+
+.demo__chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--d-line);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--d-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  transition:
+    color var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    background-color var(--fast) var(--ease);
+}
+
+.demo__chip:hover {
+  color: var(--d-fg);
+  border-color: #3b4055;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.demo__chip--reset {
+  color: var(--d-muted);
+  border-style: dashed;
+}
+
+.demo__panel-body {
+  max-height: 232px;
+  overflow: auto;
+  padding: 8px 14px 14px;
+}
+
+.demo__clear {
+  padding: 14px 0 6px;
+  color: var(--d-muted);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  max-width: 62ch;
+}
+
+.demo__list {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.demo__entry {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--d-fg);
+  transition: background-color var(--fast) var(--ease);
+}
+
+.demo__entry:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.demo__entry--active {
+  background: rgba(59, 130, 246, 0.16);
+}
+
+.demo__severity {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  position: relative;
+}
+
+.demo__severity--error {
+  background: var(--d-error);
+}
+
+.demo__severity--warning {
+  background: var(--d-warning);
+}
+
+.demo__severity::after {
+  content: '!';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 700;
+  color: #16161e;
+}
+
+.demo__entry-message {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.demo__entry-where {
+  flex: 0 0 auto;
+  color: var(--d-muted);
+  font-size: 11px;
+}
+
+/*
+ * The three rows that are the entire point of the product. They get the most
+ * space in the panel, and the labels are the words the editor uses.
+ */
+.demo__detail {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 4px 12px;
+  margin: 0;
+  padding-top: 11px;
+  border-top: 1px solid var(--d-line);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.demo__detail dt {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--d-muted);
+  padding-top: 3px;
+}
+
+.demo__detail dd {
+  margin: 0;
+  color: var(--d-fg);
+}
+
+.demo__badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--d-line);
+  color: var(--d-muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Status bar                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.demo__status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 25px;
+  padding-inline: 12px;
+  background: var(--d-accent);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+}
+
+.demo__status-right {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 620px) {
+  .demo__status-problems,
+  .demo__status-right span:not(:last-child) {
+    display: none;
+  }
+
+  .demo__title {
+    display: none;
+  }
+}

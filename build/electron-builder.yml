@@ -1,0 +1,128 @@
+appId: dev.cairn.editor
+productName: cairn-code
+copyright: Copyright (c) 2026 cairn-code contributors
+
+directories:
+  output: release/${version}
+  buildResources: build
+
+# Only the compiled output and the runtime dependencies are packaged. Source,
+# tests and development tooling stay out of the installer, which is what keeps
+# it under the 200 MB budget.
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+  - '!**/{.eslintrc,.prettierrc,tsconfig*.json}'
+
+extraResources:
+  - from: resources/icons/logo
+    to: icons
+    filter:
+      - cairn-logo-*.png
+      - cairn-logo.svg
+
+asar: true
+# node-pty ships a native binding that cannot be loaded from inside an asar
+# archive, so it is unpacked next to it.
+asarUnpack:
+  - '**/node_modules/node-pty/**'
+
+# File types cairn-code registers itself for. Keeping this list short means the
+# installer does not take over every extension on the user's machine.
+fileAssociations:
+  - ext: ts
+    name: TypeScript Source
+    role: Editor
+  - ext: tsx
+    name: TypeScript React Source
+    role: Editor
+  - ext: js
+    name: JavaScript Source
+    role: Editor
+  - ext: jsx
+    name: JavaScript React Source
+    role: Editor
+  - ext: json
+    name: JSON Document
+    role: Editor
+  - ext: md
+    name: Markdown Document
+    role: Editor
+
+protocols:
+  - name: cairn-code
+    schemes:
+      # The scheme is a URL prefix and stays lowercase: cairn://
+      - cairn
+
+win:
+  icon: build/cairn.ico
+  target:
+    - target: nsis
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64]
+  artifactName: ${productName}-${version}-${arch}-setup.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: cairn-code
+  deleteAppDataOnUninstall: false
+  # Adds "Open with cairn-code" to the Explorer context menu for files and folders.
+  include: build/installer.nsh
+
+mac:
+  icon: build/cairn.icns
+  category: public.app-category.developer-tools
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+dmg:
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+linux:
+  icon: build/cairn.png
+  category: Development
+  synopsis: The next generation code editor
+  description: >
+    cairn-code is a fast, cross platform code editor with syntax highlighting for
+    more than sixty languages, an integrated terminal, and diagnostics that
+    explain why a problem happened and how to fix it.
+  desktop:
+    entry:
+      Name: cairn-code
+      StartupWMClass: cairn-code
+      MimeType: text/plain;inode/directory;application/x-cairn-workspace;
+  target:
+    - target: AppImage
+      arch: [x64, arm64]
+    - target: deb
+      arch: [x64]
+    - target: rpm
+      arch: [x64]
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+publish:
+  provider: github
+  owner: cairn-editor
+  repo: cairn-code
+  releaseType: draft

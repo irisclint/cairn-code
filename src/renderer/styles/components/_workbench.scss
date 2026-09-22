@@ -1,0 +1,255 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.workbench {
+  display: grid;
+  grid-template-rows: $title-bar-height 1fr $status-bar-height;
+  height: 100%;
+  background: var(--editor-background);
+
+  &--loading {
+    @include flex-center;
+    grid-template-rows: 1fr;
+  }
+
+  &__loading-text {
+    color: var(--description-foreground);
+    font-size: $font-size-lg;
+  }
+
+  &__body {
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__sidebar {
+    flex: 0 0 auto;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--side-bar-background);
+    border-right: 1px solid var(--side-bar-border);
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &__editor {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__panel {
+    flex: 0 0 auto;
+    min-height: 0;
+    z-index: $z-panel;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Title bar                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.title-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  height: $title-bar-height;
+  background: var(--title-bar-active-background);
+  color: var(--title-bar-active-foreground);
+  border-bottom: 1px solid var(--title-bar-border);
+  // Lets the user drag the window by the bar while keeping the buttons clickable.
+  -webkit-app-region: drag;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    padding-inline: $space-3;
+  }
+
+  // macOS reserves the left inset for the native traffic lights.
+  &[data-platform="mac"] &__brand {
+    padding-left: 78px;
+  }
+
+  &__logo {
+    color: var(--focus-border);
+  }
+
+  &__title {
+    @include truncate;
+    text-align: center;
+    font-size: $font-size-sm;
+    color: var(--title-bar-active-foreground);
+    opacity: 0.85;
+  }
+
+  &__controls {
+    display: flex;
+    height: 100%;
+    -webkit-app-region: no-drag;
+  }
+
+  &__control {
+    @include bare-button;
+    @include flex-center;
+    width: 46px;
+    height: 100%;
+    color: var(--title-bar-active-foreground);
+    transition: background-color $duration-fast $easing-standard;
+    @include respect-reduced-motion;
+
+    &:hover {
+      background: var(--list-hover-background);
+    }
+
+    &--close:hover {
+      background: #e81123;
+      color: #ffffff;
+    }
+
+    @include focus-ring;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Activity bar                                                                */
+/* -------------------------------------------------------------------------- */
+
+.activity-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: $activity-bar-width;
+  flex: 0 0 $activity-bar-width;
+  background: var(--activity-bar-background);
+  border-right: 1px solid var(--activity-bar-border);
+
+  &__item {
+    @include bare-button;
+    @include flex-center;
+    position: relative;
+    width: $activity-bar-width;
+    height: $activity-bar-width;
+    color: var(--activity-bar-inactive-foreground);
+    transition: color $duration-fast $easing-standard;
+    @include respect-reduced-motion;
+
+    &:hover {
+      color: var(--activity-bar-foreground);
+    }
+
+    &--active {
+      color: var(--activity-bar-foreground);
+      background: var(--activity-bar-active-background);
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--activity-bar-active-border);
+      }
+    }
+
+    @include focus-ring(-2px);
+  }
+
+  &__badge {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    min-width: 16px;
+    height: 16px;
+    padding-inline: 4px;
+    border-radius: 8px;
+    background: var(--activity-bar-badge-background);
+    color: var(--activity-bar-badge-foreground);
+    font-size: 9px;
+    line-height: 16px;
+    text-align: center;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Status bar                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: $status-bar-height;
+  padding-inline: $space-2;
+  background: var(--status-bar-background);
+  color: var(--status-bar-foreground);
+  font-size: $font-size-xs;
+
+  &[data-no-folder="true"] {
+    background: var(--status-bar-no-folder-background);
+    color: var(--status-bar-no-folder-foreground);
+  }
+
+  &__group {
+    @include flex-row($space-1);
+    min-width: 0;
+  }
+
+  &__item {
+    @include bare-button;
+    @include flex-row(4px);
+    height: $status-bar-height;
+    padding-inline: $space-2;
+    color: inherit;
+    white-space: nowrap;
+
+    &:hover {
+      background: var(--status-bar-item-hover-background);
+    }
+
+    @include focus-ring(-2px);
+  }
+
+  &__message {
+    @include truncate;
+    max-width: 40vw;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Resizers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.resizer {
+  flex: 0 0 $resizer-size;
+  background: transparent;
+  z-index: $z-resizer;
+  transition: background-color $duration-normal $easing-standard;
+  @include respect-reduced-motion;
+
+  &--vertical {
+    width: $resizer-size;
+    cursor: col-resize;
+  }
+
+  &--horizontal {
+    height: $resizer-size;
+    cursor: row-resize;
+  }
+
+  &:hover,
+  &--dragging,
+  &:focus-visible {
+    background: var(--focus-border);
+    outline: none;
+  }
+}

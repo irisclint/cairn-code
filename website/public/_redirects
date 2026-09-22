@@ -1,0 +1,4 @@
+# Client side routing: every path serves the app shell, which then renders the
+# right page. Without this a deep link such as /download would 404 on a static
+# host.
+/*  /index.html  200

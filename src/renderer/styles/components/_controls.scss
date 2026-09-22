@@ -1,0 +1,235 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.button {
+  @include flex-center;
+  padding: $space-1 $space-4;
+  min-height: 26px;
+  background: var(--button-secondary-background);
+  color: var(--button-secondary-foreground);
+  border: 1px solid var(--editor-widget-border);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-size: $font-size-md;
+  transition: background-color $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+
+  &:hover {
+    background: var(--list-hover-background);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &--primary {
+    background: var(--button-background);
+    color: var(--button-foreground);
+    border-color: transparent;
+
+    &:hover {
+      background: var(--button-hover-background);
+    }
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--small {
+    min-height: 22px;
+    padding-inline: $space-2;
+    font-size: $font-size-sm;
+  }
+
+  @include focus-ring;
+}
+
+.icon-button {
+  @include bare-button;
+  @include flex-center;
+  width: 22px;
+  height: 22px;
+  border-radius: $radius-sm;
+  color: inherit;
+  opacity: 0.8;
+
+  &:hover {
+    background: var(--list-hover-background);
+    opacity: 1;
+  }
+
+  @include focus-ring(-2px);
+}
+
+.input {
+  width: 100%;
+  padding: $space-1 $space-2;
+  min-height: 26px;
+  background: var(--input-background);
+  color: var(--input-foreground);
+  border: 1px solid var(--input-border);
+  border-radius: $radius-sm;
+  font-size: $font-size-md;
+  outline: none;
+
+  &::placeholder {
+    color: var(--input-placeholder-foreground);
+  }
+
+  &:focus {
+    border-color: var(--focus-border);
+  }
+
+  &--small {
+    min-height: 22px;
+    font-size: $font-size-sm;
+  }
+}
+
+select.input {
+  cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Notifications                                                               */
+/* -------------------------------------------------------------------------- */
+
+.notifications {
+  position: fixed;
+  right: $space-4;
+  bottom: $status-bar-height + $space-3;
+  z-index: $z-notification;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  width: min(420px, 90vw);
+}
+
+.notification {
+  @include floating-surface;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: $space-2;
+  padding: $space-3;
+  animation: notification-in $duration-normal $easing-standard;
+  @include respect-reduced-motion;
+
+  &__icon {
+    margin-top: 2px;
+  }
+
+  &--error &__icon {
+    color: var(--problems-error-icon-foreground);
+  }
+
+  &--warning &__icon {
+    color: var(--problems-warning-icon-foreground);
+  }
+
+  &--info &__icon {
+    color: var(--problems-info-icon-foreground);
+  }
+
+  &--success &__icon {
+    color: var(--git-decoration-added-resource-foreground);
+  }
+
+  &__body {
+    min-width: 0;
+    user-select: text;
+  }
+
+  &__message {
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  // Cause and fix are the reason cairn notifications exist, so they are
+  // always legible rather than a de-emphasised afterthought.
+  &__detail {
+    margin-top: $space-1;
+    font-size: $font-size-sm;
+    line-height: 1.5;
+    color: var(--description-foreground);
+  }
+
+  &__label {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  &__actions {
+    @include flex-row($space-2);
+    margin-top: $space-2;
+  }
+}
+
+@keyframes notification-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Error boundary                                                              */
+/* -------------------------------------------------------------------------- */
+
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-5;
+  height: 100%;
+  overflow: auto;
+  user-select: text;
+  @include themed-scrollbar;
+
+  &__icon {
+    color: var(--problems-error-icon-foreground);
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: 500;
+  }
+
+  &__message {
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    padding: $space-2;
+    background: var(--input-background);
+    border-radius: $radius-sm;
+  }
+
+  &__cause,
+  &__solution {
+    font-size: $font-size-sm;
+    color: var(--description-foreground);
+    line-height: 1.6;
+  }
+
+  &__actions {
+    margin-top: $space-2;
+  }
+
+  &__details {
+    margin-top: $space-3;
+    font-size: $font-size-xs;
+
+    pre {
+      overflow-x: auto;
+      padding: $space-2;
+      background: var(--input-background);
+      border-radius: $radius-sm;
+      @include themed-scrollbar(8px);
+    }
+  }
+}

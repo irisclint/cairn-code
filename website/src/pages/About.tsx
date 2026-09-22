@@ -1,0 +1,244 @@
+import type { JSX } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, GitHub, Shield, Bolt, Lightbulb } from '../components/Icons';
+import { REPOSITORY_URL, DOCS_URL, LANGUAGE_COUNT, THEME_COUNT } from '../data/content';
+
+const PRINCIPLES = [
+  {
+    icon: Lightbulb,
+    title: 'An error that does not help is a bug',
+    body: 'Not a style preference, a defect. Every error cairn-code raises carries a message, a cause and a fix, and a change that adds one without the other two does not get merged. The same rule applies to its own failures: when a native module will not load, the editor says which command rebuilds it.'
+  },
+  {
+    icon: Shield,
+    title: 'The renderer is treated as hostile',
+    body: 'It runs the most third party code in the application, so it gets no access to Node at all. Everything reaches the system through one bridge with one function per allowed operation. An end to end test asserts on every build that no Node internals leaked into the page.'
+  },
+  {
+    icon: Bolt,
+    title: 'Performance is a budget, not a hope',
+    body: 'Under two seconds cold, under 400 MB idle, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives.'
+  }
+];
+
+const STACK = [
+  { name: 'Electron', role: 'Desktop shell, one process for the system and one for the interface' },
+  { name: 'Monaco', role: 'The editor core, with its language services running in web workers' },
+  { name: 'XTerm and node-pty', role: 'A real pseudo terminal, not a command runner' },
+  {
+    name: 'React and Zustand',
+    role: 'Interface and state, split so a panel resize never re-renders the editor'
+  },
+  { name: 'TypeScript', role: 'Strict mode across three projects, no implicit any anywhere' },
+  { name: 'Vitest and Playwright', role: '786 tests over the units, the integrations and the built app' }
+];
+
+const ROADMAP = [
+  {
+    status: 'done' as const,
+    title: 'Editor, terminal, themes, diagnostics',
+    body: `The workbench, ${LANGUAGE_COUNT} languages, ${THEME_COUNT} themes, workspace search, the command palette, and the explanation layer that the whole project is named for.`
+  },
+  {
+    status: 'next' as const,
+    title: 'Git integration',
+    body: 'Status, staging, commits, a diff view and branch management. The command line wrapper already exists in the main process; the panel is what is missing.'
+  },
+  {
+    status: 'next' as const,
+    title: 'Extensions',
+    body: 'A sandboxed extension host with permissioned filesystem access, and a marketplace client. Until it lands, cairn-code loads no third party code at all.'
+  },
+  {
+    status: 'later' as const,
+    title: 'Debugging and language servers',
+    body: 'Breakpoints, stepping, a variables panel, and language server clients so that the explanation layer covers every language rather than the TypeScript family.'
+  }
+];
+
+export function About(): JSX.Element {
+  return (
+    <>
+      <section className="page-hero">
+        <div className="container">
+          <span className="eyebrow">About</span>
+          <h1 className="page-hero__title">
+            Built around one idea about
+            <br />
+            what an editor owes you.
+          </h1>
+          <p className="page-hero__lead">
+            cairn-code started from a small frustration that turns out to be expensive: an editor will happily
+            tell you that a type is not assignable, and then leave you to work out what that means for the
+            line you are looking at.
+          </p>
+        </div>
+      </section>
+
+      <section className="section section--tight">
+        <div className="container">
+          <div className="prose stack about-prose">
+            <h2>What it is</h2>
+            <p>
+              A standalone code editor for Windows, macOS and Linux. It opens a folder, highlights{' '}
+              {LANGUAGE_COUNT} languages, runs a real terminal in the bottom panel, and reports every problem
+              with four answers instead of one.
+            </p>
+            <p>
+              It is not a fork. It is written from scratch on the same public building blocks the well known
+              editors use, Electron and Monaco, both open source and both available to anyone. What sits on
+              top of them, the interface, the theme engine, the state layer and the diagnostic explanation
+              catalog, is its own.
+            </p>
+            <p>
+              It is MIT licensed, and there is no paid tier and nothing planned. The source is public: every
+              line the installers are built from is readable, and the build that produces them is a file in
+              the same repository.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--tight">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Principles</span>
+            <h2 className="section-title">Three rules that shaped the code</h2>
+            <p className="section-lead">
+              Every project has principles on a page. These are the three that actually caused code to be
+              written differently, and each is enforced in review.
+            </p>
+          </div>
+
+          <ul className="grid grid--3">
+            {PRINCIPLES.map((principle) => (
+              <li key={principle.title} className="card">
+                <span className="card__icon">
+                  <principle.icon size={19} />
+                </span>
+                <h3 className="card__title">{principle.title}</h3>
+                <p className="card__body">{principle.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <hr className="rule" />
+
+      <section className="section section--tight">
+        <div className="container">
+          <div className="split">
+            <div className="split__copy stack">
+              <span className="eyebrow">How it is built</span>
+              <h2 className="section-title">Three processes, one rule</h2>
+              <p className="section-lead">
+                The main process owns the system: windows, the menu, the filesystem, search and terminal
+                processes. The renderer owns the entire interface. Between them sits a preload bridge that
+                exposes exactly one function per allowed operation, and nothing else.
+              </p>
+              <p className="section-lead">
+                The cost is that every file read is a round trip. The benefit is that a bug in any of the
+                third party code running in the interface cannot reach your home directory. That trade is
+                deliberate and it is not negotiable.
+              </p>
+              <a
+                className="link-arrow"
+                href={DOCS_URL + '/architecture/overview.md'}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Read the architecture notes <ArrowRight size={17} />
+              </a>
+            </div>
+
+            <div className="split__visual">
+              <ul className="stack-list">
+                {STACK.map((item) => (
+                  <li key={item.name} className="stack-list__item">
+                    <span className="stack-list__name">{item.name}</span>
+                    <span className="stack-list__role">{item.role}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr className="rule" />
+
+      <section className="section section--tight">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Roadmap</span>
+            <h2 className="section-title">What is done and what is not</h2>
+            <p className="section-lead">
+              cairn-code is at 1.0.0-alpha.1. Inside the application, the panels for unfinished features say
+              so rather than showing controls that do nothing, and this page does the same.
+            </p>
+          </div>
+
+          <ol className="roadmap">
+            {ROADMAP.map((item) => (
+              <li key={item.title} className={'roadmap__item roadmap__item--' + item.status}>
+                <span className="roadmap__marker" aria-hidden="true" />
+                <div>
+                  <h3 className="roadmap__title">
+                    {item.title}
+                    <span className="roadmap__status">
+                      {item.status === 'done' ? 'Shipped' : item.status === 'next' ? 'Next' : 'Later'}
+                    </span>
+                  </h3>
+                  <p className="roadmap__body">{item.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="section section--tight">
+        <div className="container">
+          <div className="prose stack about-prose">
+            <h2>On the name</h2>
+            <p>
+              A cairn is a stack of stones left on a trail by whoever walked it first, so that the next person
+              does not have to guess the way. That is the whole idea of the editor in one object: someone has
+              already hit this error, and the fix should be waiting where you stand rather than three search
+              results away.
+            </p>
+            <p>
+              The mark is three stones, widest at the base, with the top one placed slightly off square. It
+              stays legible at sixteen pixels, where it reduces to three bars, which is the size that decides
+              whether a logo works.
+            </p>
+
+            <h2>Contributing</h2>
+            <p>
+              Three kinds of change are genuinely self contained and useful: an explanation for a compiler
+              code that currently falls back to the generic message, a language definition, or a theme. Each
+              is a small, reviewable change with a documented path, and the contributing guide walks through
+              all three.
+            </p>
+          </div>
+
+          <div className="about-actions">
+            <a
+              className="button button--secondary"
+              href={REPOSITORY_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <GitHub size={18} />
+              Browse the source
+            </a>
+            <Link to="/download" className="button button--primary">
+              Download cairn-code
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

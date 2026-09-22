@@ -1,0 +1,309 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.sidebar {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: var(--side-bar-foreground);
+
+  &__header {
+    @include flex-row($space-2);
+    justify-content: space-between;
+    height: $tab-height;
+    flex: 0 0 $tab-height;
+    padding-inline: $space-3;
+    border-bottom: 1px solid var(--side-bar-border);
+  }
+
+  &__title {
+    @include truncate;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--side-bar-title-foreground);
+  }
+
+  &__actions {
+    @include flex-row(2px);
+  }
+
+  &__empty {
+    padding: $space-4;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__hint {
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+    line-height: 1.6;
+    padding-inline: $space-4;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    font-size: $font-size-sm;
+
+    li::before {
+      content: "- ";
+      color: var(--description-foreground);
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Explorer                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.explorer {
+  &__tree {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding-block: $space-1;
+    @include themed-scrollbar;
+  }
+
+  &__row {
+    @include flex-row(4px);
+    height: 22px;
+    padding-right: $space-2;
+    cursor: pointer;
+    font-size: $font-size-md;
+
+    &:hover {
+      background: var(--list-hover-background);
+    }
+
+    &--selected {
+      background: var(--list-active-selection-background);
+      color: var(--list-active-selection-foreground);
+    }
+
+    &--draft {
+      background: var(--list-hover-background);
+    }
+
+    @include focus-ring(-2px);
+  }
+
+  &__chevron {
+    flex: 0 0 16px;
+    opacity: 0.8;
+
+    &--placeholder {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    opacity: 0.9;
+  }
+
+  &__label {
+    @include truncate;
+  }
+
+  &__draft-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: var(--input-background);
+    color: var(--input-foreground);
+    border: 1px solid var(--input-focus-border, var(--focus-border));
+    border-radius: $radius-sm;
+    padding: 1px 4px;
+    font-size: $font-size-md;
+    outline: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Search                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.search {
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    padding: $space-3;
+  }
+
+  &__input-row {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__toggles {
+    display: flex;
+    gap: $space-1;
+  }
+
+  &__toggle {
+    @include bare-button;
+    @include flex-center;
+    width: 26px;
+    height: 24px;
+    border-radius: $radius-sm;
+    font-family: $font-mono;
+    font-size: $font-size-xs;
+    color: var(--description-foreground);
+    border: 1px solid transparent;
+
+    &:hover {
+      background: var(--list-hover-background);
+    }
+
+    &--active {
+      background: var(--list-active-selection-background);
+      color: var(--list-active-selection-foreground);
+      border-color: var(--input-option-active-border);
+    }
+
+    @include focus-ring;
+  }
+
+  &__summary {
+    padding-inline: $space-3;
+    font-size: $font-size-sm;
+    color: var(--description-foreground);
+  }
+
+  &__results {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    @include themed-scrollbar;
+  }
+
+  &__file {
+    border-bottom: 1px solid var(--side-bar-border);
+  }
+
+  &__file-header {
+    @include flex-row($space-2);
+    padding: $space-1 $space-3;
+    cursor: pointer;
+    font-size: $font-size-sm;
+
+    &:hover {
+      background: var(--list-hover-background);
+    }
+  }
+
+  &__file-name {
+    font-weight: 500;
+  }
+
+  &__file-path {
+    @include truncate;
+    flex: 1 1 auto;
+    color: var(--description-foreground);
+    font-size: $font-size-xs;
+  }
+
+  &__file-count {
+    flex: 0 0 auto;
+    min-width: 18px;
+    padding-inline: 5px;
+    border-radius: 9px;
+    background: var(--badge-background);
+    color: var(--badge-foreground);
+    font-size: $font-size-xs;
+    text-align: center;
+  }
+
+  &__match {
+    @include bare-button;
+    @include flex-row($space-2);
+    width: 100%;
+    padding: 2px $space-3 2px $space-5;
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+
+    &:hover {
+      background: var(--list-hover-background);
+    }
+
+    @include focus-ring(-2px);
+  }
+
+  &__match-line {
+    flex: 0 0 32px;
+    text-align: right;
+    color: var(--editor-line-number-foreground);
+  }
+
+  &__match-text {
+    @include truncate;
+    flex: 1 1 auto;
+
+    mark {
+      background: var(--editor-find-match-highlight-background);
+      color: inherit;
+      border-radius: 2px;
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Settings                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.settings {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: $space-3;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  @include themed-scrollbar;
+
+  &__section-title {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--side-bar-title-foreground);
+    margin-bottom: $space-3;
+  }
+
+  &__field {
+    margin-bottom: $space-4;
+  }
+
+  &__label {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: 500;
+  }
+
+  &__description {
+    font-size: $font-size-xs;
+    color: var(--description-foreground);
+    margin-bottom: $space-2;
+    line-height: 1.5;
+  }
+
+  &__checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--focus-border);
+  }
+}

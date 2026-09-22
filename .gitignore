@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+out/
+dist/
+release/
+*.tsbuildinfo
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Local environment
+.env
+.env.local
+
+# Generated raster icons (rebuild with: npm run assets:icons)
+resources/icons/logo/*.png
+resources/icons/logo/*.ico
+resources/icons/logo/*.icns
+
+# Website build output
+website/dist/
+website/node_modules/

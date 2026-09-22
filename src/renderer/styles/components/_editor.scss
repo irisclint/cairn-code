@@ -1,0 +1,210 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.editor-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: var(--editor-background);
+
+  &__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+  }
+}
+
+.monaco-host {
+  position: absolute;
+  inset: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Tabs                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.editor-tabs {
+  display: flex;
+  height: $tab-height;
+  flex: 0 0 $tab-height;
+  background: var(--editor-group-header-tabs-background);
+  border-bottom: 1px solid var(--editor-group-header-border);
+  overflow-x: auto;
+  overflow-y: hidden;
+  @include themed-scrollbar(6px);
+}
+
+.editor-tab {
+  @include flex-row($space-2);
+  flex: 0 0 auto;
+  height: 100%;
+  padding-inline: $space-3;
+  background: var(--tab-inactive-background);
+  color: var(--tab-inactive-foreground);
+  border-right: 1px solid var(--tab-border);
+  cursor: pointer;
+  position: relative;
+  max-width: 220px;
+
+  &:hover {
+    background: var(--tab-hover-background);
+  }
+
+  &--active {
+    background: var(--tab-active-background);
+    color: var(--tab-active-foreground);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: var(--tab-active-border-top);
+    }
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    opacity: 0.8;
+  }
+
+  &__label {
+    @include truncate;
+    font-size: $font-size-sm;
+  }
+
+  // The close button turns into a dot for unsaved files, and back into a cross
+  // on hover, so the dirty state is visible without adding a second control.
+  &--dirty &__close {
+    opacity: 1;
+    color: var(--tab-modified-border);
+  }
+
+  &__close {
+    flex: 0 0 auto;
+    opacity: 0;
+    transition: opacity $duration-fast $easing-standard;
+    @include respect-reduced-motion;
+  }
+
+  &:hover &__close,
+  &--active &__close {
+    opacity: 1;
+  }
+
+  @include focus-ring(-2px);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Breadcrumbs                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.breadcrumbs {
+  @include flex-row(0);
+  height: $breadcrumb-height;
+  flex: 0 0 $breadcrumb-height;
+  padding-inline: $space-3;
+  background: var(--breadcrumb-background);
+  font-size: $font-size-xs;
+  color: var(--breadcrumb-foreground);
+  overflow: hidden;
+
+  &__item {
+    @include flex-row(2px);
+    min-width: 0;
+  }
+
+  &__separator {
+    opacity: 0.5;
+    flex: 0 0 auto;
+  }
+
+  &__segment {
+    @include truncate;
+    padding-inline: 2px;
+
+    &--leaf {
+      color: var(--breadcrumb-focus-foreground);
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Welcome                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.welcome {
+  @include flex-center;
+  height: 100%;
+  overflow: auto;
+  @include themed-scrollbar;
+
+  &__content {
+    width: min(760px, 90%);
+    padding: $space-6 0;
+  }
+
+  &__header {
+    @include flex-row($space-4);
+    margin-bottom: $space-6;
+  }
+
+  &__title {
+    font-size: 40px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  &__tagline {
+    color: var(--description-foreground);
+    margin-top: $space-1;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: $space-6;
+  }
+
+  &__section-title {
+    font-size: $font-size-lg;
+    font-weight: 500;
+    margin-bottom: $space-3;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+  }
+
+  &__action {
+    @include flex-row($space-3);
+    justify-content: space-between;
+  }
+
+  &__link {
+    @include bare-button;
+    color: var(--focus-border);
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    @include focus-ring;
+  }
+
+  &__keybinding {
+    color: var(--description-foreground);
+  }
+
+  &__footer {
+    margin-top: $space-6;
+    padding-top: $space-4;
+    border-top: 1px solid var(--editor-widget-border);
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+  }
+}

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="cairn-logo-title">
+  <title id="cairn-logo-title">Cairn</title>
+
+  <defs>
+    <!-- The signature pair: blue into violet, bottom-left to top-right. -->
+    <linearGradient id="cairn-stone" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+
+    <!-- Subtle radial lift so the tile does not read as flat at large sizes. -->
+    <radialGradient id="cairn-backdrop" cx="30%" cy="22%" r="95%">
+      <stop offset="0%" stop-color="#242636" />
+      <stop offset="60%" stop-color="#1A1B26" />
+      <stop offset="100%" stop-color="#121219" />
+    </radialGradient>
+
+    <linearGradient id="cairn-edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.15" />
+    </linearGradient>
+  </defs>
+
+  <g id="backdrop">
+    <rect x="0" y="0" width="512" height="512" rx="61" fill="url(#cairn-backdrop)" />
+    <rect x="1" y="1" width="510" height="510" rx="60" fill="none" stroke="url(#cairn-edge)" stroke-width="2" />
+  </g>
+
+  <!--
+    Three stacked stones, widest at the base. The widths step down by a
+    consistent ratio and the gaps stay even, which is what keeps the stack
+    readable when it is scaled down to a 16px favicon: at that size the shapes
+    become three bars, and uneven spacing would turn them into noise.
+
+    Each stone is slightly asymmetric, and the top one leans, so the mark reads
+    as balanced stones rather than a bar chart.
+  -->
+  <g id="stones">
+    <!-- Base: widest, flattest, carries the stack. -->
+    <rect x="112" y="316" width="288" height="88" rx="33" fill="url(#cairn-stone)" />
+
+    <!-- Middle: offset a touch left, as a real stack settles. -->
+    <rect x="146" y="214" width="220" height="84" rx="31" fill="url(#cairn-stone)" opacity="0.9" />
+
+    <!-- Crown: smallest and tilted, the piece that says "placed by hand". -->
+    <rect
+      x="186"
+      y="114"
+      width="140"
+      height="78"
+      rx="29"
+      fill="#FFFFFF"
+      opacity="0.94"
+      transform="rotate(-8 256 153)"
+    />
+  </g>
+</svg>

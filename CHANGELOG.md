@@ -1,0 +1,93 @@
+# Changelog
+
+All notable changes to cairn-code are documented here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
+[semantic versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Planned
+
+- Git integration: status, staging, commit, diff view and branch management
+- Sandboxed extension host with a marketplace client
+- Debug adapter support with breakpoints, stepping and a variables panel
+- ESLint diagnostics from the workspace configuration, in a worker thread
+
+## [1.0.0-alpha.1] - 2026-09-22
+
+The first alpha. The editor, terminal, themes and diagnostics are usable.
+
+### Added
+
+- Electron application shell with a custom title bar, activity bar, sidebar,
+  editor area, bottom panel and status bar
+- Monaco editor integration with a single shared instance, per file models and
+  preserved view state across tab switches
+- 69 recognised languages, resolved by exact file name, extension or `#!` line
+- Diagnostics that report cause and solution alongside the compiler message,
+  with a catalog covering the common TypeScript codes and ESLint rules, message
+  heuristics for everything else, and a Problems panel that shows all four
+- Integrated terminal on XTerm with a real pseudo terminal through node-pty,
+  shell detection per platform, multiple tabs and a documented fallback to
+  piped child processes when the native module is unavailable
+- Theme engine with 12 built-in themes across dark, light and high contrast,
+  applied as CSS custom properties so a switch repaints in one frame
+- Theme picker with live preview on hover, and a validator that rejects a
+  broken theme with named fields rather than leaving the window unreadable
+- Command palette, quick open and a searchable keyboard shortcut reference,
+  all dispatching through one command registry shared with the native menu
+- Workspace search across files with regular expression, case, whole word and
+  glob filters, running in the main process
+- File explorer with lazy directory loading, create, rename and delete, kept in
+  sync by a debounced recursive filesystem watcher
+- Settings persisted to JSON, with telemetry off by default
+- Own visual identity: SVG logo master and a generator that produces every PNG
+  size plus Windows ICO and macOS ICNS
+- Desktop shortcut creation on all three platforms, from the Command Palette
+  or Settings, plus a one-time offer on first run for builds that were
+  unpacked rather than installed. Windows gets a .lnk, macOS a desktop alias,
+  Linux a freedesktop entry that also registers in the launcher
+- Cross platform packaging through electron-builder, and CI that lints,
+  typechecks, tests, builds and size checks the installers
+- File type icons for every recognised language, shown in the explorer and on
+  the editor tabs, with a monogram derived from the language when an extension
+  adds one the table does not know
+- A download and marketing site in website/, built with Vite and React, whose
+  claims are generated from one content module so they cannot drift
+
+### Fixed
+
+- Save As on an untitled buffer wrote an empty file. Untitled models were
+  created under a file URI and read back under a parsed one, so the read found
+  a different, empty model and the typed content was lost
+- A single Ctrl+backquote started two shells, because both the command and the
+  terminal panel created the first terminal
+- The Problems panel kept showing errors that had already been fixed, because
+  an empty marker set produced no entry to overwrite the old ones with
+- Holding Ctrl cancelled a pending chord such as Ctrl+K Ctrl+T, since the
+  auto-repeating modifier keydown was treated as an unmatched second key
+- .tsx and .jsx files opened without syntax highlighting or diagnostics,
+  because their cairn-code language ids have no tokenizer in Monaco, which serves
+  both from its typescript and javascript grammars
+- Clicking a problem could not reopen its file on Windows, because diagnostics
+  recorded a URI path with a leading slash before the drive letter
+- The end to end suite could not run at all. Playwright launches Electron with
+  --inspect, which makes Electron parse the rest of the command line with the
+  Node option parser and then reject --remote-debugging-port. The harness now
+  starts the binary itself and attaches over the debugging port
+
+### Changed
+
+- Renamed from fcode to cairn-code, including the application id, the URL scheme,
+  the preload global, the theme prefix, the icons and the website. A cairn is
+  the stack of stones that marks a route when the path is not obvious, which
+  is what the editor does with an error
+- New mark: three stacked stones in the blue to violet pair, replacing the
+  slanted f. It stays legible down to a 16 pixel favicon
+
+### Security
+
+- Context isolation on, node integration off, and a preload bridge that exposes
+  one allowlisted method per IPC channel and nothing else
+- Content Security Policy that forbids remote code in the renderer
+- The `cairn://` protocol resolves only inside the opened workspace

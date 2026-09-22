@@ -1,0 +1,62 @@
+// Layout constants and non-themeable design tokens.
+//
+// Every colour comes from the active theme through CSS custom properties that
+// the theme loader injects (see src/renderer/theme-engine/theme-loader.ts), so
+// nothing in this file hard-codes a colour. What lives here is geometry,
+// typography scale and motion.
+
+// Chrome dimensions
+$title-bar-height: 35px;
+$activity-bar-width: 48px;
+$status-bar-height: 22px;
+$tab-height: 35px;
+$breadcrumb-height: 22px;
+$panel-header-height: 35px;
+$resizer-size: 4px;
+
+// Radii
+$radius-sm: 3px;
+$radius-md: 5px;
+$radius-lg: 8px;
+
+// Spacing scale
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+
+// Typography
+$font-ui:
+  "Inter",
+  "Segoe UI Variable Text",
+  "Segoe UI",
+  -apple-system,
+  BlinkMacSystemFont,
+  system-ui,
+  "Helvetica Neue",
+  sans-serif;
+$font-mono: "JetBrains Mono", "Cascadia Code", "SF Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+
+$font-size-xs: 11px;
+$font-size-sm: 12px;
+$font-size-md: 13px;
+$font-size-lg: 15px;
+$font-size-xl: 20px;
+
+// Motion. Theme switching must stay imperceptible, so colour transitions are
+// deliberately absent from large surfaces and only applied to small controls.
+$duration-fast: 80ms;
+$duration-normal: 150ms;
+$easing-standard: cubic-bezier(0.2, 0, 0, 1);
+
+// Elevation
+$shadow-md: 0 2px 8px rgba(0, 0, 0, 0.32);
+$shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.44);
+
+// Stacking order
+$z-panel: 10;
+$z-resizer: 20;
+$z-dialog: 100;
+$z-notification: 200;

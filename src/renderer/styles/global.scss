@@ -1,0 +1,103 @@
+// Entry point for every style in the renderer.
+//
+// Order matters: variables and mixins first, then the reset, then components.
+// Theme colours are not imported here; they are injected at runtime as CSS
+// custom properties by the theme loader, which is what lets a theme change
+// repaint in a single frame.
+
+@use "variables";
+@use "mixins";
+@use "reset";
+
+@use "components/workbench";
+@use "components/editor";
+@use "components/sidebar";
+@use "components/panel";
+@use "components/dialogs";
+@use "components/controls";
+
+// Applied last so its refinements win over the component defaults above.
+@use "components/refinements";
+
+// Fallback custom properties.
+//
+// The loader overwrites all of these on startup. They exist so the first frame
+// before the theme is applied is already dark instead of white, and so unit
+// tests that render components without the loader still produce sane colours.
+:root {
+  --editor-background: #1a1b26;
+  --editor-foreground: #c8d0e0;
+  --foreground: #c8d0e0;
+  --description-foreground: #7a819b;
+  --focus-border: #3b82f6;
+  --activity-bar-background: #13131a;
+  --activity-bar-foreground: #c8d0e0;
+  --activity-bar-inactive-foreground: #7a819b;
+  --activity-bar-border: #282a3a;
+  --activity-bar-active-border: #3b82f6;
+  --activity-bar-active-background: #3b82f61a;
+  --activity-bar-badge-background: #3b82f6;
+  --activity-bar-badge-foreground: #ffffff;
+  --side-bar-background: #16161e;
+  --side-bar-foreground: #c8d0e0;
+  --side-bar-border: #282a3a;
+  --side-bar-title-foreground: #7a819b;
+  --status-bar-background: #3b82f6;
+  --status-bar-foreground: #ffffff;
+  --status-bar-no-folder-background: #20212e;
+  --status-bar-no-folder-foreground: #c8d0e0;
+  --status-bar-item-hover-background: #ffffff26;
+  --title-bar-active-background: #13131a;
+  --title-bar-active-foreground: #c8d0e0;
+  --title-bar-border: #282a3a;
+  --tab-active-background: #1a1b26;
+  --tab-active-foreground: #c8d0e0;
+  --tab-active-border-top: #3b82f6;
+  --tab-inactive-background: #16161e;
+  --tab-inactive-foreground: #7a819b;
+  --tab-border: #282a3a;
+  --tab-hover-background: #20212e;
+  --tab-modified-border: #e0af68;
+  --editor-group-header-tabs-background: #16161e;
+  --editor-group-header-border: #282a3a;
+  --panel-background: #16161e;
+  --panel-border: #282a3a;
+  --panel-title-active-foreground: #c8d0e0;
+  --panel-title-inactive-foreground: #7a819b;
+  --panel-title-active-border: #3b82f6;
+  --terminal-background: #16161e;
+  --terminal-foreground: #c8d0e0;
+  --breadcrumb-background: #1a1b26;
+  --breadcrumb-foreground: #7a819b;
+  --breadcrumb-focus-foreground: #c8d0e0;
+  --editor-widget-background: #20212e;
+  --editor-widget-foreground: #c8d0e0;
+  --editor-widget-border: #282a3a;
+  --editor-line-number-foreground: #7a819b;
+  --editor-find-match-highlight-background: #e0af6840;
+  --input-background: #20212e;
+  --input-foreground: #c8d0e0;
+  --input-border: #282a3a;
+  --input-placeholder-foreground: #7a819b;
+  --input-option-active-border: #3b82f6;
+  --dropdown-background: #20212e;
+  --dropdown-foreground: #c8d0e0;
+  --dropdown-border: #282a3a;
+  --button-background: #3b82f6;
+  --button-foreground: #ffffff;
+  --button-hover-background: #3b82f6d9;
+  --button-secondary-background: #20212e;
+  --button-secondary-foreground: #c8d0e0;
+  --badge-background: #3b82f6;
+  --badge-foreground: #ffffff;
+  --list-active-selection-background: #3b82f64d;
+  --list-active-selection-foreground: #c8d0e0;
+  --list-hover-background: #7a819b26;
+  --scrollbar-slider-background: #7a819b66;
+  --scrollbar-slider-hover-background: #7a819b99;
+  --scrollbar-slider-active-background: #7a819bcc;
+  --problems-error-icon-foreground: #f45c6a;
+  --problems-warning-icon-foreground: #e0af68;
+  --problems-info-icon-foreground: #3b82f6;
+  --git-decoration-added-resource-foreground: #10b981;
+}

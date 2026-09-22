@@ -1,0 +1,288 @@
+/*
+ * cairn website design system.
+ *
+ * The site borrows the editor's palette so that the download page and the
+ * product feel like one thing. Everything is a custom property, and the layout
+ * uses a single fluid type and space scale rather than breakpoint-specific
+ * overrides, which is what keeps it from breaking at odd widths.
+ */
+
+:root {
+  /* Surfaces, darkest to lightest */
+  --bg: #0f1015;
+  --bg-raised: #15161d;
+  --bg-elevated: #1b1d26;
+  --bg-inset: #0b0c10;
+
+  /* Text */
+  --text: #e8eaf2;
+  --text-muted: #9ba3b8;
+  --text-subtle: #6b7287;
+
+  /* Lines */
+  --line: #232632;
+  --line-strong: #2f3342;
+
+  /* Brand */
+  --accent: #3b82f6;
+  --accent-2: #8b5cf6;
+  --accent-soft: rgba(59, 130, 246, 0.12);
+  --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+
+  /* Semantics */
+  --error: #f45c6a;
+  --warning: #e0af68;
+  --success: #10b981;
+
+  /* Type */
+  --font-sans: 'Inter', 'Inter var', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, monospace;
+
+  /* Fluid type scale. Each step interpolates between a phone and a desktop. */
+  --step--1: clamp(0.82rem, 0.79rem + 0.13vw, 0.89rem);
+  --step-0: clamp(0.95rem, 0.91rem + 0.19vw, 1.06rem);
+  --step-1: clamp(1.13rem, 1.06rem + 0.35vw, 1.33rem);
+  --step-2: clamp(1.35rem, 1.22rem + 0.63vw, 1.7rem);
+  --step-3: clamp(1.6rem, 1.38rem + 1.1vw, 2.2rem);
+  --step-4: clamp(1.95rem, 1.5rem + 2.2vw, 3.2rem);
+  --step-5: clamp(2.4rem, 1.5rem + 4.4vw, 4.8rem);
+
+  /* Space scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  /* Geometry */
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --content-width: 1140px;
+  --prose-width: 68ch;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 24px 70px rgba(0, 0, 0, 0.5);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --fast: 140ms;
+  --normal: 260ms;
+  --slow: 600ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* The sticky header must not cover the target of an in-page link. */
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-5);
+  letter-spacing: -0.04em;
+}
+h2 {
+  font-size: var(--step-4);
+  letter-spacing: -0.03em;
+}
+h3 {
+  font-size: var(--step-2);
+}
+h4 {
+  font-size: var(--step-1);
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: var(--text);
+}
+
+/* Scrollbar, themed to match the page rather than the platform. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #3a3f52;
+  background-clip: padding-box;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Layout primitives                                                           */
+/* -------------------------------------------------------------------------- */
+
+.container {
+  width: min(100% - 2.5rem, var(--content-width));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--space-9);
+}
+
+.section--tight {
+  padding-block: var(--space-8);
+}
+
+.prose {
+  max-width: var(--prose-width);
+}
+
+.stack > * + * {
+  margin-top: var(--space-4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared elements                                                             */
+/* -------------------------------------------------------------------------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.section-title {
+  margin-bottom: var(--space-4);
+}
+
+.section-lead {
+  color: var(--text-muted);
+  font-size: var(--step-1);
+  max-width: 60ch;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent);
+  color: #fff;
+  border-radius: 0 0 var(--radius) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* A hairline divider that fades out at both ends. */
+.rule {
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+}

@@ -1,0 +1,367 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: $z-dialog;
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Quick pick (command palette, quick open)                                    */
+/* -------------------------------------------------------------------------- */
+
+.quick-pick {
+  @include floating-surface;
+  width: min(640px, 90vw);
+  margin-top: 10vh;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__input {
+    flex: 0 0 auto;
+    margin: $space-2;
+    padding: $space-2 $space-3;
+    background: var(--input-background);
+    color: var(--input-foreground);
+    border: 1px solid var(--input-border);
+    border-radius: $radius-md;
+    font-size: $font-size-lg;
+    outline: none;
+
+    &:focus {
+      border-color: var(--focus-border);
+    }
+
+    &::placeholder {
+      color: var(--input-placeholder-foreground);
+    }
+  }
+
+  &__list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: $space-1;
+    @include themed-scrollbar;
+  }
+
+  &__item {
+    @include flex-row($space-3);
+    padding: $space-2 $space-3;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+
+    &--active {
+      background: var(--list-active-selection-background);
+      color: var(--list-active-selection-foreground);
+      border-left-color: var(--focus-border);
+    }
+  }
+
+  &__item-main {
+    @include flex-row($space-2);
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__label {
+    @include truncate;
+  }
+
+  &__highlight {
+    background: none;
+    color: var(--focus-border);
+    font-weight: 600;
+  }
+
+  &__description,
+  &__detail {
+    @include truncate;
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+  }
+
+  &__trailing {
+    flex: 0 0 auto;
+  }
+
+  &__empty,
+  &__footer {
+    padding: $space-3;
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+    border-top: 1px solid var(--editor-widget-border);
+  }
+
+  &__empty {
+    border-top: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Theme picker                                                                */
+/* -------------------------------------------------------------------------- */
+
+.theme-picker {
+  @include floating-surface;
+  width: min(920px, 92vw);
+  margin-top: 8vh;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__header {
+    padding: $space-4;
+    border-bottom: 1px solid var(--editor-widget-border);
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: 500;
+  }
+
+  &__grid {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: $space-4;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $space-4;
+    @include themed-scrollbar;
+  }
+
+  &__footer {
+    @include flex-row($space-3);
+    justify-content: space-between;
+    padding: $space-3 $space-4;
+    border-top: 1px solid var(--editor-widget-border);
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+  }
+}
+
+.theme-card {
+  @include bare-button;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-2;
+  border: 1px solid var(--editor-widget-border);
+  border-radius: $radius-md;
+  transition: border-color $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--focus-border);
+    outline: none;
+  }
+
+  &--active {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 1px var(--focus-border);
+  }
+
+  &__name {
+    font-weight: 500;
+    margin-top: $space-1;
+  }
+
+  &__type,
+  &__description {
+    font-size: $font-size-xs;
+    color: var(--description-foreground);
+  }
+
+  &__description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.theme-swatch {
+  position: relative;
+  height: 96px;
+  border: 1px solid;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 10px 34px 1fr;
+  grid-template-rows: 1fr 8px;
+
+  &__activity {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  &__sidebar {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  &__editor {
+    grid-row: 1;
+    grid-column: 3;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__line {
+    height: 4px;
+    width: 80%;
+    border-radius: 2px;
+    opacity: 0.85;
+
+    &--short {
+      width: 45%;
+    }
+
+    &--medium {
+      width: 62%;
+    }
+  }
+
+  &__status {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* About and shortcuts                                                         */
+/* -------------------------------------------------------------------------- */
+
+.about-dialog {
+  @include floating-surface;
+  width: min(440px, 90vw);
+  margin-top: 14vh;
+  height: fit-content;
+  padding: $space-5;
+
+  &__title {
+    font-size: 30px;
+    font-weight: 300;
+  }
+
+  &__tagline {
+    color: var(--description-foreground);
+    margin-bottom: $space-4;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    font-size: $font-size-sm;
+    user-select: text;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+
+    dt {
+      color: var(--description-foreground);
+    }
+
+    dd {
+      font-family: $font-mono;
+    }
+  }
+
+  &__license {
+    margin-top: $space-4;
+    font-size: $font-size-xs;
+    color: var(--description-foreground);
+  }
+
+  &__actions {
+    @include flex-row($space-2);
+    justify-content: flex-end;
+    margin-top: $space-4;
+  }
+}
+
+.shortcuts-dialog {
+  @include floating-surface;
+  width: min(760px, 92vw);
+  margin-top: 8vh;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &__header {
+    padding: $space-4;
+    border-bottom: 1px solid var(--editor-widget-border);
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    h2 {
+      font-size: $font-size-xl;
+      font-weight: 500;
+    }
+  }
+
+  &__empty {
+    padding: $space-4;
+    color: var(--description-foreground);
+  }
+
+  &__footer {
+    @include flex-row($space-3);
+    justify-content: space-between;
+    padding: $space-3 $space-4;
+    border-top: 1px solid var(--editor-widget-border);
+    color: var(--description-foreground);
+    font-size: $font-size-sm;
+  }
+}
+
+.shortcuts-table {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: block;
+  overflow-y: auto;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: $font-size-sm;
+  @include themed-scrollbar;
+
+  th,
+  td {
+    text-align: left;
+    padding: $space-1 $space-4;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    background: var(--editor-widget-background);
+    color: var(--description-foreground);
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--editor-widget-border);
+  }
+
+  tbody tr:hover {
+    background: var(--list-hover-background);
+  }
+}

@@ -1,0 +1,239 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+// Refinements applied on top of the component styles.
+//
+// These are the details that separate a workbench that works from one that
+// feels finished: consistent icon alignment, motion that acknowledges a click
+// without delaying it, and hit targets that are forgiving.
+
+/* -------------------------------------------------------------------------- */
+/* File type icons                                                             */
+/* -------------------------------------------------------------------------- */
+
+.file-icon,
+.folder-icon {
+  flex: 0 0 auto;
+  // Optical alignment: the tiles read as sitting slightly high against text
+  // because their mass is centred, so they are nudged down by half a pixel.
+  transform: translateY(0.5px);
+}
+
+.folder-icon {
+  color: var(--focus-border);
+  opacity: 0.85;
+}
+
+.explorer__row--selected .folder-icon {
+  opacity: 1;
+}
+
+// A file tile in a row that is not selected sits back slightly, so the file
+// names stay the primary information and the colours do not shout.
+.explorer__icon.file-icon {
+  opacity: 0.92;
+  transition: opacity $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+}
+
+.explorer__row:hover .explorer__icon.file-icon,
+.explorer__row--selected .explorer__icon.file-icon {
+  opacity: 1;
+}
+
+.editor-tab__icon.file-icon {
+  opacity: 0.75;
+  transition: opacity $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+}
+
+.editor-tab--active .editor-tab__icon.file-icon,
+.editor-tab:hover .editor-tab__icon.file-icon {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion                                                                      */
+/* -------------------------------------------------------------------------- */
+
+// Rows respond to the pointer without animating position, which would make a
+// list feel unsteady while scanning it.
+.explorer__row,
+.quick-pick__item,
+.problems__summary,
+.search__match {
+  transition: background-color $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+}
+
+// A pressed control dips very slightly. Enough to register, short enough that
+// it never sits between the click and the result.
+.button:active:not(:disabled),
+.icon-button:active,
+.theme-card:active {
+  transform: scale(0.985);
+}
+
+.button,
+.icon-button,
+.theme-card {
+  transition:
+    background-color $duration-fast $easing-standard,
+    border-color $duration-fast $easing-standard,
+    transform $duration-fast $easing-standard;
+  @include respect-reduced-motion;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hit targets and spacing                                                     */
+/* -------------------------------------------------------------------------- */
+
+.explorer__row {
+  height: 24px;
+  gap: 6px;
+  border-radius: $radius-sm;
+  // Keeps the rounded highlight off the scrollbar.
+  margin-right: 4px;
+}
+
+.explorer__label {
+  letter-spacing: -0.005em;
+}
+
+.editor-tab {
+  gap: 7px;
+}
+
+// The close control keeps its space whether or not it is visible, so tab
+// labels never shift as the pointer moves across the strip.
+.editor-tab__close {
+  width: 18px;
+  height: 18px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Surfaces                                                                    */
+/* -------------------------------------------------------------------------- */
+
+// A one pixel top highlight lifts floating surfaces off the background without
+// a heavier border, which would fight with the theme in high contrast modes.
+.quick-pick,
+.theme-picker,
+.about-dialog,
+.shortcuts-dialog,
+.notification {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--foreground) 18%, transparent),
+      transparent
+    );
+    pointer-events: none;
+  }
+}
+
+:root[data-theme-type="high-contrast-dark"],
+:root[data-theme-type="high-contrast-light"] {
+  .quick-pick::after,
+  .theme-picker::after,
+  .about-dialog::after,
+  .shortcuts-dialog::after,
+  .notification::after {
+    // High contrast themes draw explicit borders; a subtle highlight on top of
+    // one reads as a rendering artefact.
+    display: none;
+  }
+}
+
+.dialog-overlay {
+  animation: overlay-in $duration-normal $easing-standard;
+  @include respect-reduced-motion;
+}
+
+.quick-pick,
+.theme-picker,
+.about-dialog,
+.shortcuts-dialog {
+  animation: surface-in $duration-normal $easing-standard;
+  @include respect-reduced-motion;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes surface-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Typography                                                                  */
+/* -------------------------------------------------------------------------- */
+
+// Tightens the tracking of the workbench chrome. Interface text at 12 to 13px
+// reads better slightly tighter than the font's default spacing.
+.title-bar__title,
+.editor-tab__label,
+.status-bar,
+.panel__tab,
+.quick-pick__label {
+  letter-spacing: -0.01em;
+}
+
+.sidebar-view__title,
+.settings__section-title {
+  // Uppercase labels need the opposite treatment.
+  letter-spacing: 0.09em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Focus                                                                       */
+/* -------------------------------------------------------------------------- */
+
+// One consistent focus ring everywhere, drawn inside the element so it never
+// overlaps a neighbour in a dense list.
+:focus-visible {
+  outline: 2px solid var(--focus-border);
+  outline-offset: -2px;
+  border-radius: $radius-sm;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Empty states                                                                */
+/* -------------------------------------------------------------------------- */
+
+.sidebar-view__empty {
+  padding-top: $space-5;
+}
+
+.sidebar-view__empty p:first-child {
+  font-size: $font-size-md;
+  color: var(--foreground);
+}
+
+.problems__empty,
+.output__empty,
+.terminal-panel__empty {
+  padding-top: $space-5;
+  text-align: center;
+}

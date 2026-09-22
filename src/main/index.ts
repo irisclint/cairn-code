@@ -16,6 +16,7 @@ import { FileWatcherService } from './services/file-watcher';
 import { UpdateService } from './updater';
 import { ShortcutService } from './services/shortcut-service';
 import { LintService } from './services/lint-service';
+import { GitCliService } from './services/git-cli';
 
 const logger = createLogger('main');
 
@@ -81,6 +82,7 @@ async function bootstrap(): Promise<void> {
     updater,
     shortcuts: new ShortcutService(),
     lint: new LintService(),
+    git: new GitCliService(),
     workspace: { rootPath: null, name: null }
   };
 

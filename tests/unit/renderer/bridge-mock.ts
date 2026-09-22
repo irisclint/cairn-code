@@ -1,3 +1,4 @@
+import type { GitStatus, LintOutcome } from '@shared/types';
 import { vi } from 'vitest';
 import type { CairnApi } from '../../../src/preload';
 
@@ -28,7 +29,9 @@ export interface BridgeState {
   failNextWrite: boolean;
   shortcut: { exists: boolean; path: string; canCreate: boolean; reason?: string };
   /** What the fake ESLint run comes back with. */
-  lint: { findings: unknown[]; ignored: boolean };
+  lint: LintOutcome;
+  /** What the fake repository looks like. */
+  git: { status: GitStatus; branches: string[]; diff: string | null; commits: string[] };
 }
 
 export const state: BridgeState = {
@@ -43,7 +46,13 @@ export const state: BridgeState = {
   failNextRead: false,
   failNextWrite: false,
   shortcut: { exists: false, path: '/home/dev/Desktop/cairn-code.lnk', canCreate: true },
-  lint: { findings: [], ignored: false }
+  lint: { findings: [], ignored: false },
+  git: {
+    status: { isRepository: false, branch: null, ahead: 0, behind: 0, changes: [] },
+    branches: [],
+    diff: null,
+    commits: []
+  }
 };
 
 const ok = <T>(value: T): { ok: true; value: T } => ({ ok: true, value });
@@ -273,6 +282,54 @@ export function createBridge(): CairnApi {
 
     lint: {
       run: vi.fn(async () => ok(state.lint))
+    },
+
+    git: {
+      status: vi.fn(async () => ok(state.git.status)),
+      branches: vi.fn(async () => ok(state.git.branches)),
+      diff: vi.fn(async () => ok(state.git.diff)),
+      stage: vi.fn(async (paths: string[]) => {
+        state.git.status = {
+          ...state.git.status,
+          changes: state.git.status.changes.map((change) =>
+            paths.includes(change.path) ? { ...change, staged: true } : change
+          )
+        };
+        return ok(undefined);
+      }),
+      unstage: vi.fn(async (paths: string[]) => {
+        state.git.status = {
+          ...state.git.status,
+          changes: state.git.status.changes.map((change) =>
+            paths.includes(change.path) ? { ...change, staged: false } : change
+          )
+        };
+        return ok(undefined);
+      }),
+      discard: vi.fn(async (paths: string[]) => {
+        state.git.status = {
+          ...state.git.status,
+          changes: state.git.status.changes.filter((change) => !paths.includes(change.path))
+        };
+        return ok(undefined);
+      }),
+      commit: vi.fn(async (message: string) => {
+        state.git.commits.push(message);
+        state.git.status = {
+          ...state.git.status,
+          changes: state.git.status.changes.filter((change) => !change.staged)
+        };
+        return ok('abc1234');
+      }),
+      switchBranch: vi.fn(async (name: string) => {
+        state.git.status = { ...state.git.status, branch: name };
+        return ok(undefined);
+      }),
+      createBranch: vi.fn(async (name: string) => {
+        state.git.branches = [...state.git.branches, name];
+        state.git.status = { ...state.git.status, branch: name };
+        return ok(undefined);
+      })
     },
 
     update: {

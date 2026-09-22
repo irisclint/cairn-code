@@ -138,6 +138,36 @@ export interface Diagnostic {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Source control                                                              */
+/* -------------------------------------------------------------------------- */
+
+export type GitFileStatus = 'modified' | 'added' | 'deleted' | 'renamed' | 'untracked' | 'conflicted';
+
+/**
+ * One change to one file, on one side of the index.
+ *
+ * A file that is staged and then edited again produces two of these, because
+ * the staged version and the working copy are different things and a commit
+ * will only contain the first.
+ */
+export interface GitChange {
+  /** Repository-relative, as git reports it. */
+  path: string;
+  status: GitFileStatus;
+  staged: boolean;
+}
+
+export interface GitStatus {
+  isRepository: boolean;
+  branch: string | null;
+  /** Commits this branch has that its upstream does not. */
+  ahead: number;
+  /** Commits the upstream has that this branch does not. */
+  behind: number;
+  changes: GitChange[];
+}
+
+/* -------------------------------------------------------------------------- */
 /* Linting                                                                     */
 /* -------------------------------------------------------------------------- */
 

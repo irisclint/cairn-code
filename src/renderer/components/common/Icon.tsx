@@ -29,6 +29,14 @@ const PATHS: Record<string, string> = {
   folder: 'M1.5 3h4.2l1.4 1.8H14.5v8.2h-13V3zm1 1v7.9h11V5.8H6.6L5.2 4H2.5z',
   'folder-open': 'M1.5 3h4.2l1.4 1.8h6.4v1.7h1.3L13 13H1.5V3zm1 1v7.5l1.5-5h9V5.8H6.6L5.2 4H2.5z',
   add: 'M7.5 3h1v4.5H13v1H8.5V13h-1V8.5H3v-1h4.5V3z',
+  minus: 'M3 7.5h10v1H3v-1z',
+  check: 'M6.3 11.4 3 8.1l.8-.8 2.5 2.5 5.9-5.9.8.8-6.7 6.7z',
+  // A commit on a branch that leaves the trunk and comes back.
+  branch:
+    'M4.5 2a2 2 0 0 1 .5 3.9v1.2c.5-.4 1.2-.6 2-.6h1A1.5 1.5 0 0 0 9.5 5V4.9a2 2 0 1 1 1 0V5A2.5 2.5 0 0 1 8 7.5H7c-1 0-2 .5-2 1.4v1.2a2 2 0 1 1-1 0V5.9A2 2 0 0 1 4.5 2zm0 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm6 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-6 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2z',
+  // An arrow curving back on itself: undo what is in the working tree.
+  discard:
+    'M8 3a5 5 0 1 1-4.7 6.6l1-.3A4 4 0 1 0 8 4a4 4 0 0 0-3 1.4h1.9v1H3.2V3.1h1v1.6A5 5 0 0 1 8 3z',
   'new-file': 'M4 1.5h5L12.5 5v3h-1V6H8.5V2.5H5v11h4v1H4V1.5zM12 9.5h1V12h2.5v1H13v2.5h-1V13H9.5v-1H12V9.5z',
   'new-folder':
     'M1.5 3h4.2l1.4 1.8h4.4v2h-1V5.8H6.6L5.2 4H2.5v7.9H8v1H1.5V3zm10 4.5h1V10H15v1h-2.5v2.5h-1V11H9v-1h2.5V7.5z',

@@ -6,6 +6,7 @@ import type {
   FileContent,
   FileEvent,
   FileStat,
+  GitStatus,
   IpcResult,
   LintOutcome,
   SearchFileResult,
@@ -135,6 +136,24 @@ const api = {
     getState: (): Promise<IpcResult<ShortcutState>> => ipcRenderer.invoke(IpcChannel.ShortcutGetState),
     create: (): Promise<IpcResult<string>> => ipcRenderer.invoke(IpcChannel.ShortcutCreate),
     remove: (): Promise<IpcResult<boolean>> => ipcRenderer.invoke(IpcChannel.ShortcutRemove)
+  },
+
+  git: {
+    status: (): Promise<IpcResult<GitStatus>> => ipcRenderer.invoke(IpcChannel.GitStatus),
+    diff: (filePath: string, staged: boolean): Promise<IpcResult<string | null>> =>
+      ipcRenderer.invoke(IpcChannel.GitDiff, filePath, staged),
+    stage: (paths: string[]): Promise<IpcResult<void>> => ipcRenderer.invoke(IpcChannel.GitStage, paths),
+    unstage: (paths: string[]): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.GitUnstage, paths),
+    discard: (paths: string[]): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.GitDiscard, paths),
+    commit: (message: string): Promise<IpcResult<string>> =>
+      ipcRenderer.invoke(IpcChannel.GitCommit, message),
+    branches: (): Promise<IpcResult<string[]>> => ipcRenderer.invoke(IpcChannel.GitBranches),
+    switchBranch: (name: string): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.GitSwitchBranch, name),
+    createBranch: (name: string): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.GitCreateBranch, name)
   },
 
   lint: {

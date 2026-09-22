@@ -11,6 +11,7 @@ import { ExtensionsView } from '@renderer/components/views/ExtensionsView';
 import { SideBar } from '@renderer/components/layout/SideBar';
 import { ActivityBar } from '@renderer/components/layout/ActivityBar';
 
+import { useGitStore } from '@renderer/store/git-store';
 import { useWorkspaceStore } from '@renderer/store/workspace-store';
 import { useEditorStore } from '@renderer/store/editor-store';
 import { useSettingsStore, FALLBACK_SETTINGS } from '@renderer/store/settings-store';
@@ -380,17 +381,89 @@ describe('SettingsView', () => {
 /* -------------------------------------------------------------------------- */
 
 describe('SourceControlView', () => {
-  it('should say the feature is not built yet rather than showing dead controls', () => {
+  beforeEach(() => {
+    useGitStore.getState().reset();
+    state.git = {
+      status: { isRepository: false, branch: null, ahead: 0, behind: 0, changes: [] },
+      branches: [],
+      diff: null,
+      commits: []
+    };
+  });
+
+  it('should ask for a folder before it can say anything', () => {
+    useWorkspaceStore.setState({ rootPath: null, name: null });
     render(<SourceControlView />);
     expect(screen.getByText(/Open a folder to see its repository status/)).toBeInTheDocument();
   });
 
-  it('should point at the terminal once a folder is open', () => {
+  it('should say plainly when the folder is not a repository', async () => {
     useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
     render(<SourceControlView />);
 
-    expect(screen.getByText(/Git integration arrives in the next milestone/)).toBeInTheDocument();
-    expect(screen.getByText(/integrated terminal/)).toBeInTheDocument();
+    expect(await screen.findByText(/not a git repository/)).toBeInTheDocument();
+    expect(screen.getByText(/git init/)).toBeInTheDocument();
+  });
+
+  it('should show the branch and both change lists for a repository', async () => {
+    useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
+    state.git.status = {
+      isRepository: true,
+      branch: 'main',
+      ahead: 2,
+      behind: 0,
+      changes: [
+        { path: 'src/a.ts', status: 'modified', staged: true },
+        { path: 'src/b.ts', status: 'untracked', staged: false }
+      ]
+    };
+    state.git.branches = ['main', 'feature/x'];
+
+    render(<SourceControlView />);
+
+    expect(await screen.findByText('main')).toBeInTheDocument();
+    expect(screen.getByText('Staged Changes')).toBeInTheDocument();
+    expect(screen.getByText('Changes')).toBeInTheDocument();
+    expect(screen.getByText('src/a.ts')).toBeInTheDocument();
+    expect(screen.getByText('src/b.ts')).toBeInTheDocument();
+    // Two commits ahead of the upstream.
+    expect(screen.getByTitle('Commits to push')).toHaveTextContent('2');
+  });
+
+  it('should refuse to commit with nothing staged, and say why in the tooltip', async () => {
+    useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
+    state.git.status = {
+      isRepository: true,
+      branch: 'main',
+      ahead: 0,
+      behind: 0,
+      changes: [{ path: 'src/b.ts', status: 'modified', staged: false }]
+    };
+
+    render(<SourceControlView />);
+
+    const button = await screen.findByRole('button', { name: /Commit/ });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('title', expect.stringContaining('Stage something first'));
+  });
+
+  it('should keep the commit button disabled until there is a message', async () => {
+    useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
+    state.git.status = {
+      isRepository: true,
+      branch: 'main',
+      ahead: 0,
+      behind: 0,
+      changes: [{ path: 'src/a.ts', status: 'modified', staged: true }]
+    };
+
+    render(<SourceControlView />);
+
+    const button = await screen.findByRole('button', { name: /Commit/ });
+    expect(button).toBeDisabled();
+
+    await userEvent.type(screen.getByLabelText('Commit message'), 'Fix the parser');
+    expect(button).toBeEnabled();
   });
 });
 

@@ -60,6 +60,17 @@ export const IpcChannel = {
   // Linting
   LintRequest: 'lint:request',
 
+  // Source control
+  GitStatus: 'git:status',
+  GitDiff: 'git:diff',
+  GitStage: 'git:stage',
+  GitUnstage: 'git:unstage',
+  GitDiscard: 'git:discard',
+  GitCommit: 'git:commit',
+  GitBranches: 'git:branches',
+  GitSwitchBranch: 'git:switch-branch',
+  GitCreateBranch: 'git:create-branch',
+
   // Menu and commands coming from the native menu bar
   MenuCommand: 'menu:command',
 

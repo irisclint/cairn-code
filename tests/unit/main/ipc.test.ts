@@ -22,6 +22,7 @@ const { WindowManager } = await import('@main/windows');
 const { ProtocolHandler } = await import('@main/protocol');
 const { UpdateService } = await import('@main/updater');
 const { ShortcutService } = await import('@main/services/shortcut-service');
+const { GitCliService } = await import('@main/services/git-cli');
 
 import type { IpcResult, LintOutcome } from '@shared/types';
 import type { IpcContext } from '@main/ipc';
@@ -96,6 +97,7 @@ beforeEach(async () => {
     // A stub rather than the real service: spawning a worker thread per test
     // would be slow, and what is under test here is the handler's guards.
     lint: { lint: lintSpy, dispose: vi.fn(async () => undefined) } as unknown as IpcContext['lint'],
+    git: new GitCliService(),
     workspace: { rootPath: null, name: null }
   };
 

@@ -7,6 +7,7 @@ import type {
   DirectoryEntry,
   FileContent,
   FileStat,
+  GitStatus,
   IpcResult,
   LintOutcome,
   SearchFileResult,
@@ -30,9 +31,10 @@ import type { ProtocolHandler } from './protocol';
 import type { UpdateService } from './updater';
 import type { ShortcutService } from './services/shortcut-service';
 import type { LintService } from './services/lint-service';
+import type { GitCliService } from './services/git-cli';
 import { createLogger } from '@shared/logger';
 
-import { resolve as resolvePath, sep } from 'node:path';
+import { isAbsolute, resolve as resolvePath, sep } from 'node:path';
 
 const log = createLogger('ipc');
 
@@ -47,6 +49,7 @@ export interface IpcContext {
   updater: UpdateService;
   shortcuts: ShortcutService;
   lint: LintService;
+  git: GitCliService;
   /** Mutable workspace state owned by the main process. */
   workspace: { rootPath: string | null; name: string | null };
 }
@@ -358,6 +361,84 @@ export function registerIpcHandlers(context: IpcContext): void {
 
       return context.lint.lint(resolved, text, root);
     });
+  });
+
+  /* ---------------------------------------------------------------------- */
+  /* Source control                                                          */
+  /* ---------------------------------------------------------------------- */
+
+  /**
+   * Every source control call works against the folder the main process has
+   * open. The renderer never supplies the repository path, so it cannot aim
+   * git at somewhere else on the disk.
+   */
+  const repository = (): string => {
+    const root = context.workspace.rootPath;
+    if (root) return root;
+
+    throw new WorkspaceError({
+      code: 'GIT_NO_WORKSPACE',
+      message: 'Source control needs an open folder',
+      cause: 'git works inside a repository, and no folder is open for it to work in.',
+      solution: 'Open the folder that contains the repository, then try again.'
+    });
+  };
+
+  /** Paths arrive from the renderer, so they are checked before git sees them. */
+  const relativePaths = (paths: unknown): string[] => {
+    const list = Array.isArray(paths) ? paths : [];
+
+    return list.map((entry) => {
+      const value = String(entry);
+      if (isAbsolute(value) || value.split(/[/\\]/).includes('..')) {
+        throw new WorkspaceError({
+          code: 'GIT_BAD_PATH',
+          message: 'That path cannot be used here',
+          cause: `Source control works with paths relative to the repository, and ${value} is absolute or walks outside it.`,
+          solution: 'Use the entries in the Source Control panel, which already carry the right paths.'
+        });
+      }
+      return value;
+    });
+  };
+
+  handle<GitStatus>(IpcChannel.GitStatus, () => guarded(() => context.git.getStatus(repository())));
+
+  handle<string | null>(IpcChannel.GitDiff, (_event, ...args) => {
+    const [filePath, staged] = args as unknown as [string, boolean];
+    return guarded(() => {
+      const safe = relativePaths([filePath])[0] as string;
+      return context.git.getDiff(repository(), safe, Boolean(staged));
+    });
+  });
+
+  handle<void>(IpcChannel.GitStage, (_event, ...args) =>
+    guarded(() => context.git.stage(repository(), relativePaths(args[0])))
+  );
+
+  handle<void>(IpcChannel.GitUnstage, (_event, ...args) =>
+    guarded(() => context.git.unstage(repository(), relativePaths(args[0])))
+  );
+
+  handle<void>(IpcChannel.GitDiscard, (_event, ...args) =>
+    guarded(() => context.git.discard(repository(), relativePaths(args[0])))
+  );
+
+  handle<string>(IpcChannel.GitCommit, (_event, ...args) => {
+    const [message] = args as unknown as [string];
+    return guarded(() => context.git.commit(repository(), String(message)));
+  });
+
+  handle<string[]>(IpcChannel.GitBranches, () => guarded(() => context.git.listBranches(repository())));
+
+  handle<void>(IpcChannel.GitSwitchBranch, (_event, ...args) => {
+    const [name] = args as unknown as [string];
+    return guarded(() => context.git.switchBranch(repository(), String(name)));
+  });
+
+  handle<void>(IpcChannel.GitCreateBranch, (_event, ...args) => {
+    const [name] = args as unknown as [string];
+    return guarded(() => context.git.createBranch(repository(), String(name)));
   });
 
   /* ---------------------------------------------------------------------- */

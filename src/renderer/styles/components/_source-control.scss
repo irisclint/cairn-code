@@ -1,0 +1,413 @@
+@use "../variables" as *;
+
+/*
+ * The Source Control panel.
+ *
+ * Every colour comes from a theme custom property, including the four git
+ * decoration colours the themes already define for file status, so a change
+ * to a theme recolours this panel with no work here.
+ *
+ * The panel lives in a sidebar that can be narrow, so the layout is a single
+ * column throughout and nothing relies on having room for two.
+ */
+
+.scm {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Branch                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.scm__branch {
+  position: relative;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.scm__branch-current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color $duration-fast $easing-standard;
+}
+
+.scm__branch-current:hover:not(:disabled) {
+  background: var(--list-hover-background);
+}
+
+.scm__branch-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.scm__count {
+  flex: 0 0 auto;
+  color: var(--description-foreground);
+  font-size: 10px;
+}
+
+.scm__branch-menu {
+  position: absolute;
+  inset: calc(100% - 4px) 8px auto 8px;
+  z-index: 20;
+  max-height: 260px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--dropdown-border);
+  border-radius: $radius-md;
+  background: var(--dropdown-background);
+  box-shadow: $shadow-md;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.scm__branch-item {
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: none;
+  color: var(--dropdown-foreground);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.scm__branch-item:hover:not(:disabled) {
+  background: var(--list-hover-background);
+}
+
+.scm__branch-item--active {
+  color: var(--focus-border);
+  cursor: default;
+}
+
+.scm__branch-create {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--dropdown-border);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 3px 6px;
+    border: 1px solid var(--input-border);
+    border-radius: $radius-sm;
+    background: var(--input-background);
+    color: var(--input-foreground);
+    font-size: 12px;
+  }
+
+  button {
+    padding: 3px 8px;
+    border: 0;
+    border-radius: $radius-sm;
+    background: var(--button-background);
+    color: var(--button-foreground);
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Commit                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.scm__commit {
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.scm__message {
+  width: 100%;
+  padding: 6px 8px;
+  resize: vertical;
+  border: 1px solid var(--input-border);
+  border-radius: $radius-sm;
+  background: var(--input-background);
+  color: var(--input-foreground);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.scm__message::placeholder {
+  color: var(--input-placeholder-foreground);
+}
+
+.scm__message:focus-visible {
+  outline: 1px solid var(--focus-border);
+  outline-offset: -1px;
+}
+
+.scm__commit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: var(--button-background);
+  color: var(--button-foreground);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color $duration-fast $easing-standard;
+}
+
+.scm__commit-button:hover:not(:disabled) {
+  background: var(--button-hover-background);
+}
+
+.scm__commit-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Change lists                                                                */
+/* -------------------------------------------------------------------------- */
+
+.scm__lists {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.scm__group-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 4px;
+
+  h3 {
+    margin: 0;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--side-bar-section-header-foreground);
+  }
+}
+
+.scm__group-count {
+  padding: 0 5px;
+  border-radius: 8px;
+  background: var(--badge-background);
+  color: var(--badge-foreground);
+  font-size: 10px;
+}
+
+.scm__group-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 2px;
+  /* Group actions stay hidden until the section is hovered, so the header is
+     quiet while nothing is being done to it. Focus reveals them too, so the
+     keyboard is not shut out of an action the mouse can reach. */
+  opacity: 0;
+  transition: opacity $duration-fast $easing-standard;
+}
+
+.scm__group:hover .scm__group-actions,
+.scm__group:focus-within .scm__group-actions {
+  opacity: 1;
+}
+
+.scm__group-empty {
+  margin: 0;
+  padding: 2px 10px 8px;
+  color: var(--description-foreground);
+  font-size: 11.5px;
+}
+
+.scm__files {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
+  li:hover {
+    background: var(--list-hover-background);
+  }
+}
+
+.scm__file {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+  padding: 3px 4px 3px 10px;
+  border: 0;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.scm__file--open {
+  color: var(--focus-border);
+}
+
+.scm__file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* The end of a path identifies the file and the start repeats across every
+     entry, so the ellipsis belongs on the left. */
+  direction: rtl;
+  text-align: left;
+}
+
+.scm__status {
+  flex: 0 0 auto;
+  width: 13px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.scm__status--modified {
+  color: var(--git-decoration-modified-resource-foreground);
+}
+.scm__status--added {
+  color: var(--git-decoration-added-resource-foreground);
+}
+.scm__status--untracked {
+  color: var(--git-decoration-untracked-resource-foreground);
+}
+.scm__status--deleted {
+  color: var(--git-decoration-deleted-resource-foreground);
+}
+.scm__status--renamed {
+  color: var(--git-decoration-modified-resource-foreground);
+}
+.scm__status--conflicted {
+  color: var(--git-decoration-conflicting-resource-foreground);
+}
+
+.scm__file-actions {
+  display: flex;
+  gap: 2px;
+  padding-right: 6px;
+  opacity: 0;
+  transition: opacity $duration-fast $easing-standard;
+}
+
+.scm__files li:hover .scm__file-actions,
+.scm__files li:focus-within .scm__file-actions {
+  opacity: 1;
+}
+
+.icon-button--danger:hover:not(:disabled) {
+  color: var(--error-foreground);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Diff                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.scm__diff {
+  display: flex;
+  flex-direction: column;
+  max-height: 45%;
+  border-top: 1px solid var(--side-bar-border);
+  background: var(--editor-background);
+}
+
+.scm__diff-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px 5px 10px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.scm__diff-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+}
+
+.scm__diff-side {
+  margin-left: 6px;
+  color: var(--description-foreground);
+  font-size: 10px;
+}
+
+.scm__diff-body {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 6px 0;
+  overflow: auto;
+  font-family: $font-mono;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--editor-foreground);
+}
+
+.scm__diff-line {
+  display: block;
+  padding-inline: 10px;
+  white-space: pre;
+}
+
+.scm__diff-line--add {
+  background: var(--editor-gutter-added-background);
+  color: var(--git-decoration-added-resource-foreground);
+}
+
+.scm__diff-line--remove {
+  background: var(--editor-gutter-deleted-background);
+  color: var(--git-decoration-deleted-resource-foreground);
+}
+
+.scm__diff-line--hunk {
+  color: var(--focus-border);
+}
+
+.scm__diff-line--file,
+.scm__diff-line--meta {
+  color: var(--description-foreground);
+}

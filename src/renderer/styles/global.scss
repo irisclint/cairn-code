@@ -17,6 +17,7 @@
 @use "components/controls";
 
 // Applied last so its refinements win over the component defaults above.
+@use "components/source-control";
 @use "components/refinements";
 
 // Fallback custom properties.

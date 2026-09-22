@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { mkdtemp, writeFile, rm, mkdir } from 'node:fs/promises';
@@ -8,6 +8,12 @@ import { join } from 'node:path';
 import { GitCliService } from '@main/services/git-cli';
 
 const run = promisify(execFile);
+
+// Every test here starts real git processes, and process creation on Windows
+// under a parallel test run is slow enough to pass the default timeout. The
+// limit is raised for this file rather than globally, so a genuinely hung test
+// elsewhere still fails fast.
+vi.setConfig({ testTimeout: 30_000, hookTimeout: 60_000 });
 
 /**
  * Exercises the git wrapper against a real repository.
@@ -173,5 +179,140 @@ describe('GitCliService against a real repository', () => {
     expect(status.branch).toBeNull();
 
     await rm(plain, { recursive: true, force: true });
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+/* Writing                                                                     */
+/* -------------------------------------------------------------------------- */
+
+describe('staging and committing', () => {
+  it.runIf(hasGit)('should stage a file and report it on the staged side', async () => {
+    await writeFile(join(repo, 'staged-me.txt'), 'hello\n');
+    await git.stage(repo, ['staged-me.txt']);
+
+    const staged = (await git.getStatus(repo)).changes.filter((change) => change.staged);
+    expect(staged.map((change) => change.path)).toContain('staged-me.txt');
+  });
+
+  it.runIf(hasGit)('should list a file twice when the index and the working tree differ', async () => {
+    await writeFile(join(repo, 'both-sides.txt'), 'first\n');
+    await git.stage(repo, ['both-sides.txt']);
+    await writeFile(join(repo, 'both-sides.txt'), 'first\nsecond\n');
+
+    const entries = (await git.getStatus(repo)).changes.filter(
+      (change) => change.path === 'both-sides.txt'
+    );
+
+    // One for what a commit would contain, one for what is still only on disk.
+    expect(entries).toHaveLength(2);
+    expect(entries.some((entry) => entry.staged)).toBe(true);
+    expect(entries.some((entry) => !entry.staged)).toBe(true);
+  });
+
+  it.runIf(hasGit)('should unstage without touching the working tree', async () => {
+    await writeFile(join(repo, 'unstage-me.txt'), 'content\n');
+    await git.stage(repo, ['unstage-me.txt']);
+    await git.unstage(repo, ['unstage-me.txt']);
+
+    const entries = (await git.getStatus(repo)).changes.filter(
+      (change) => change.path === 'unstage-me.txt'
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0]?.staged).toBe(false);
+    // The file itself is still there; only the index entry went away.
+    expect(entries[0]?.status).toBe('untracked');
+  });
+
+  it.runIf(hasGit)('should commit what is staged and return the new hash', async () => {
+    await writeFile(join(repo, 'to-commit.txt'), 'payload\n');
+    await git.stage(repo, ['to-commit.txt']);
+
+    const hash = await git.commit(repo, 'Add a file worth committing');
+    expect(hash).toMatch(/^[0-9a-f]{7,}$/);
+
+    const after = (await git.getStatus(repo)).changes.filter(
+      (change) => change.path === 'to-commit.txt'
+    );
+    expect(after).toEqual([]);
+  });
+
+  it.runIf(hasGit)('should refuse an empty message and say what to do', async () => {
+    await expect(git.commit(repo, '   ')).rejects.toMatchObject({ code: 'GIT_EMPTY_MESSAGE' });
+
+    try {
+      await git.commit(repo, '');
+    } catch (error) {
+      const failure = error as { userCause: string; solution: string };
+      expect(failure.userCause.length).toBeGreaterThan(0);
+      expect(failure.solution).toContain('what the change does');
+    }
+  });
+
+  it.runIf(hasGit)('should explain a commit with nothing staged', async () => {
+    await expect(git.commit(repo, 'nothing here')).rejects.toMatchObject({
+      code: 'GIT_NOTHING_STAGED'
+    });
+  });
+
+  it.runIf(hasGit)('should discard a working tree change', async () => {
+    await writeFile(join(repo, 'committed.txt'), 'edited\n');
+    expect((await git.getStatus(repo)).changes.some((c) => c.path === 'committed.txt')).toBe(true);
+
+    await git.discard(repo, ['committed.txt']);
+    expect((await git.getStatus(repo)).changes.some((c) => c.path === 'committed.txt')).toBe(false);
+  });
+});
+
+describe('branches', () => {
+  it.runIf(hasGit)('should create a branch and switch to it', async () => {
+    await git.createBranch(repo, 'feature/parser');
+
+    const status = await git.getStatus(repo);
+    expect(status.branch).toBe('feature/parser');
+    expect(await git.listBranches(repo)).toContain('feature/parser');
+  });
+
+  it.runIf(hasGit)('should switch back to an existing branch', async () => {
+    await git.switchBranch(repo, 'main');
+    expect((await git.getStatus(repo)).branch).toBe('main');
+  });
+
+  it.runIf(hasGit)('should explain a name that is already taken', async () => {
+    await expect(git.createBranch(repo, 'main')).rejects.toMatchObject({ code: 'GIT_BRANCH_EXISTS' });
+  });
+
+  it.runIf(hasGit)('should treat a branch name as data, not as arguments', async () => {
+    // A name that looks like a flag must not be parsed as one. The `--`
+    // separator in switchBranch is what makes this safe.
+    await expect(git.switchBranch(repo, '--orphan')).rejects.toMatchObject({ code: 'GIT_FAILED' });
+    expect((await git.getStatus(repo)).branch).toBe('main');
+  });
+});
+
+describe('when the folder is not a repository', () => {
+  it.runIf(hasGit)('should fail a commit with a cause and a concrete next step', async () => {
+    const plain = await mkdtemp(join(tmpdir(), 'cairn-notrepo-'));
+
+    try {
+      await git.commit(plain, 'this cannot work');
+      expect.unreachable('committing outside a repository should throw');
+    } catch (error) {
+      const failure = error as { code: string; userCause: string; solution: string };
+      expect(failure.code).toBe('GIT_NOT_A_REPOSITORY');
+      expect(failure.userCause.length).toBeGreaterThan(0);
+      expect(failure.solution).toContain('git init');
+    } finally {
+      await rm(plain, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+    }
+  });
+
+  it.runIf(hasGit)('should read a status of nothing rather than throwing', async () => {
+    const plain = await mkdtemp(join(tmpdir(), 'cairn-notrepo-'));
+    const status = await git.getStatus(plain);
+
+    expect(status.isRepository).toBe(false);
+    expect(status.changes).toEqual([]);
+    await rm(plain, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
   });
 });

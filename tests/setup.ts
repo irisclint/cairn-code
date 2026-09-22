@@ -65,7 +65,18 @@ if (!navigator.clipboard) {
 // uncaught exception from an event listener rather than a test failure.
 if (!globalThis.ClipboardItem) {
   globalThis.ClipboardItem = class {
-    constructor(readonly items: Record<string, unknown>) {}
+    constructor(readonly items: Record<string, unknown>) {
+      // The real ClipboardItem consumes the promises it is handed, so the stub
+      // has to as well. Monaco's Safari workaround creates a deferred promise
+      // on every click and cancels the previous one; with nothing attached,
+      // each cancellation becomes an unhandled rejection, and a few hundred of
+      // those make the run exit non-zero while every test passes.
+      for (const value of Object.values(items)) {
+        if (typeof (value as PromiseLike<unknown> | undefined)?.then === 'function') {
+          void Promise.resolve(value).catch(() => undefined);
+        }
+      }
+    }
   } as unknown as typeof ClipboardItem;
 }
 
@@ -73,4 +84,27 @@ if (!globalThis.ClipboardItem) {
 // measurement, which is fine for the logic under test but noisy without this.
 if (!globalThis.matchMedia) {
   globalThis.matchMedia = (() => ({ matches: false })) as unknown as typeof matchMedia;
+}
+
+// Monaco starts its TypeScript language service in a web worker. jsdom has no
+// Worker, and the missing global surfaces as an unhandled rejection rather
+// than a test failure, so the run exits non-zero while every test passes.
+//
+// The stub accepts messages and never answers, which is indistinguishable from
+// a language service that has not finished starting. Tests that need markers
+// set them directly rather than waiting for this.
+if (!globalThis.Worker) {
+  globalThis.Worker = class {
+    onmessage: ((event: MessageEvent) => void) | null = null;
+    onmessageerror: ((event: MessageEvent) => void) | null = null;
+    onerror: ((event: ErrorEvent) => void) | null = null;
+
+    postMessage(): void {}
+    terminate(): void {}
+    addEventListener(): void {}
+    removeEventListener(): void {}
+    dispatchEvent(): boolean {
+      return false;
+    }
+  } as unknown as typeof Worker;
 }

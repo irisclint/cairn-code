@@ -3,6 +3,7 @@ import { commandService, type Command } from './command-service';
 import { keyboardService, type Keybinding } from './keyboard-service';
 import { useEditorStore } from '../store/editor-store';
 import { useWorkspaceStore } from '../store/workspace-store';
+import { useDebugStore } from '../store/debug-store';
 import { useUiStore } from '../store/ui-store';
 import { useTerminalStore } from '../store/terminal-store';
 import { useSettingsStore } from '../store/settings-store';
@@ -311,6 +312,51 @@ export function registerBuiltInCommands(): () => void {
       category: 'View',
       key: 'ctrl+shift+g',
       run: () => useUiStore.getState().showSidebarView('source-control')
+    },
+    {
+      id: 'view.debug',
+      title: 'Show Run and Debug',
+      category: 'View',
+      key: 'ctrl+shift+d',
+      run: () => useUiStore.getState().showSidebarView('debug')
+    },
+    {
+      id: 'debug.start',
+      title: 'Start Debugging',
+      category: 'Debug',
+      key: 'f5',
+      run: () => {
+        useUiStore.getState().showSidebarView('debug');
+        return useDebugStore.getState().start();
+      }
+    },
+    {
+      id: 'debug.stop',
+      title: 'Stop Debugging',
+      category: 'Debug',
+      key: 'shift+f5',
+      run: () => useDebugStore.getState().stop()
+    },
+    {
+      id: 'debug.stepOver',
+      title: 'Step Over',
+      category: 'Debug',
+      key: 'f10',
+      run: () => useDebugStore.getState().control('next')
+    },
+    {
+      id: 'debug.stepInto',
+      title: 'Step Into',
+      category: 'Debug',
+      key: 'f11',
+      run: () => useDebugStore.getState().control('stepIn')
+    },
+    {
+      id: 'debug.stepOut',
+      title: 'Step Out',
+      category: 'Debug',
+      key: 'shift+f11',
+      run: () => useDebugStore.getState().control('stepOut')
     },
     {
       id: 'view.extensions',

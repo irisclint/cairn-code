@@ -21,6 +21,7 @@ const ITEMS: ActivityItem[] = [
     label: 'Source Control',
     commandId: 'view.sourceControl'
   },
+  { view: 'debug', icon: 'debug', label: 'Run and Debug', commandId: 'view.debug' },
   { view: 'extensions', icon: 'extensions', label: 'Extensions', commandId: 'view.extensions' }
 ];
 

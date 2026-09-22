@@ -1,4 +1,13 @@
-import type { GitStatus, LintOutcome } from '@shared/types';
+import type {
+  DebugConfiguration,
+  DebugSessionState,
+  DebugScope,
+  DebugStackFrame,
+  DebugVariable,
+  GitStatus,
+  LintOutcome,
+  SourceBreakpoint
+} from '@shared/types';
 import { vi } from 'vitest';
 import type { CairnApi } from '../../../src/preload';
 
@@ -32,6 +41,16 @@ export interface BridgeState {
   lint: LintOutcome;
   /** What the fake repository looks like. */
   git: { status: GitStatus; branches: string[]; diff: string | null; commits: string[] };
+  /** What the fake debug adapter reports. */
+  debug: {
+    configurations: DebugConfiguration[];
+    frames: DebugStackFrame[];
+    scopes: DebugScope[];
+    variables: Record<number, DebugVariable[]>;
+    breakpoints: Record<string, SourceBreakpoint[]>;
+    started: DebugConfiguration | null;
+    actions: string[];
+  };
 }
 
 export const state: BridgeState = {
@@ -52,6 +71,15 @@ export const state: BridgeState = {
     branches: [],
     diff: null,
     commits: []
+  },
+  debug: {
+    configurations: [],
+    frames: [],
+    scopes: [],
+    variables: {},
+    breakpoints: {},
+    started: null,
+    actions: []
   }
 };
 
@@ -69,7 +97,9 @@ export const listeners = {
   terminalExit: [] as Array<(event: unknown) => void>,
   menuCommand: [] as Array<(command: string) => void>,
   windowState: [] as Array<(state: unknown) => void>,
-  updateStatus: [] as Array<(status: unknown) => void>
+  updateStatus: [] as Array<(status: unknown) => void>,
+  debugState: [] as Array<(state: DebugSessionState) => void>,
+  debugOutput: [] as Array<(output: unknown) => void>
 };
 
 export const calls = {
@@ -282,6 +312,38 @@ export function createBridge(): CairnApi {
 
     lint: {
       run: vi.fn(async () => ok(state.lint))
+    },
+
+    debug: {
+      configurations: vi.fn(async () => ok(state.debug.configurations)),
+      start: vi.fn(async (configuration: DebugConfiguration) => {
+        state.debug.started = configuration;
+        listeners.debugState.forEach((listener) =>
+          listener({ status: 'running', threadId: null, configurationName: configuration.name })
+        );
+        return ok(undefined);
+      }),
+      stop: vi.fn(async () => {
+        state.debug.started = null;
+        listeners.debugState.forEach((listener) =>
+          listener({ status: 'inactive', threadId: null, configurationName: null })
+        );
+        return ok(undefined);
+      }),
+      control: vi.fn(async (action: string) => {
+        state.debug.actions.push(action);
+        return ok(undefined);
+      }),
+      setBreakpoints: vi.fn(async (filePath: string, breakpoints: SourceBreakpoint[]) => {
+        state.debug.breakpoints[filePath] = breakpoints;
+        return ok(undefined);
+      }),
+      stackTrace: vi.fn(async () => ok(state.debug.frames)),
+      scopes: vi.fn(async () => ok(state.debug.scopes)),
+      variables: vi.fn(async (reference: number) => ok(state.debug.variables[reference] ?? [])),
+      evaluate: vi.fn(async (expression: string) => ok('=' + expression)),
+      onState: vi.fn((listener: (state: unknown) => void) => subscribe(listeners.debugState, listener)),
+      onOutput: vi.fn((listener: (output: unknown) => void) => subscribe(listeners.debugOutput, listener))
     },
 
     git: {

@@ -60,6 +60,19 @@ export const IpcChannel = {
   // Linting
   LintRequest: 'lint:request',
 
+  // Debugging
+  DebugConfigurations: 'debug:configurations',
+  DebugStart: 'debug:start',
+  DebugStop: 'debug:stop',
+  DebugControl: 'debug:control',
+  DebugSetBreakpoints: 'debug:set-breakpoints',
+  DebugStackTrace: 'debug:stack-trace',
+  DebugScopes: 'debug:scopes',
+  DebugVariables: 'debug:variables',
+  DebugEvaluate: 'debug:evaluate',
+  DebugStateChanged: 'debug:state-changed',
+  DebugOutput: 'debug:output',
+
   // Source control
   GitStatus: 'git:status',
   GitDiff: 'git:diff',

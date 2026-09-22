@@ -17,6 +17,7 @@ import { UpdateService } from './updater';
 import { ShortcutService } from './services/shortcut-service';
 import { LintService } from './services/lint-service';
 import { GitCliService } from './services/git-cli';
+import { DebugService } from './services/debug-service';
 
 const logger = createLogger('main');
 
@@ -71,6 +72,12 @@ async function bootstrap(): Promise<void> {
     windows?.broadcast(IpcChannel.UpdateStatus, status);
   });
 
+  // The debug session pushes rather than being polled: a stop can happen at
+  // any moment, and the renderer has to react to it rather than discover it.
+  const debugService = new DebugService();
+  debugService.on('state', (state) => windows?.broadcast(IpcChannel.DebugStateChanged, state));
+  debugService.on('output', (output) => windows?.broadcast(IpcChannel.DebugOutput, output));
+
   const context: IpcContext = {
     windows,
     files: new FileSystemService(),
@@ -83,6 +90,7 @@ async function bootstrap(): Promise<void> {
     shortcuts: new ShortcutService(),
     lint: new LintService(),
     git: new GitCliService(),
+    debug: debugService,
     workspace: { rootPath: null, name: null }
   };
 

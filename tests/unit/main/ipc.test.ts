@@ -23,6 +23,7 @@ const { ProtocolHandler } = await import('@main/protocol');
 const { UpdateService } = await import('@main/updater');
 const { ShortcutService } = await import('@main/services/shortcut-service');
 const { GitCliService } = await import('@main/services/git-cli');
+const { DebugService } = await import('@main/services/debug-service');
 
 import type { IpcResult, LintOutcome } from '@shared/types';
 import type { IpcContext } from '@main/ipc';
@@ -98,6 +99,7 @@ beforeEach(async () => {
     // would be slow, and what is under test here is the handler's guards.
     lint: { lint: lintSpy, dispose: vi.fn(async () => undefined) } as unknown as IpcContext['lint'],
     git: new GitCliService(),
+    debug: new DebugService(),
     workspace: { rootPath: null, name: null }
   };
 

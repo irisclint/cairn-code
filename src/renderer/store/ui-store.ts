@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { clamp } from '@shared/utils';
 
-export type SidebarView = 'explorer' | 'search' | 'source-control' | 'extensions' | 'settings';
+export type SidebarView =
+  | 'explorer'
+  | 'search'
+  | 'source-control'
+  | 'debug'
+  | 'extensions'
+  | 'settings';
 export type PanelView = 'problems' | 'terminal' | 'output';
 export type DialogView = 'none' | 'command-palette' | 'quick-open' | 'theme-picker' | 'about' | 'shortcuts';
 

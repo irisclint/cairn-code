@@ -4,6 +4,10 @@ import { IpcChannel } from '@shared/ipc-channels';
 import { WorkspaceError, guarded } from '@shared/errors';
 import type {
   AppInfo,
+  DebugConfiguration,
+  DebugScope,
+  DebugStackFrame,
+  DebugVariable,
   DirectoryEntry,
   FileContent,
   FileStat,
@@ -16,6 +20,7 @@ import type {
   Settings,
   ShellDescriptor,
   ShortcutState,
+  SourceBreakpoint,
   TerminalCreateOptions,
   TerminalSession,
   UpdateStatus,
@@ -32,6 +37,7 @@ import type { UpdateService } from './updater';
 import type { ShortcutService } from './services/shortcut-service';
 import type { LintService } from './services/lint-service';
 import type { GitCliService } from './services/git-cli';
+import type { DebugService } from './services/debug-service';
 import { createLogger } from '@shared/logger';
 
 import { isAbsolute, resolve as resolvePath, sep } from 'node:path';
@@ -50,6 +56,7 @@ export interface IpcContext {
   shortcuts: ShortcutService;
   lint: LintService;
   git: GitCliService;
+  debug: DebugService;
   /** Mutable workspace state owned by the main process. */
   workspace: { rootPath: string | null; name: string | null };
 }
@@ -439,6 +446,71 @@ export function registerIpcHandlers(context: IpcContext): void {
   handle<void>(IpcChannel.GitCreateBranch, (_event, ...args) => {
     const [name] = args as unknown as [string];
     return guarded(() => context.git.createBranch(repository(), String(name)));
+  });
+
+  /* ---------------------------------------------------------------------- */
+  /* Debugging                                                               */
+  /* ---------------------------------------------------------------------- */
+
+  handle<DebugConfiguration[]>(IpcChannel.DebugConfigurations, () =>
+    guarded(() => context.debug.listConfigurations(repository()))
+  );
+
+  handle<void>(IpcChannel.DebugStart, (_event, ...args) => {
+    const [configuration] = args as unknown as [DebugConfiguration];
+    return guarded(() => context.debug.start(repository(), configuration));
+  });
+
+  handle<void>(IpcChannel.DebugStop, () => guarded(() => context.debug.stop()));
+
+  handle<void>(IpcChannel.DebugControl, (_event, ...args) => {
+    const [action] = args as unknown as [string];
+
+    return guarded(async () => {
+      switch (action) {
+        case 'continue':
+          return context.debug.continue();
+        case 'next':
+          return context.debug.next();
+        case 'stepIn':
+          return context.debug.stepIn();
+        case 'stepOut':
+          return context.debug.stepOut();
+        case 'pause':
+          return context.debug.pause();
+        default:
+          throw new WorkspaceError({
+            code: 'DEBUG_UNKNOWN_ACTION',
+            message: `There is no debug action called ${action}`,
+            cause: 'The renderer asked for an execution command the main process does not implement.',
+            solution: 'Use the buttons in the Run and Debug panel, which only send the supported actions.'
+          });
+      }
+    });
+  });
+
+  handle<void>(IpcChannel.DebugSetBreakpoints, (_event, ...args) => {
+    const [filePath, breakpoints] = args as unknown as [string, SourceBreakpoint[]];
+    return guarded(() =>
+      context.debug.setBreakpoints(resolvePath(String(filePath)), Array.isArray(breakpoints) ? breakpoints : [])
+    );
+  });
+
+  handle<DebugStackFrame[]>(IpcChannel.DebugStackTrace, () => guarded(() => context.debug.stackTrace()));
+
+  handle<DebugScope[]>(IpcChannel.DebugScopes, (_event, ...args) => {
+    const [frameId] = args as unknown as [number];
+    return guarded(() => context.debug.scopes(Number(frameId)));
+  });
+
+  handle<DebugVariable[]>(IpcChannel.DebugVariables, (_event, ...args) => {
+    const [reference] = args as unknown as [number];
+    return guarded(() => context.debug.variables(Number(reference)));
+  });
+
+  handle<string>(IpcChannel.DebugEvaluate, (_event, ...args) => {
+    const [expression, frameId] = args as unknown as [string, number | null];
+    return guarded(() => context.debug.evaluate(String(expression), frameId === null ? null : Number(frameId)));
   });
 
   /* ---------------------------------------------------------------------- */

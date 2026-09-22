@@ -30,6 +30,16 @@ const PATHS: Record<string, string> = {
   'folder-open': 'M1.5 3h4.2l1.4 1.8h6.4v1.7h1.3L13 13H1.5V3zm1 1v7.5l1.5-5h9V5.8H6.6L5.2 4H2.5z',
   add: 'M7.5 3h1v4.5H13v1H8.5V13h-1V8.5H3v-1h4.5V3z',
   minus: 'M3 7.5h10v1H3v-1z',
+  play: 'M5 3.2 12.5 8 5 12.8V3.2z',
+  stop: 'M4 4h8v8H4V4z',
+  pause: 'M5 3.5h2v9H5v-9zm4 0h2v9H9v-9z',
+  // An arrow that hops over a dot: run the next line without entering it.
+  'step-over':
+    'M8 3a5 5 0 0 1 4.9 4h-1a4 4 0 1 0-1.2 3.6l.7.7A5 5 0 1 1 8 3zm2.5 0H14v3.5h-1V4.7l-2 2-.7-.7 2-2h-1.8V3zM8 9.2a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6z',
+  // An arrow pointing down into a dot: enter the call on this line.
+  'step-into': 'M7.5 2h1v6.3l2.1-2.1.7.7L8 10.2 4.7 6.9l.7-.7 2.1 2.1V2zM8 11.4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6z',
+  // An arrow pointing up out of a dot: finish this call and come back.
+  'step-out': 'M8 2.3 11.3 5.6l-.7.7-2.1-2.1V10.5h-1V4.2L5.4 6.3l-.7-.7L8 2.3zM8 11.4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6z',
   check: 'M6.3 11.4 3 8.1l.8-.8 2.5 2.5 5.9-5.9.8.8-6.7 6.7z',
   // A commit on a branch that leaves the trunk and comes back.
   branch:

@@ -502,8 +502,12 @@ describe('ActivityBar', () => {
   it('should offer every primary view plus settings', () => {
     render(<ActivityBar />);
 
-    const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(5);
+    // Named rather than counted: a count says nothing about which view went
+    // missing, and it has to be edited every time one is added.
+    for (const label of ['Explorer', 'Search', 'Source Control', 'Run and Debug', 'Extensions']) {
+      expect(screen.getByRole('button', { name: new RegExp(label) })).toBeInTheDocument();
+    }
+    expect(screen.getByRole('button', { name: /Settings/ })).toBeInTheDocument();
   });
 
   it('should show the keyboard shortcut in the tooltip', () => {

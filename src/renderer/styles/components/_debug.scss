@@ -1,0 +1,377 @@
+@use "../variables" as *;
+
+/*
+ * Run and Debug, and the breakpoint glyph in the editor margin.
+ *
+ * Every colour is a theme custom property. The breakpoint reuses the error
+ * colour deliberately: a theme that made errors legible has already made
+ * breakpoints legible, and one more red would only be one more thing to get
+ * wrong in eleven of the twelve themes.
+ */
+
+.debug {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Launching                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.debug__launch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.debug__config {
+  flex: 1;
+  min-width: 0;
+  padding: 3px 6px;
+  border: 1px solid var(--dropdown-border);
+  border-radius: $radius-sm;
+  background: var(--dropdown-background);
+  color: var(--dropdown-foreground);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.debug__config:disabled {
+  opacity: 0.6;
+}
+
+.debug__action {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: $radius-sm;
+  background: none;
+  cursor: pointer;
+  transition: background-color $duration-fast $easing-standard;
+}
+
+.debug__action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.debug__action--run {
+  color: var(--git-decoration-added-resource-foreground);
+}
+
+.debug__action--stop {
+  color: var(--error-foreground);
+}
+
+.debug__action:hover:not(:disabled) {
+  background: var(--list-hover-background);
+}
+
+.debug__hint {
+  margin: 0;
+  padding: 10px;
+  color: var(--description-foreground);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Execution controls                                                          */
+/* -------------------------------------------------------------------------- */
+
+.debug__controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.debug__status {
+  margin-left: auto;
+  color: var(--description-foreground);
+  font-size: 10.5px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Panels                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.debug__panels {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.debug__section {
+  border-bottom: 1px solid var(--side-bar-border);
+  padding-bottom: 6px;
+}
+
+.debug__section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 7px 10px 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--side-bar-section-header-foreground);
+}
+
+.debug__count {
+  padding: 0 5px;
+  border-radius: 8px;
+  background: var(--badge-background);
+  color: var(--badge-foreground);
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.debug__empty {
+  margin: 0;
+  padding: 0 10px 6px;
+  color: var(--description-foreground);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Call stack                                                                  */
+/* -------------------------------------------------------------------------- */
+
+.debug__stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.debug__frame {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 3px 10px;
+  border: 0;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.debug__frame:hover {
+  background: var(--list-hover-background);
+}
+
+.debug__frame--active {
+  background: var(--list-active-selection-background);
+  color: var(--list-active-selection-foreground);
+}
+
+.debug__frame-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: $font-mono;
+}
+
+.debug__frame-where {
+  flex: 0 0 auto;
+  color: var(--description-foreground);
+  font-size: 10.5px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Variables                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.debug__scope-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 3px 10px;
+  border: 0;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 11.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.debug__scope-head:hover {
+  background: var(--list-hover-background);
+}
+
+.debug__scope-note {
+  margin-left: auto;
+  color: var(--description-foreground);
+  font-size: 10px;
+}
+
+.debug__variables,
+.debug__variables ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.debug__variable {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  width: 100%;
+  padding: 2px 10px 2px 0;
+  border: 0;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-family: $font-mono;
+  font-size: 11.5px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.debug__variable:disabled {
+  cursor: default;
+}
+
+.debug__variable:hover:not(:disabled) {
+  background: var(--list-hover-background);
+}
+
+.debug__variable-name {
+  flex: 0 0 auto;
+  color: var(--git-decoration-modified-resource-foreground);
+}
+
+.debug__variable-name::after {
+  content: ':';
+  color: var(--description-foreground);
+}
+
+.debug__variable-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Breakpoints                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.debug__breakpoints {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
+  li:hover {
+    background: var(--list-hover-background);
+  }
+}
+
+.debug__breakpoint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+  padding: 3px 4px 3px 10px;
+  border: 0;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.debug__breakpoint-dot {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--editor-error-foreground);
+}
+
+.debug__breakpoint-file {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.debug__breakpoint-line {
+  flex: 0 0 auto;
+  color: var(--description-foreground);
+  font-size: 10.5px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Console                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.debug__console {
+  max-height: 200px;
+  margin: 0;
+  padding: 4px 10px 8px;
+  overflow: auto;
+  font-family: $font-mono;
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--editor-foreground);
+}
+
+.debug__line--stderr {
+  color: var(--error-foreground);
+}
+
+/* -------------------------------------------------------------------------- */
+/* The glyph in the editor margin                                              */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * Monaco sizes the glyph margin itself, so the dot is centred inside whatever
+ * box it is given rather than positioned absolutely.
+ */
+.breakpoint {
+  position: relative;
+}
+
+.breakpoint::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--editor-error-foreground);
+}
+
+/* A conditional breakpoint is hollow, so the two are distinguishable without
+   relying on a colour difference. */
+.breakpoint--conditional::after {
+  background: transparent;
+  border: 2px solid var(--editor-error-foreground);
+}

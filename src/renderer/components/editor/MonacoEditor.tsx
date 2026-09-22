@@ -5,6 +5,8 @@ import { useSettingsStore } from '../../store/settings-store';
 import { useThemeStore } from '../../store/theme-store';
 import { buildEditorOptions, createEditor, getModel } from '../../editor/create-editor';
 import { forgetLint, scheduleLint } from '../../services/lint-client';
+import { attachBreakpointMargin, renderBreakpoints } from '../../editor/breakpoint-margin';
+import { useDebugStore } from '../../store/debug-store';
 import { diagnosticService } from '../../services/diagnostic-service';
 import { setActiveEditor } from '../../services/register-commands';
 import { debounce } from '@shared/utils';
@@ -102,12 +104,37 @@ export function MonacoEditor({ editor }: MonacoEditorProps): JSX.Element {
       if (uris.some((uri) => uri.toString() === model.uri.toString())) refreshDiagnostics();
     });
 
+    /*
+     * Breakpoints are drawn from the store rather than from local state, so
+     * the gutter and the Run and Debug panel cannot disagree. The decoration
+     * ids are kept between updates because Monaco needs the previous set to
+     * know what to remove.
+     */
+    let decorations: string[] = [];
+    const paintBreakpoints = (): void => {
+      if (!lintable) return;
+      decorations = renderBreakpoints(
+        instance,
+        decorations,
+        useDebugStore.getState().breakpointsFor(model.uri.fsPath)
+      );
+    };
+
+    const marginListener = attachBreakpointMargin(instance, (line) => {
+      if (lintable) void useDebugStore.getState().toggleBreakpoint(model.uri.fsPath, line);
+    });
+
+    const unsubscribeBreakpoints = useDebugStore.subscribe(paintBreakpoints);
+
     refreshDiagnostics();
     requestLint();
+    paintBreakpoints();
 
     return () => {
       contentListener.dispose();
       markerListener.dispose();
+      marginListener.dispose();
+      unsubscribeBreakpoints();
       refreshDiagnostics.cancel();
       if (lintable) forgetLint(model.uri.fsPath);
       if (instanceRef.current) saveViewState(editor.path, instanceRef.current.saveViewState());

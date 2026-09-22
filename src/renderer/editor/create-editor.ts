@@ -33,6 +33,8 @@ export function buildEditorOptions(
     insertSpaces: settings['editor.insertSpaces'],
     wordWrap: settings['editor.wordWrap'],
     lineNumbers: settings['editor.lineNumbers'],
+    // The strip left of the line numbers, where breakpoints are set and shown.
+    glyphMargin: true,
     renderWhitespace: isLargeFile ? 'none' : settings['editor.renderWhitespace'],
 
     minimap: {

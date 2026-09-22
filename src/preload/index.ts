@@ -6,8 +6,15 @@ import type {
   FileContent,
   FileEvent,
   FileStat,
+  DebugConfiguration,
+  DebugOutput,
+  DebugScope,
+  DebugSessionState,
+  DebugStackFrame,
+  DebugVariable,
   GitStatus,
   IpcResult,
+  SourceBreakpoint,
   LintOutcome,
   SearchFileResult,
   SearchQuery,
@@ -136,6 +143,30 @@ const api = {
     getState: (): Promise<IpcResult<ShortcutState>> => ipcRenderer.invoke(IpcChannel.ShortcutGetState),
     create: (): Promise<IpcResult<string>> => ipcRenderer.invoke(IpcChannel.ShortcutCreate),
     remove: (): Promise<IpcResult<boolean>> => ipcRenderer.invoke(IpcChannel.ShortcutRemove)
+  },
+
+  debug: {
+    configurations: (): Promise<IpcResult<DebugConfiguration[]>> =>
+      ipcRenderer.invoke(IpcChannel.DebugConfigurations),
+    start: (configuration: DebugConfiguration): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.DebugStart, configuration),
+    stop: (): Promise<IpcResult<void>> => ipcRenderer.invoke(IpcChannel.DebugStop),
+    control: (action: string): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.DebugControl, action),
+    setBreakpoints: (filePath: string, breakpoints: SourceBreakpoint[]): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.DebugSetBreakpoints, filePath, breakpoints),
+    stackTrace: (): Promise<IpcResult<DebugStackFrame[]>> =>
+      ipcRenderer.invoke(IpcChannel.DebugStackTrace),
+    scopes: (frameId: number): Promise<IpcResult<DebugScope[]>> =>
+      ipcRenderer.invoke(IpcChannel.DebugScopes, frameId),
+    variables: (reference: number): Promise<IpcResult<DebugVariable[]>> =>
+      ipcRenderer.invoke(IpcChannel.DebugVariables, reference),
+    evaluate: (expression: string, frameId: number | null): Promise<IpcResult<string>> =>
+      ipcRenderer.invoke(IpcChannel.DebugEvaluate, expression, frameId),
+    onState: (listener: (state: DebugSessionState) => void): Unsubscribe =>
+      subscribe(IpcChannel.DebugStateChanged, listener),
+    onOutput: (listener: (output: DebugOutput) => void): Unsubscribe =>
+      subscribe(IpcChannel.DebugOutput, listener)
   },
 
   git: {

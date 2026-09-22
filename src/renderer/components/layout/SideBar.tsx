@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { ExplorerView } from '../views/ExplorerView';
 import { SearchView } from '../views/SearchView';
 import { SourceControlView } from '../views/SourceControlView';
+import { DebugView } from '../views/DebugView';
 import { ExtensionsView } from '../views/ExtensionsView';
 import { SettingsView } from '../views/SettingsView';
 import { ErrorBoundary } from '../common/ErrorBoundary';
@@ -11,6 +12,7 @@ const VIEWS: Record<SidebarView, () => JSX.Element> = {
   explorer: ExplorerView,
   search: SearchView,
   'source-control': SourceControlView,
+  debug: DebugView,
   extensions: ExtensionsView,
   settings: SettingsView
 };

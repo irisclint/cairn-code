@@ -1,7 +1,15 @@
 import { fuzzyScore } from '@shared/utils';
 
 export type CommandCategory =
-  'File' | 'Edit' | 'Selection' | 'View' | 'Navigate' | 'Terminal' | 'Preferences' | 'Help';
+  | 'File'
+  | 'Edit'
+  | 'Selection'
+  | 'View'
+  | 'Navigate'
+  | 'Terminal'
+  | 'Debug'
+  | 'Preferences'
+  | 'Help';
 
 export interface Command {
   id: string;

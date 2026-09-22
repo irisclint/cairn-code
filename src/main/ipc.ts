@@ -1,19 +1,20 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron';
 import { basename } from 'node:path';
 import { IpcChannel } from '@shared/ipc-channels';
-import { guarded } from '@shared/errors';
+import { WorkspaceError, guarded } from '@shared/errors';
 import type {
   AppInfo,
   DirectoryEntry,
   FileContent,
   FileStat,
   IpcResult,
+  LintOutcome,
   SearchFileResult,
   SearchQuery,
-  Settings,
   SettingKey,
-  ShortcutState,
+  Settings,
   ShellDescriptor,
+  ShortcutState,
   TerminalCreateOptions,
   TerminalSession,
   UpdateStatus,
@@ -28,7 +29,10 @@ import type { FileWatcherService } from './services/file-watcher';
 import type { ProtocolHandler } from './protocol';
 import type { UpdateService } from './updater';
 import type { ShortcutService } from './services/shortcut-service';
+import type { LintService } from './services/lint-service';
 import { createLogger } from '@shared/logger';
+
+import { resolve as resolvePath, sep } from 'node:path';
 
 const log = createLogger('ipc');
 
@@ -42,6 +46,7 @@ export interface IpcContext {
   protocolHandler: ProtocolHandler;
   updater: UpdateService;
   shortcuts: ShortcutService;
+  lint: LintService;
   /** Mutable workspace state owned by the main process. */
   workspace: { rootPath: string | null; name: string | null };
 }
@@ -318,6 +323,42 @@ export function registerIpcHandlers(context: IpcContext): void {
   handle<string>(IpcChannel.ShortcutCreate, () => guarded(() => context.shortcuts.create()));
 
   handle<boolean>(IpcChannel.ShortcutRemove, () => guarded(() => context.shortcuts.remove()));
+
+  /* ---------------------------------------------------------------------- */
+  /* Linting                                                                 */
+  /* ---------------------------------------------------------------------- */
+
+  handle<LintOutcome>(IpcChannel.LintRequest, (_event, ...args) => {
+    const [filePath, text] = args as unknown as [string, string];
+
+    return guarded(async () => {
+      const root = context.workspace.rootPath;
+
+      if (!root) {
+        throw new WorkspaceError({
+          code: 'LINT_NO_WORKSPACE',
+          message: 'ESLint needs an open folder',
+          cause:
+            'ESLint resolves its configuration relative to a project root, and no folder is open, so there is nothing to resolve against.',
+          solution: 'Open the folder that contains the project, then save the file again.'
+        });
+      }
+
+      // The path arrives from the renderer, so it is checked before it is used
+      // even though the renderer is the only caller today.
+      const resolved = resolvePath(filePath);
+      if (resolved !== root && !resolved.startsWith(root + sep)) {
+        throw new WorkspaceError({
+          code: 'LINT_OUTSIDE_WORKSPACE',
+          message: 'That file is outside the open folder',
+          cause: `${resolved} is not inside ${root}, and linting runs with the workspace configuration only.`,
+          solution: 'Open the folder that contains the file, then try again.'
+        });
+      }
+
+      return context.lint.lint(resolved, text, root);
+    });
+  });
 
   /* ---------------------------------------------------------------------- */
   /* Updates                                                                 */

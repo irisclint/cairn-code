@@ -5,11 +5,17 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { DownloadPage } from './pages/DownloadPage';
+import { Learn } from './pages/Learn';
+import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
 
 const TITLES: Record<string, string> = {
   '/': 'cairn-code - a code editor that explains your errors',
   '/about': 'About cairn-code - how and why it is built',
-  '/download': 'Download cairn-code for Windows, macOS and Linux'
+  '/download': 'Download cairn-code for Windows, macOS and Linux',
+  '/learn': 'Learn to code with cairn-code',
+  '/privacy': 'Privacy - cairn-code',
+  '/terms': 'Terms - cairn-code'
 };
 
 /**
@@ -51,6 +57,9 @@ export function App(): JSX.Element {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/download" element={<DownloadPage />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           {/* Anything unknown goes home rather than showing a dead end. */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

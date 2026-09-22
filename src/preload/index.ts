@@ -7,6 +7,7 @@ import type {
   FileEvent,
   FileStat,
   IpcResult,
+  LintOutcome,
   SearchFileResult,
   SearchQuery,
   Settings,
@@ -134,6 +135,11 @@ const api = {
     getState: (): Promise<IpcResult<ShortcutState>> => ipcRenderer.invoke(IpcChannel.ShortcutGetState),
     create: (): Promise<IpcResult<string>> => ipcRenderer.invoke(IpcChannel.ShortcutCreate),
     remove: (): Promise<IpcResult<boolean>> => ipcRenderer.invoke(IpcChannel.ShortcutRemove)
+  },
+
+  lint: {
+    run: (filePath: string, text: string): Promise<IpcResult<LintOutcome>> =>
+      ipcRenderer.invoke(IpcChannel.LintRequest, filePath, text)
   },
 
   update: {

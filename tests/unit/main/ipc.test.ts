@@ -23,7 +23,12 @@ const { ProtocolHandler } = await import('@main/protocol');
 const { UpdateService } = await import('@main/updater');
 const { ShortcutService } = await import('@main/services/shortcut-service');
 
-import type { IpcResult } from '@shared/types';
+import type { IpcResult, LintOutcome } from '@shared/types';
+import type { IpcContext } from '@main/ipc';
+
+const lintSpy = vi.fn(
+  async (): Promise<LintOutcome> => ({ findings: [], ignored: false })
+);
 
 /** Fails the test if the envelope reports an error, otherwise unwraps it. */
 function expectOk<T>(result: unknown): T {
@@ -88,6 +93,9 @@ beforeEach(async () => {
     protocolHandler: new ProtocolHandler(),
     updater: new UpdateService(() => {}),
     shortcuts: new ShortcutService(),
+    // A stub rather than the real service: spawning a worker thread per test
+    // would be slow, and what is under test here is the handler's guards.
+    lint: { lint: lintSpy, dispose: vi.fn(async () => undefined) } as unknown as IpcContext['lint'],
     workspace: { rootPath: null, name: null }
   };
 
@@ -411,5 +419,67 @@ describe('update handler', () => {
 
     expect(status.state).toBe('error');
     expect(status.message).toContain('packaged build');
+  });
+});
+
+describe('the lint handler', () => {
+  beforeEach(() => {
+    lintSpy.mockClear();
+  });
+
+  it('should explain that linting needs an open folder', async () => {
+    context.workspace.rootPath = null;
+    const envelope = (await ipcMain.invoke(
+      IpcChannel.LintRequest,
+      join(root, 'a.ts'),
+      'const a = 1;'
+    )) as IpcResult<LintOutcome>;
+
+    expect(envelope.ok).toBe(false);
+    if (!envelope.ok) {
+      expect(envelope.error.code).toBe('LINT_NO_WORKSPACE');
+      expect(envelope.error.solution).toContain('Open the folder');
+    }
+  });
+
+  it('should refuse a file outside the open folder', async () => {
+    context.workspace.rootPath = root;
+    const outside = join(tmpdir(), 'somewhere-else', 'evil.ts');
+
+    const envelope = (await ipcMain.invoke(
+      IpcChannel.LintRequest,
+      outside,
+      'const a = 1;'
+    )) as IpcResult<LintOutcome>;
+
+    expect(envelope.ok).toBe(false);
+    if (!envelope.ok) expect(envelope.error.code).toBe('LINT_OUTSIDE_WORKSPACE');
+    expect(lintSpy).not.toHaveBeenCalled();
+  });
+
+  it('should lint a file inside the folder with the workspace as the root', async () => {
+    context.workspace.rootPath = root;
+    const file = join(root, 'src', 'a.ts');
+
+    const outcome = expectOk<LintOutcome>(
+      await ipcMain.invoke(IpcChannel.LintRequest, file, 'const a = 1;')
+    );
+
+    expect(outcome.findings).toEqual([]);
+    expect(lintSpy).toHaveBeenCalledWith(file, 'const a = 1;', root);
+  });
+
+  it('should not be fooled by a path that walks out of the folder', async () => {
+    context.workspace.rootPath = root;
+    const escaping = join(root, '..', 'outside.ts');
+
+    const envelope = (await ipcMain.invoke(
+      IpcChannel.LintRequest,
+      escaping,
+      'const a = 1;'
+    )) as IpcResult<LintOutcome>;
+
+    expect(envelope.ok).toBe(false);
+    if (!envelope.ok) expect(envelope.error.code).toBe('LINT_OUTSIDE_WORKSPACE');
   });
 });

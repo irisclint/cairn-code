@@ -5,6 +5,7 @@ import { PRODUCT, REPOSITORY_URL } from '../data/content';
 
 const LINKS = [
   { to: '/', label: 'Home' },
+  { to: '/learn', label: 'Learn' },
   { to: '/about', label: 'About' },
   { to: '/download', label: 'Download' }
 ];

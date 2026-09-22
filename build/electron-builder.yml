@@ -27,6 +27,9 @@ asar: true
 # archive, so it is unpacked next to it.
 asarUnpack:
   - '**/node_modules/node-pty/**'
+  # worker_threads cannot load a script from inside an asar archive, so the
+  # ESLint worker has to sit on disk next to it.
+  - '**/out/main/eslint-worker.cjs'
 
 # File types cairn-code registers itself for. Keeping this list short means the
 # installer does not take over every extension on the user's machine.

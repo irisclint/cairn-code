@@ -21,7 +21,12 @@ export default defineConfig({
     build: {
       outDir: 'out/main',
       rollupOptions: {
-        input: { index: resolve('src/main/index.ts') },
+        input: {
+          index: resolve('src/main/index.ts'),
+          // A second entry, because worker_threads needs a real file to load
+          // rather than a chunk of the main bundle.
+          'eslint-worker': resolve('src/main/workers/eslint-worker.ts')
+        },
         // Electron cannot resolve named imports from the built-in 'electron'
         // module when the main bundle is ESM, so the main process is emitted
         // as CommonJS. The renderer stays ESM.

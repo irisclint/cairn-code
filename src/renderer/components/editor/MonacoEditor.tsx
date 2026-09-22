@@ -4,6 +4,7 @@ import { useEditorStore, type OpenEditor } from '../../store/editor-store';
 import { useSettingsStore } from '../../store/settings-store';
 import { useThemeStore } from '../../store/theme-store';
 import { buildEditorOptions, createEditor, getModel } from '../../editor/create-editor';
+import { forgetLint, scheduleLint } from '../../services/lint-client';
 import { diagnosticService } from '../../services/diagnostic-service';
 import { setActiveEditor } from '../../services/register-commands';
 import { debounce } from '@shared/utils';
@@ -83,9 +84,18 @@ export function MonacoEditor({ editor }: MonacoEditorProps): JSX.Element {
       diagnosticService.importMonacoMarkers(model);
     }, LINT_DEBOUNCE_MS);
 
+    // ESLint runs in the main process against the workspace configuration, so
+    // it only applies to files that actually live in the opened folder. An
+    // untitled buffer has no path to resolve a configuration from.
+    const lintable = model.uri.scheme === 'file';
+    const requestLint = (): void => {
+      if (lintable) scheduleLint(model.uri.fsPath, model.getValue(), model.getLanguageId());
+    };
+
     const contentListener = model.onDidChangeContent(() => {
       markDirty(editor.path, true);
       refreshDiagnostics();
+      requestLint();
     });
 
     const markerListener = monaco.editor.onDidChangeMarkers((uris) => {
@@ -93,11 +103,13 @@ export function MonacoEditor({ editor }: MonacoEditorProps): JSX.Element {
     });
 
     refreshDiagnostics();
+    requestLint();
 
     return () => {
       contentListener.dispose();
       markerListener.dispose();
       refreshDiagnostics.cancel();
+      if (lintable) forgetLint(model.uri.fsPath);
       if (instanceRef.current) saveViewState(editor.path, instanceRef.current.saveViewState());
     };
   }, [editor.path, editor.isLarge, markDirty, saveViewState, editor]);

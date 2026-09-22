@@ -2,7 +2,7 @@
   "name": "cairn-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Marketing and download site for the Cairn editor",
+  "description": "Marketing and download site for the cairn-code editor",
   "type": "module",
   "scripts": {
     "dev": "vite",

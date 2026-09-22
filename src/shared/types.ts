@@ -138,6 +138,35 @@ export interface Diagnostic {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Linting                                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * One ESLint message, before it is turned into a Diagnostic.
+ *
+ * The cause and the solution are added in the renderer, where the explanation
+ * catalog lives, so that every source of problems looks them up in one place.
+ */
+export interface LintFinding {
+  ruleId: string | null;
+  /** 1 is a warning, 2 is an error, matching ESLint's own numbering. */
+  severity: 1 | 2;
+  message: string;
+  line: number;
+  column: number;
+  endLine?: number;
+  endColumn?: number;
+  /** True when ESLint can fix this automatically. */
+  fixable: boolean;
+}
+
+export interface LintOutcome {
+  findings: LintFinding[];
+  /** True when the workspace's own configuration ignores the file. */
+  ignored: boolean;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Terminal                                                                    */
 /* -------------------------------------------------------------------------- */
 

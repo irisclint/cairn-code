@@ -27,6 +27,8 @@ export interface BridgeState {
   failNextRead: boolean;
   failNextWrite: boolean;
   shortcut: { exists: boolean; path: string; canCreate: boolean; reason?: string };
+  /** What the fake ESLint run comes back with. */
+  lint: { findings: unknown[]; ignored: boolean };
 }
 
 export const state: BridgeState = {
@@ -40,7 +42,8 @@ export const state: BridgeState = {
   searchNames: [],
   failNextRead: false,
   failNextWrite: false,
-  shortcut: { exists: false, path: '/home/dev/Desktop/cairn-code.lnk', canCreate: true }
+  shortcut: { exists: false, path: '/home/dev/Desktop/cairn-code.lnk', canCreate: true },
+  lint: { findings: [], ignored: false }
 };
 
 const ok = <T>(value: T): { ok: true; value: T } => ({ ok: true, value });
@@ -266,6 +269,10 @@ export function createBridge(): CairnApi {
         state.shortcut = { ...state.shortcut, exists: false };
         return ok(had);
       })
+    },
+
+    lint: {
+      run: vi.fn(async () => ok(state.lint))
     },
 
     update: {

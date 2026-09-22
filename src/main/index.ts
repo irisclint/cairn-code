@@ -15,6 +15,7 @@ import { SettingsStore } from './services/settings-store';
 import { FileWatcherService } from './services/file-watcher';
 import { UpdateService } from './updater';
 import { ShortcutService } from './services/shortcut-service';
+import { LintService } from './services/lint-service';
 
 const logger = createLogger('main');
 
@@ -79,6 +80,7 @@ async function bootstrap(): Promise<void> {
     protocolHandler,
     updater,
     shortcuts: new ShortcutService(),
+    lint: new LintService(),
     workspace: { rootPath: null, name: null }
   };
 

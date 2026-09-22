@@ -5,7 +5,9 @@ import { App } from './App';
 
 import './styles/base.css';
 import './styles/components.css';
+import './styles/surface.css';
 import './styles/demo.css';
+import './styles/learn.css';
 import './styles/motion.css';
 import './styles/pages.css';
 

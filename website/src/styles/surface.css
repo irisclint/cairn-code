@@ -1,0 +1,178 @@
+/*
+ * The editable code surface, shared by the hero demo and the lessons.
+ *
+ * Painted with the Dark Modern theme's own colours rather than the site
+ * palette, so that what you type here looks the way it will look after
+ * installing.
+ *
+ * The whole thing rests on one constraint: the textarea and the highlighted
+ * copy behind it must lay text out identically, to the pixel. Every property
+ * that affects glyph position is declared once, for both layers together.
+ */
+
+.surface {
+  --s-bg: #1a1b26;
+  --s-fg: #c8d0e0;
+  --s-line: #282a3a;
+  --s-accent: #3b82f6;
+  --s-error: #f45c6a;
+  --s-warning: #e0af68;
+
+  /* Shared text metrics. Changing one without the other breaks the alignment
+     between what you type and what you see. */
+  --s-font: var(--font-mono);
+  --s-size: 13px;
+  --s-leading: 1.65;
+  --s-pad-y: 12px;
+  --s-pad-x: 14px;
+
+  display: flex;
+  height: 300px;
+  background: var(--s-bg);
+  color: var(--s-fg);
+}
+
+@media (max-width: 620px) {
+  .surface {
+    --s-size: 12px;
+  }
+}
+
+.surface__gutter {
+  flex: 0 0 auto;
+  width: 52px;
+  padding-block: var(--s-pad-y);
+  overflow: hidden;
+  border-right: 1px solid var(--s-line);
+  font-family: var(--s-font);
+  font-size: var(--s-size);
+  line-height: var(--s-leading);
+  color: #545a70;
+  user-select: none;
+}
+
+.surface__line-number {
+  position: relative;
+  padding-right: 12px;
+  text-align: right;
+  white-space: pre;
+}
+
+.surface__mark {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.surface__mark--error {
+  background: var(--s-error);
+}
+
+.surface__mark--warning {
+  background: var(--s-warning);
+}
+
+.surface__body {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/*
+ * Both layers share every metric. They are declared together so that an edit
+ * to one cannot silently miss the other.
+ */
+.surface__paint,
+.surface__input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: var(--s-pad-y) var(--s-pad-x);
+  border: 0;
+  font-family: var(--s-font);
+  font-size: var(--s-size);
+  line-height: var(--s-leading);
+  letter-spacing: normal;
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+  box-sizing: border-box;
+}
+
+.surface__paint {
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--s-fg);
+}
+
+.surface__paint code {
+  font: inherit;
+}
+
+.surface__input {
+  overflow: auto;
+  resize: none;
+  background: transparent;
+  /* The text itself is invisible; the painted layer underneath supplies the
+     colour. The caret and the selection stay native, which is the whole reason
+     for using a textarea rather than a contenteditable div. */
+  color: transparent;
+  caret-color: var(--s-fg);
+  outline: none;
+}
+
+.surface__input::selection {
+  background: rgba(59, 130, 246, 0.32);
+}
+
+.surface__input:focus-visible {
+  outline: 2px solid var(--s-accent);
+  outline-offset: -2px;
+}
+
+/* Token colours, from the Dark Modern theme. */
+.tok--keyword {
+  color: #8b5cf6;
+}
+.tok--type {
+  color: #2dd4bf;
+}
+.tok--string {
+  color: #9ece6a;
+}
+.tok--number {
+  color: #ff9e64;
+}
+.tok--function {
+  color: #7aa2f7;
+}
+.tok--comment {
+  color: #5c6370;
+  font-style: italic;
+}
+.tok--operator {
+  color: #89ddff;
+}
+.tok--punct,
+.tok--plain {
+  color: var(--s-fg);
+}
+
+.tok--mark {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.tok--mark-error {
+  text-decoration-color: var(--s-error);
+}
+
+.tok--mark-warning {
+  text-decoration-color: var(--s-warning);
+}

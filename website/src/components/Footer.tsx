@@ -28,6 +28,9 @@ export function Footer(): JSX.Element {
               <Link to="/download">Download</Link>
             </li>
             <li>
+              <Link to="/learn">Learn to code</Link>
+            </li>
+            <li>
               <Link to="/#features">Features</Link>
             </li>
             <li>
@@ -93,6 +96,10 @@ export function Footer(): JSX.Element {
       <div className="container site-footer__bottom">
         <span>
           {YEAR} {PRODUCT} contributors. MIT licensed. Version {VERSION}.
+        </span>
+        <span className="site-footer__legal">
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
         </span>
         <a
           href={REPOSITORY_URL}

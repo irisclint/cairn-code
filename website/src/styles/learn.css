@@ -1,0 +1,494 @@
+/* The Learn page, and the two legal pages, which share its prose treatment. */
+
+/* -------------------------------------------------------------------------- */
+/* Choosing a track                                                            */
+/* -------------------------------------------------------------------------- */
+
+.track-grid {
+  align-items: stretch;
+}
+
+.track-card {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: var(--space-2);
+  width: 100%;
+  height: 100%;
+  padding: var(--space-5);
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  transition:
+    border-color var(--normal) var(--ease),
+    transform var(--normal) var(--ease);
+}
+
+.track-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+.track-card__tile {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.track-card__title {
+  font-size: var(--step-2);
+}
+
+.track-card__blurb {
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  line-height: 1.7;
+}
+
+.track-card__meta {
+  color: var(--text-subtle);
+  font-size: var(--step--1);
+}
+
+.track-card__go {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  color: var(--accent);
+  font-weight: 550;
+  transition: gap var(--fast) var(--ease);
+}
+
+.track-card:hover .track-card__go {
+  gap: 0.75rem;
+}
+
+.track-planned {
+  margin-top: var(--space-6);
+  max-width: 70ch;
+  color: var(--text-subtle);
+  font-size: var(--step--1);
+}
+
+/* -------------------------------------------------------------------------- */
+/* The lesson layout                                                           */
+/* -------------------------------------------------------------------------- */
+
+.learn {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: var(--space-7);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .learn {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+}
+
+.learn__rail {
+  position: sticky;
+  top: 90px;
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (max-width: 900px) {
+  .learn__rail {
+    position: static;
+  }
+}
+
+.learn__back {
+  justify-self: start;
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  transition: color var(--fast) var(--ease);
+}
+
+.learn__back::before {
+  content: '← ';
+}
+
+.learn__back:hover {
+  color: var(--text);
+}
+
+.learn__progress {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.learn__progress-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+
+.learn__progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent-gradient);
+  transition: width var(--normal) var(--ease);
+}
+
+.learn__progress-text {
+  color: var(--text-subtle);
+  font-size: var(--step--1);
+}
+
+.learn__list {
+  display: grid;
+  gap: 2px;
+  counter-reset: none;
+}
+
+.learn__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-align: left;
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.learn__item:hover {
+  background: var(--bg-raised);
+  color: var(--text);
+}
+
+.learn__item--active {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.learn__item-mark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.learn__item--done .learn__item-mark {
+  border-color: var(--success);
+  background: var(--success);
+  color: #06281d;
+}
+
+.learn__note {
+  padding: var(--space-3);
+  border-left: 2px solid var(--line-strong);
+  color: var(--text-subtle);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* -------------------------------------------------------------------------- */
+/* The lesson itself                                                           */
+/* -------------------------------------------------------------------------- */
+
+.learn__head .eyebrow {
+  margin-bottom: var(--space-2);
+}
+
+.learn__title {
+  font-size: var(--step-3);
+  margin-bottom: var(--space-2);
+}
+
+.learn__goal {
+  color: var(--text-muted);
+  font-size: var(--step-1);
+}
+
+.learn__teach {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 72ch;
+  margin-top: var(--space-5);
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.learn__task {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+.learn__task-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.learn__editor {
+  margin-top: var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.learn__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.learn__reveal {
+  margin-left: auto;
+  color: var(--text-subtle);
+  font-size: var(--step--1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--fast) var(--ease);
+}
+
+.learn__reveal:hover {
+  color: var(--text-muted);
+}
+
+.learn__next {
+  margin-top: var(--space-4);
+}
+
+.learn__done {
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-lg);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.learn__done h3 {
+  margin-bottom: var(--space-2);
+  font-size: var(--step-2);
+}
+
+.learn__done p {
+  margin-bottom: var(--space-4);
+  color: var(--text-muted);
+  max-width: 62ch;
+}
+
+.learn__solution {
+  margin-top: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-inset);
+}
+
+.learn__solution-label {
+  display: block;
+  margin-bottom: var(--space-3);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.learn__solution pre {
+  margin: 0;
+  overflow-x: auto;
+  color: var(--text);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.learn__solution-note {
+  margin-top: var(--space-3);
+  color: var(--text-subtle);
+  font-size: var(--step--1);
+  max-width: 60ch;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Feedback                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.feedback {
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+}
+
+.feedback--pass {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+.feedback--error {
+  border-color: rgba(244, 92, 106, 0.35);
+  background: rgba(244, 92, 106, 0.05);
+}
+
+.feedback__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--step-1);
+  margin-bottom: var(--space-3);
+}
+
+.feedback--pass .feedback__title {
+  color: var(--success);
+}
+
+.feedback--error .feedback__title {
+  color: var(--error);
+}
+
+.feedback__cases {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+}
+
+.feedback__cases li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--text-muted);
+}
+
+.feedback__cases code {
+  color: var(--text);
+}
+
+.feedback__case-mark {
+  flex: 0 0 auto;
+  margin-top: 0.15em;
+}
+
+.feedback__cases .is-ok .feedback__case-mark {
+  color: var(--success);
+}
+
+.feedback__cases .is-bad .feedback__case-mark {
+  color: var(--error);
+}
+
+.feedback__case-detail {
+  color: var(--text-subtle);
+}
+
+.feedback__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: var(--step--1);
+  line-height: 1.7;
+  max-width: 68ch;
+}
+
+.feedback__hint svg {
+  flex: 0 0 auto;
+  margin-top: 0.15em;
+  color: var(--warning);
+}
+
+.feedback__detail {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 4px 12px;
+  margin: 0;
+  font-size: var(--step--1);
+  line-height: 1.7;
+}
+
+.feedback__detail dt {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  padding-top: 4px;
+}
+
+.feedback__detail dd {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Privacy and terms                                                           */
+/* -------------------------------------------------------------------------- */
+
+.legal {
+  max-width: 74ch;
+}
+
+.legal h2 {
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-3);
+  font-size: var(--step-2);
+}
+
+.legal h2:first-child {
+  margin-top: 0;
+}
+
+.legal h3 {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--step-1);
+  color: var(--text);
+}
+
+.legal p {
+  margin-bottom: var(--space-3);
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+.legal a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal code {
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.88em;
+}

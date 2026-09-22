@@ -68,14 +68,18 @@ export default tseslint.config(
   },
 
   {
-    // Build scripts run in plain Node, outside either TypeScript project.
-    files: ['scripts/**/*.mjs'],
+    // Build scripts and test fixtures run in plain Node, outside either
+    // TypeScript project. The debug adapter fixture is a real program that a
+    // test spawns, so it needs the same globals as a script.
+    files: ['scripts/**/*.mjs', 'tests/fixtures/**/*.mjs'],
     languageOptions: {
       globals: {
         process: 'readonly',
         console: 'readonly',
         Buffer: 'readonly',
-        URL: 'readonly'
+        URL: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly'
       }
     }
   },

@@ -138,6 +138,74 @@ export interface Diagnostic {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Debugging                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * One entry from the workspace's launch.json.
+ *
+ * The three fields cairn-code needs are named; everything else is passed to
+ * the adapter untouched, because each adapter defines its own options and
+ * listing them here would mean rejecting valid configurations.
+ */
+export interface DebugConfiguration {
+  name: string;
+  /** The adapter to use, for example "python" or "node". */
+  type: string;
+  request: 'launch' | 'attach';
+  /** Overrides the adapter command, so any adapter can be driven. */
+  debugAdapter?: string;
+  [option: string]: unknown;
+}
+
+export interface SourceBreakpoint {
+  /** One based, matching the editor gutter. */
+  line: number;
+  /** Only breaks when this expression is true, when the adapter supports it. */
+  condition?: string;
+}
+
+export type DebugStatus = 'inactive' | 'starting' | 'running' | 'stopped';
+
+export interface DebugSessionState {
+  status: DebugStatus;
+  /** The thread the adapter last stopped, which the step commands act on. */
+  threadId: number | null;
+  configurationName: string | null;
+  /** Why it stopped: "breakpoint", "step", "exception", as the adapter says. */
+  stoppedReason?: string;
+}
+
+export interface DebugStackFrame {
+  id: number;
+  name: string;
+  line: number;
+  column: number;
+  /** Absolute path, or null for a frame with no source on disk. */
+  source: string | null;
+}
+
+export interface DebugScope {
+  name: string;
+  variablesReference: number;
+  /** True when reading it is slow enough that it should not expand by itself. */
+  expensive: boolean;
+}
+
+export interface DebugVariable {
+  name: string;
+  value: string;
+  type: string | null;
+  /** Non-zero when the value has children that can be fetched. */
+  variablesReference: number;
+}
+
+export interface DebugOutput {
+  category: string;
+  text: string;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Source control                                                              */
 /* -------------------------------------------------------------------------- */
 

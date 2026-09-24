@@ -39,8 +39,10 @@ export interface ExtensionCapabilities {
     solution: string;
     documentationUrl?: string;
   }) => void;
-  readClipboard: () => string;
-  writeClipboard: (text: string) => void;
+  // Async because Electron's clipboard is: it was aligned with the W3C API,
+  // which is promise based.
+  readClipboard: () => string | Promise<string>;
+  writeClipboard: (text: string) => void | Promise<void>;
   /** True when a command id already belongs to the editor itself. */
   isBuiltInCommand: (commandId: string) => boolean;
 }
@@ -110,9 +112,9 @@ export class ExtensionApi {
       case 'diagnostics.explain':
         return this.#explain(manifest, args);
       case 'clipboard.read':
-        return this.#capabilities.readClipboard();
+        return await this.#capabilities.readClipboard();
       case 'clipboard.write':
-        return this.#capabilities.writeClipboard(text(manifest, args[0], 'the text to copy'));
+        return await this.#capabilities.writeClipboard(text(manifest, args[0], 'the text to copy'));
       default:
         // Unreachable: the table above is the only way in.
         throw new ExtensionError({

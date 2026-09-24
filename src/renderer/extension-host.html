@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      The extension host page.
+
+      Never shown. It exists to own one Worker per running extension, which is
+      where third party code actually executes. The policy below is the whole
+      point of the page: scripts may come from this bundle and from blob URLs,
+      which is how an extension's code is handed to its worker, and from
+      nowhere else. No network, no images, no styles, no frames.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self' blob:; worker-src blob:; connect-src 'none'"
+    />
+    <title>cairn-code extension host</title>
+  </head>
+  <body>
+    <script type="module" src="./extension-host/bootstrap.ts"></script>
+  </body>
+</html>

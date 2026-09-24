@@ -13,6 +13,7 @@ import type {
   DebugStackFrame,
   DebugVariable,
   GitStatus,
+  InstalledExtension,
   IpcResult,
   SourceBreakpoint,
   LintOutcome,
@@ -143,6 +144,18 @@ const api = {
     getState: (): Promise<IpcResult<ShortcutState>> => ipcRenderer.invoke(IpcChannel.ShortcutGetState),
     create: (): Promise<IpcResult<string>> => ipcRenderer.invoke(IpcChannel.ShortcutCreate),
     remove: (): Promise<IpcResult<boolean>> => ipcRenderer.invoke(IpcChannel.ShortcutRemove)
+  },
+
+  extensions: {
+    list: (): Promise<IpcResult<InstalledExtension[]>> => ipcRenderer.invoke(IpcChannel.ExtensionsList),
+    setEnabled: (id: string, enabled: boolean): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.ExtensionsSetEnabled, id, enabled),
+    uninstall: (id: string): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.ExtensionsUninstall, id),
+    invokeCommand: (extensionId: string, commandId: string): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.ExtensionsInvokeCommand, extensionId, commandId),
+    onChanged: (listener: (change: unknown) => void): Unsubscribe =>
+      subscribe(IpcChannel.ExtensionsChanged, listener)
   },
 
   debug: {

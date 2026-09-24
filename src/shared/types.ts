@@ -216,6 +216,14 @@ export interface InstalledExtension {
   path: string;
   /** Why it failed, when it did. */
   failure?: string;
+  /**
+   * Command ids the extension has actually wired a handler to.
+   *
+   * Carried in the listing rather than only announced, because an extension
+   * registers its commands while the workbench is still starting and a panel
+   * that only listened would miss every one of them.
+   */
+  activeCommands?: string[];
 }
 
 /** One entry as a marketplace registry lists it. */

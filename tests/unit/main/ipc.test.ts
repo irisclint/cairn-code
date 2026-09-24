@@ -24,6 +24,7 @@ const { UpdateService } = await import('@main/updater');
 const { ShortcutService } = await import('@main/services/shortcut-service');
 const { GitCliService } = await import('@main/services/git-cli');
 const { DebugService } = await import('@main/services/debug-service');
+const { ExtensionRegistry } = await import('@main/services/extension-registry');
 
 import type { IpcResult, LintOutcome } from '@shared/types';
 import type { IpcContext } from '@main/ipc';
@@ -100,6 +101,10 @@ beforeEach(async () => {
     lint: { lint: lintSpy, dispose: vi.fn(async () => undefined) } as unknown as IpcContext['lint'],
     git: new GitCliService(),
     debug: new DebugService(),
+    extensions: new ExtensionRegistry(join(root, 'extensions')),
+    // The host is never started in these tests; the handlers under test only
+    // ask the registry for what is installed.
+    extensionHost: { running: () => [], startAll: async () => undefined, stop: () => undefined, dispose: async () => undefined, invokeCommand: () => undefined } as unknown as IpcContext['extensionHost'],
     workspace: { rootPath: null, name: null }
   };
 

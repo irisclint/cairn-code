@@ -60,6 +60,18 @@ export const IpcChannel = {
   // Linting
   LintRequest: 'lint:request',
 
+  // Extensions
+  ExtensionsList: 'extensions:list',
+  ExtensionsSetEnabled: 'extensions:set-enabled',
+  ExtensionsUninstall: 'extensions:uninstall',
+  ExtensionsInstall: 'extensions:install',
+  ExtensionsMarketplace: 'extensions:marketplace',
+  ExtensionsChanged: 'extensions:changed',
+  ExtensionsInvokeCommand: 'extensions:invoke-command',
+  // The two the sandboxed host page uses, and the only channels it can reach.
+  ExtensionHostToMain: 'extension-host:to-main',
+  ExtensionHostToHost: 'extension-host:to-host',
+
   // Debugging
   DebugConfigurations: 'debug:configurations',
   DebugStart: 'debug:start',

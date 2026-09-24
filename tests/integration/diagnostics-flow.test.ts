@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import * as monaco from 'monaco-editor';
 import {
   DiagnosticService,
@@ -18,6 +18,16 @@ import { detectLanguage, toMonacoLanguageId } from '@renderer/editor/language-su
 
 let service: DiagnosticService;
 let model: monaco.editor.ITextModel;
+
+/*
+ * Creating a TypeScript model makes Monaco load its language mode, and that
+ * import is dynamic: it can still be in flight when this file's environment is
+ * torn down, which Vitest reports as an unhandled rejection even though every
+ * test passed. Yielding once at the end lets it settle first.
+ */
+afterAll(async () => {
+  await new Promise((resolve) => setTimeout(resolve, 50));
+});
 let counter = 0;
 
 beforeEach(() => {

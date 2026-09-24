@@ -12,6 +12,7 @@ import type {
   FileContent,
   FileStat,
   GitStatus,
+  InstalledExtension,
   IpcResult,
   LintOutcome,
   SearchFileResult,
@@ -38,6 +39,8 @@ import type { ShortcutService } from './services/shortcut-service';
 import type { LintService } from './services/lint-service';
 import type { GitCliService } from './services/git-cli';
 import type { DebugService } from './services/debug-service';
+import type { ExtensionRegistry } from './services/extension-registry';
+import type { ExtensionHost } from './services/extension-host';
 import { createLogger } from '@shared/logger';
 
 import { isAbsolute, resolve as resolvePath, sep } from 'node:path';
@@ -57,6 +60,8 @@ export interface IpcContext {
   lint: LintService;
   git: GitCliService;
   debug: DebugService;
+  extensions: ExtensionRegistry;
+  extensionHost: ExtensionHost;
   /** Mutable workspace state owned by the main process. */
   workspace: { rootPath: string | null; name: string | null };
 }
@@ -511,6 +516,67 @@ export function registerIpcHandlers(context: IpcContext): void {
   handle<string>(IpcChannel.DebugEvaluate, (_event, ...args) => {
     const [expression, frameId] = args as unknown as [string, number | null];
     return guarded(() => context.debug.evaluate(String(expression), frameId === null ? null : Number(frameId)));
+  });
+
+  /* ---------------------------------------------------------------------- */
+  /* Extensions                                                              */
+  /* ---------------------------------------------------------------------- */
+
+  handle<InstalledExtension[]>(IpcChannel.ExtensionsList, () =>
+    guarded(async () => {
+      const installed = await context.extensions.list();
+      const running = new Set(context.extensionHost.running());
+
+      // An extension that should be running but is not is reported as failed,
+      // so the panel never shows "enabled" for something that is not there.
+      return installed.map((entry) => {
+        const withCommands = {
+          ...entry,
+          activeCommands: context.extensionHost.commandsFor(entry.manifest.id)
+        };
+
+        return withCommands.status === 'enabled' &&
+          withCommands.manifest.main !== undefined &&
+          !running.has(withCommands.manifest.id)
+          ? {
+              ...withCommands,
+              status: 'failed' as const,
+              failure: withCommands.failure ?? 'It is enabled but not running.'
+            }
+          : withCommands;
+      });
+    })
+  );
+
+  handle<void>(IpcChannel.ExtensionsSetEnabled, (_event, ...args) => {
+    const [id, enabled] = args as unknown as [string, boolean];
+
+    return guarded(async () => {
+      await context.extensions.setEnabled(String(id), Boolean(enabled));
+
+      if (enabled) {
+        const entry = (await context.extensions.list()).find((item) => item.manifest.id === id);
+        if (entry && entry.manifest.main !== undefined) await context.extensionHost.start(entry);
+      } else {
+        context.extensionHost.stop(String(id));
+      }
+    });
+  });
+
+  handle<void>(IpcChannel.ExtensionsUninstall, (_event, ...args) => {
+    const [id] = args as unknown as [string];
+
+    return guarded(async () => {
+      context.extensionHost.stop(String(id));
+      await context.extensions.uninstall(String(id));
+    });
+  });
+
+  handle<void>(IpcChannel.ExtensionsInvokeCommand, (_event, ...args) => {
+    const [extensionId, commandId] = args as unknown as [string, string];
+    return guarded(() => {
+      context.extensionHost.invokeCommand(String(extensionId), String(commandId));
+    });
   });
 
   /* ---------------------------------------------------------------------- */

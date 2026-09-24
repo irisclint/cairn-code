@@ -43,7 +43,12 @@ export default defineConfig({
     build: {
       outDir: 'out/preload',
       rollupOptions: {
-        input: { index: resolve('src/preload/index.ts') },
+        input: {
+          index: resolve('src/preload/index.ts'),
+          // The extension host page gets its own bridge, which exposes two
+          // functions rather than the workbench surface.
+          'extension-host': resolve('src/preload/extension-host.ts')
+        },
         output: { format: 'cjs', entryFileNames: '[name].cjs' }
       }
     }
@@ -62,7 +67,13 @@ export default defineConfig({
       outDir: 'out/renderer',
       chunkSizeWarningLimit: 4096,
       rollupOptions: {
-        input: { index: resolve('src/renderer/index.html') },
+        input: {
+          index: resolve('src/renderer/index.html'),
+          // A second document, loaded into a hidden sandboxed window. It is a
+          // renderer page because that is exactly what it is: no Node, and a
+          // policy that allows scripts from this bundle and blobs only.
+          'extension-host': resolve('src/renderer/extension-host.html')
+        },
         output: {
           // Monaco and XTerm are large; splitting them keeps the initial
           // renderer chunk small so first paint stays under the 2s budget.

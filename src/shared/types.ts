@@ -138,6 +138,102 @@ export interface Diagnostic {
 }
 
 /* -------------------------------------------------------------------------- */
+/* Extensions                                                                  */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Everything an extension is allowed to ask for.
+ *
+ * A closed list, on purpose. An extension that wants something not named here
+ * cannot have it, and adding a capability means adding it here first, in front
+ * of a reviewer, rather than as a side effect of some other change.
+ */
+export const EXTENSION_PERMISSIONS = [
+  'commands',
+  'notifications',
+  'workspace.read',
+  'workspace.write',
+  'diagnostics',
+  'clipboard'
+] as const;
+
+export type ExtensionPermission = (typeof EXTENSION_PERMISSIONS)[number];
+
+/** What each permission lets an extension do, in the words shown to the user. */
+export const PERMISSION_DESCRIPTIONS: Record<ExtensionPermission, string> = {
+  commands: 'Add commands to the Command Palette',
+  notifications: 'Show you messages',
+  'workspace.read': 'Read the files in your open folder',
+  'workspace.write': 'Change the files in your open folder',
+  diagnostics: 'Explain compiler codes and lint rules',
+  clipboard: 'Read and write your clipboard'
+};
+
+export interface ExtensionCommandContribution {
+  id: string;
+  title: string;
+}
+
+/**
+ * An explanation an extension adds to the diagnostic catalog.
+ *
+ * The most useful thing a small extension can contribute, and the reason the
+ * contribution format is declarative: an explanation is data, so it needs no
+ * code to run and no permission to be trusted with.
+ */
+export interface ExtensionExplanationContribution {
+  /** The compiler code or lint rule, for example "TS2532" or "no-shadow". */
+  code: string;
+  cause: string;
+  solution: string;
+  documentationUrl?: string;
+}
+
+export interface ExtensionContributions {
+  commands?: ExtensionCommandContribution[];
+  diagnosticExplanations?: ExtensionExplanationContribution[];
+}
+
+export interface ExtensionManifest {
+  /** publisher.name, unique across the marketplace. */
+  id: string;
+  name: string;
+  version: string;
+  publisher: string;
+  description: string;
+  /** Entry file, relative to the extension folder. Absent for data-only ones. */
+  main?: string;
+  permissions: ExtensionPermission[];
+  contributes: ExtensionContributions;
+}
+
+export type ExtensionStatus = 'enabled' | 'disabled' | 'failed';
+
+export interface InstalledExtension {
+  manifest: ExtensionManifest;
+  status: ExtensionStatus;
+  /** Absolute path of the folder it was installed into. */
+  path: string;
+  /** Why it failed, when it did. */
+  failure?: string;
+}
+
+/** One entry as a marketplace registry lists it. */
+export interface MarketplaceEntry {
+  id: string;
+  name: string;
+  version: string;
+  publisher: string;
+  description: string;
+  permissions: ExtensionPermission[];
+  /** Where the packaged extension is downloaded from. */
+  archiveUrl: string;
+  /** SHA-256 of the archive, hex encoded. */
+  sha256: string;
+  downloads?: number;
+}
+
+/* -------------------------------------------------------------------------- */
 /* Debugging                                                                   */
 /* -------------------------------------------------------------------------- */
 

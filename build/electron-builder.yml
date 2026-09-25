@@ -66,9 +66,14 @@ win:
       arch: [x64, arm64]
     - target: zip
       arch: [x64]
-  artifactName: ${productName}-${version}-${arch}-setup.${ext}
+  # The portable zip takes this name; the installer overrides it below, because
+  # a file called "setup.zip" would be a lie about what it is. The platform is
+  # in the name because every platform builds a zip, and all of them land on one
+  # GitHub release, where two files called -x64.zip would overwrite each other.
+  artifactName: ${productName}-${version}-win-${arch}.${ext}
 
 nsis:
+  artifactName: ${productName}-${version}-${arch}-setup.${ext}
   oneClick: false
   perMachine: false
   allowToChangeInstallationDirectory: true
@@ -91,7 +96,7 @@ mac:
       arch: [x64, arm64]
     - target: zip
       arch: [x64, arm64]
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: ${productName}-${version}-mac-${arch}.${ext}
 
 dmg:
   contents:
@@ -122,10 +127,10 @@ linux:
       arch: [x64]
     - target: rpm
       arch: [x64]
-  artifactName: ${productName}-${version}-${arch}.${ext}
+  artifactName: ${productName}-${version}-linux-${arch}.${ext}
 
 publish:
   provider: github
-  owner: cairn-editor
+  owner: irisclint
   repo: cairn-code
   releaseType: draft

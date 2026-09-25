@@ -120,6 +120,37 @@ export const Command = (props: IconProps): JSX.Element => (
   </Svg>
 );
 
+// A commit that leaves the trunk and rejoins it.
+export const Branch = (props: IconProps): JSX.Element => (
+  <Svg {...props}>
+    <>
+      <circle cx="6" cy="5" r="2.2" />
+      <circle cx="6" cy="19" r="2.2" />
+      <circle cx="17" cy="8" r="2.2" />
+      <path d="M6 7.2v9.6" />
+      <path d="M17 10.2c0 3.2-2.6 4.8-5.5 5.2-1.9.3-3.3 1-3.3 2.4" />
+    </>
+  </Svg>
+);
+
+// A beetle: breakpoints and stepping.
+export const Bug = (props: IconProps): JSX.Element => (
+  <Svg {...props}>
+    <>
+      <path d="M8.5 6a3.5 3.5 0 0 1 7 0" />
+      <rect x="7.5" y="6" width="9" height="12" rx="4.5" />
+      <path d="M7.5 10H4.5M7.5 14H4M7.5 17l-2.5 2M16.5 10h3M16.5 14h3.5M16.5 17l2.5 2" />
+    </>
+  </Svg>
+);
+
+// A piece that only fits one way, which is what a permission list is for.
+export const Puzzle = (props: IconProps): JSX.Element => (
+  <Svg {...props}>
+    <path d="M10 3.5a2 2 0 0 1 4 0V5h3.5a1 1 0 0 1 1 1v3.5H20a2 2 0 0 1 0 4h-1.5V18a1 1 0 0 1-1 1H14v-1.5a2 2 0 0 0-4 0V19H6.5a1 1 0 0 1-1-1v-3.5H4a2 2 0 0 1 0-4h1.5V6a1 1 0 0 1 1-1H10V3.5z" />
+  </Svg>
+);
+
 export const Check = (props: IconProps): JSX.Element => (
   <Svg {...props}>
     <path d="m5 12.5 4.5 4.5L19 7.5" />

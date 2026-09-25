@@ -30,7 +30,7 @@ const STACK = [
     role: 'Interface and state, split so a panel resize never re-renders the editor'
   },
   { name: 'TypeScript', role: 'Strict mode across three projects, no implicit any anywhere' },
-  { name: 'Vitest and Playwright', role: '786 tests over the units, the integrations and the built app' }
+  { name: 'Vitest and Playwright', role: '986 tests over the units, the integrations and the built app' }
 ];
 
 const ROADMAP = [
@@ -40,19 +40,29 @@ const ROADMAP = [
     body: `The workbench, ${LANGUAGE_COUNT} languages, ${THEME_COUNT} themes, workspace search, the command palette, and the explanation layer that the whole project is named for.`
   },
   {
-    status: 'next' as const,
-    title: 'Git integration',
-    body: 'Status, staging, commits, a diff view and branch management. The command line wrapper already exists in the main process; the panel is what is missing.'
+    status: 'done' as const,
+    title: 'Source control',
+    body: 'Status, staging, commits, diffs and branch management, driven through the git command line so that your own configuration, hooks and credential helpers apply exactly as they do in a terminal.'
+  },
+  {
+    status: 'done' as const,
+    title: 'Debugging',
+    body: 'Breakpoints, stepping, the call stack and the variables, over the Debug Adapter Protocol. Adapters come from the project rather than being bundled, and launch.json is read from where projects already keep it.'
+  },
+  {
+    status: 'done' as const,
+    title: 'Extensions',
+    body: 'A sandboxed host where extension code runs with no Node, no filesystem and no network, a closed permission list shown before installing, and a marketplace client that verifies what it downloads.'
   },
   {
     status: 'next' as const,
-    title: 'Extensions',
-    body: 'A sandboxed extension host with permissioned filesystem access, and a marketplace client. Until it lands, cairn-code loads no third party code at all.'
+    title: 'A published registry',
+    body: 'The marketplace client is finished and there is no catalogue for it to read. Until one is published the panel says so, with the setting to point it at your own.'
   },
   {
     status: 'later' as const,
-    title: 'Debugging and language servers',
-    body: 'Breakpoints, stepping, a variables panel, and language server clients so that the explanation layer covers every language rather than the TypeScript family.'
+    title: 'Language servers',
+    body: 'Clients for the Language Server Protocol, so that the explanation layer covers every language rather than the TypeScript family and whatever ESLint reaches.'
   }
 ];
 

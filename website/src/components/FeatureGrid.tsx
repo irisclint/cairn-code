@@ -1,6 +1,18 @@
 import type { JSX } from 'react';
 import { FEATURES, type Feature } from '../data/content';
-import { Lightbulb, Terminal, Palette, Languages, Search, Command, Shield, Bolt } from './Icons';
+import {
+  Lightbulb,
+  Terminal,
+  Palette,
+  Languages,
+  Search,
+  Command,
+  Shield,
+  Bolt,
+  Branch,
+  Bug,
+  Puzzle
+} from './Icons';
 import { Reveal, SpotlightCard } from './Motion';
 
 const ICONS: Record<Feature['icon'], (props: { size?: number }) => JSX.Element> = {
@@ -11,7 +23,10 @@ const ICONS: Record<Feature['icon'], (props: { size?: number }) => JSX.Element> 
   search: Search,
   command: Command,
   shield: Shield,
-  bolt: Bolt
+  bolt: Bolt,
+  branch: Branch,
+  bug: Bug,
+  puzzle: Puzzle
 };
 
 export function FeatureGrid(): JSX.Element {

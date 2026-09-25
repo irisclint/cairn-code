@@ -18,7 +18,7 @@
 /* The header only grows a background once the page has scrolled, so the hero
    meets the top of the window cleanly. */
 .site-header[data-scrolled='true'] {
-  background: rgba(15, 16, 21, 0.82);
+  background: rgba(16, 16, 19, 0.84);
   backdrop-filter: blur(14px) saturate(140%);
   border-bottom-color: var(--line);
 }
@@ -160,17 +160,15 @@
 }
 
 .button--primary {
-  background: var(--accent-gradient);
+  background: var(--accent);
   color: #fff;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.12) inset,
-    0 8px 24px rgba(59, 130, 246, 0.25);
+  /* One hairline of lift rather than a coloured glow. A button that throws
+     light onto the page around it reads as a decoration, not a control. */
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1) inset;
 }
 
 .button--primary:hover {
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.16) inset,
-    0 12px 34px rgba(59, 130, 246, 0.35);
+  background: var(--accent-strong);
 }
 
 .button--secondary {
@@ -180,8 +178,8 @@
 }
 
 .button--secondary:hover {
-  border-color: #3d4356;
-  background: #20232e;
+  border-color: #40404a;
+  background: #24242a;
 }
 
 .button--ghost {

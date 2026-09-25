@@ -35,8 +35,9 @@ export function Comparison(): JSX.Element {
       </dl>
 
       <p className="comparison__footnote">
-        Where {PRODUCT} is behind: there is no Git panel, no extension marketplace and no debugger yet. Those
-        are the next milestone, and the panels for them say so rather than pretending.
+        Where {PRODUCT} is behind: no registry has been published for the marketplace to browse, and the
+        builds are not code signed. Both are stated plainly in the editor and on the download page rather
+        than being papered over.
       </p>
     </div>
   );

@@ -63,9 +63,9 @@
   gap: 6px;
   padding: 2px 9px;
   border-radius: 999px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  background: rgba(59, 130, 246, 0.12);
-  color: #9ec1ff;
+  border: 1px solid rgba(77, 135, 240, 0.35);
+  background: rgba(77, 135, 240, 0.12);
+  color: #a6c4f7;
   font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: 0.06em;
@@ -269,7 +269,7 @@
 }
 
 .demo__entry--active {
-  background: rgba(59, 130, 246, 0.16);
+  background: rgba(77, 135, 240, 0.16);
 }
 
 .demo__severity {

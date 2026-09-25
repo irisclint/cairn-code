@@ -5,7 +5,7 @@ import {
   RELEASES_URL,
   DOCS_URL,
   VERSION,
-  RELEASES_PUBLISHED,
+  isPublished,
   type DownloadTarget
 } from '../data/content';
 import { usePlatform } from '../hooks/usePlatform';
@@ -21,6 +21,11 @@ function assetUrl(file: string): string {
   return `${RELEASES_URL}/download/v${VERSION}/${file}`;
 }
 
+/** Whether any build for this platform is on the release. */
+function hasBuild(target: DownloadTarget): boolean {
+  return isPublished(target.primary.file) || target.others.some((other) => isPublished(other.file));
+}
+
 function PlatformCard({
   target,
   recommended
@@ -29,10 +34,18 @@ function PlatformCard({
   recommended: boolean;
 }): JSX.Element {
   const Icon = PLATFORM_ICONS[target.id];
+  const ready = hasBuild(target);
+  const primaryReady = isPublished(target.primary.file);
 
   return (
-    <article className={'download-card' + (recommended ? ' download-card--recommended' : '')}>
-      {recommended ? <span className="download-card__flag">Detected</span> : null}
+    <article
+      className={
+        'download-card' +
+        (recommended && ready ? ' download-card--recommended' : '') +
+        (ready ? '' : ' download-card--pending')
+      }
+    >
+      {recommended && ready ? <span className="download-card__flag">Detected</span> : null}
 
       <div className="download-card__head">
         <span className="download-card__icon">
@@ -44,7 +57,7 @@ function PlatformCard({
         </div>
       </div>
 
-      {RELEASES_PUBLISHED ? (
+      {primaryReady ? (
         <a
           className={'button button--block ' + (recommended ? 'button--primary' : 'button--secondary')}
           href={assetUrl(target.primary.file)}
@@ -58,12 +71,14 @@ function PlatformCard({
           {target.primary.label}
         </span>
       )}
-      <p className="download-card__note">{RELEASES_PUBLISHED ? target.primary.note : 'Not published yet'}</p>
+      <p className="download-card__note">
+        {primaryReady ? target.primary.note : target.pending}
+      </p>
 
       <ul className="download-card__others">
         {target.others.map((other) => (
           <li key={other.file}>
-            {RELEASES_PUBLISHED ? (
+            {isPublished(other.file) ? (
               <a href={assetUrl(other.file)} className="download-card__other">
                 <span>{other.label}</span>
                 <ArrowRight size={15} />
@@ -71,9 +86,12 @@ function PlatformCard({
             ) : (
               <span className="download-card__other download-card__other--disabled">
                 <span>{other.label}</span>
+                <span className="download-card__other-state">Not built yet</span>
               </span>
             )}
-            {other.note ? <span className="download-card__other-note">{other.note}</span> : null}
+            {other.note && isPublished(other.file) ? (
+              <span className="download-card__other-note">{other.note}</span>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -99,12 +117,21 @@ const INSTALL_STEPS: Record<DownloadTarget['id'], string[]> = {
   ]
 };
 
+/** "macOS and Linux", from whatever is actually missing. */
+function joinNames(names: string[]): string {
+  if (names.length <= 1) return names.join('');
+  return names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+}
+
 export function DownloadPage(): JSX.Element {
   const platform = usePlatform();
   const ordered = [
     ...DOWNLOADS.filter((target) => target.id === platform.id),
     ...DOWNLOADS.filter((target) => target.id !== platform.id)
   ];
+
+  const ready = DOWNLOADS.filter(hasBuild);
+  const missing = DOWNLOADS.filter((target) => !hasBuild(target));
 
   return (
     <>
@@ -113,29 +140,40 @@ export function DownloadPage(): JSX.Element {
           <span className="eyebrow">Download</span>
           <h1 className="page-hero__title">Get cairn-code {VERSION}</h1>
           <p className="page-hero__lead">
-            {RELEASES_PUBLISHED
-              ? 'Free and MIT licensed. Every build below comes from the same tagged commit and is produced by the CI workflow, so you can rebuild any of them yourself.'
-              : 'Free and MIT licensed. The first alpha has not been tagged yet, so there is nothing to download from this page today.'}
+            {ready.length === 0
+              ? 'Free and MIT licensed. No build has been attached to a release yet, so there is nothing to download from this page today.'
+              : missing.length === 0
+                ? 'Free and MIT licensed. Every build below comes from the same tagged commit, and the build that produced it is a file in the repository, so you can reproduce any of them yourself.'
+                : `Free and MIT licensed. The first alpha is built for ${joinNames(
+                    ready.map((target) => target.label)
+                  )}. ${joinNames(missing.map((target) => target.label))} ${
+                    missing.length === 1 ? 'is' : 'are'
+                  } listed below with what is missing, because a greyed out button that tells you why is worth more than one that returns 404.`}
           </p>
         </div>
       </section>
 
-      {RELEASES_PUBLISHED ? null : (
+      {missing.length === 0 ? null : (
         <section className="section section--tight">
           <div className="container">
             <div className="notice notice--wide">
               <span className="notice__icon">
                 <Shield size={19} />
               </span>
-              <h2 className="notice__title">No binaries yet</h2>
+              <h2 className="notice__title">
+                {joinNames(ready.map((target) => target.label))} today,{' '}
+                {joinNames(missing.map((target) => target.label))} not yet
+              </h2>
               <p className="notice__body">
-                cairn-code works, and the tests and builds are green on all three platforms, but no release
-                has been tagged yet. The source is public in the meantime, so nothing here rests on taking the
-                project's word for it.
+                An installer has to be produced on the system it targets: a macOS app has to be built and
+                signed on a Mac, and the deb, rpm and AppImage targets have to be assembled on Linux. This
+                alpha was built where it could be, and the cards below say plainly which files exist rather
+                than listing all nine and letting you find out by clicking.
               </p>
               <p className="notice__body">
-                The platform cards below show exactly what will be published. Until then, the way to run
-                cairn-code is to build it, which is one command once the dependencies are in place.
+                On a platform with no build yet, the way to run cairn-code is to build it. That is one command
+                once the dependencies are in place, and the source is public, so nothing here rests on taking
+                the project's word for anything.
               </p>
             </div>
           </div>
@@ -150,14 +188,14 @@ export function DownloadPage(): JSX.Element {
             ))}
           </div>
 
-          {RELEASES_PUBLISHED ? (
+          {ready.length === 0 ? null : (
             <p className="download-footnote">
               Looking for an older version, or the checksums?{' '}
               <a href={RELEASES_URL} target="_blank" rel="noreferrer noopener" className="link-arrow">
                 All releases on GitHub <ArrowRight size={15} />
               </a>
             </p>
-          ) : null}
+          )}
         </div>
       </section>
 

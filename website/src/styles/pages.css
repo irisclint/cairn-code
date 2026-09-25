@@ -22,9 +22,9 @@
   height: 720px;
   background: radial-gradient(
     ellipse at center,
-    rgba(59, 130, 246, 0.16) 0%,
-    rgba(139, 92, 246, 0.09) 38%,
-    transparent 68%
+    rgba(77, 135, 240, 0.1) 0%,
+    rgba(77, 135, 240, 0.04) 40%,
+    transparent 70%
   );
   pointer-events: none;
   z-index: -1;
@@ -42,20 +42,16 @@
   margin-bottom: var(--space-5);
 }
 
-.hero__gradient,
 /*
- * The gradient is repeated on the animating span. A filter creates a new
- * containing block, so a word that animates with blur no longer picks up the
- * parent's clipped background and renders as transparent, which is to say
- * invisible.
+ * The word the headline turns on.
+ *
+ * A solid accent rather than a gradient fill: at display size a sweep across
+ * three letters reads as a rendering artefact, and it costs the clipping
+ * workarounds that a background-clipped, animated, blurred span needs.
  */
+.hero__gradient,
 .hero__gradient .split-word__inner {
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  /* The descender of a gradient-filled glyph clips without this. */
-  padding-bottom: 0.08em;
+  color: var(--accent);
 }
 
 .hero__lead {
@@ -136,10 +132,8 @@
   font-size: var(--step-3);
   font-weight: 600;
   letter-spacing: -0.03em;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .stats__label {
@@ -239,7 +233,7 @@
   bottom: 6px;
   width: 2px;
   border-radius: 2px;
-  background: var(--accent-gradient);
+  background: var(--accent);
 }
 
 .answer-card__row--highlight .answer-card__label {
@@ -609,7 +603,7 @@
   position: absolute;
   inset: auto 0 -60% 0;
   height: 340px;
-  background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.2), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(77, 135, 240, 0.09), transparent 70%);
   pointer-events: none;
 }
 
@@ -644,7 +638,6 @@
   padding-top: var(--space-8);
   padding-bottom: var(--space-6);
   border-bottom: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.06), transparent);
 }
 
 .page-hero__title {
@@ -788,12 +781,12 @@
 }
 
 .roadmap__item--done .roadmap__status {
-  border-color: rgba(16, 185, 129, 0.4);
+  border-color: rgba(69, 179, 137, 0.42);
   color: var(--success);
 }
 
 .roadmap__item--next .roadmap__status {
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: var(--accent-line);
   color: var(--accent);
 }
 
@@ -820,10 +813,8 @@
 }
 
 .download-card--recommended {
-  border-color: rgba(59, 130, 246, 0.45);
-  box-shadow:
-    0 0 0 1px rgba(59, 130, 246, 0.12),
-    var(--shadow);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow);
 }
 
 .download-card__flag {
@@ -832,7 +823,7 @@
   left: var(--space-5);
   padding: 0.12rem 0.6rem;
   border-radius: 999px;
-  background: var(--accent-gradient);
+  background: var(--accent);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
@@ -966,7 +957,7 @@
   height: 36px;
   margin-bottom: var(--space-4);
   border-radius: var(--radius-sm);
-  background: rgba(224, 175, 104, 0.12);
+  background: rgba(214, 167, 96, 0.12);
   color: var(--warning);
 }
 
@@ -1055,5 +1046,25 @@
 
 .download-card__other--disabled:hover {
   background: none;
+  color: var(--text-subtle);
+}
+
+/*
+ * A platform with nothing built yet. It stays in the grid at full width and
+ * reads as a stated gap: the alternative is dropping the card, which just
+ * raises the same question without answering it.
+ */
+.download-card--pending {
+  border-style: dashed;
+}
+
+.download-card--pending .download-card__icon {
+  color: var(--text-subtle);
+}
+
+/* "Not built yet", on the right of the row whose link is absent. */
+.download-card__other-state {
+  margin-left: auto;
+  font-size: var(--step--2);
   color: var(--text-subtle);
 }

@@ -103,12 +103,12 @@ function PlatformCard({
 const INSTALL_STEPS: Record<DownloadTarget['id'], string[]> = {
   windows: [
     'Run the installer. It installs for your user, so it never asks for an administrator password.',
-    'SmartScreen may warn about an unrecognised publisher while the alpha is unsigned. Choose More info, then Run anyway.',
+    'SmartScreen may warn about an unrecognised publisher, because the build is not code signed. Choose More info, then Run anyway.',
     'cairn-code adds an "Open with cairn-code" entry to the Explorer context menu for files and folders.'
   ],
   macos: [
     'Open the disk image and drag cairn-code into Applications.',
-    'The first launch is blocked while the alpha is unsigned. Right click the app, choose Open, then confirm.',
+    'The first launch is blocked because the build is not code signed. Right click the app, choose Open, then confirm.',
     'Pick the Apple silicon build on an M1 or newer, and the Intel build otherwise.'
   ],
   linux: [
@@ -145,7 +145,7 @@ export function DownloadPage(): JSX.Element {
               ? 'Free and MIT licensed. No build has been attached to a release yet, so there is nothing to download from this page today.'
               : missing.length === 0
                 ? 'Free and MIT licensed. Every build below comes from the same tagged commit, and the build that produced it is a file in the repository, so you can reproduce any of them yourself.'
-                : `Free and MIT licensed. The first alpha is built for ${joinNames(
+                : `Free and MIT licensed. Version ${VERSION} is built for ${joinNames(
                     ready.map((target) => target.label)
                   )}. ${joinNames(missing.map((target) => target.label))} ${
                     missing.length === 1 ? 'is' : 'are'
@@ -168,7 +168,7 @@ export function DownloadPage(): JSX.Element {
               <p className="notice__body">
                 An installer has to be produced on the system it targets: a macOS app has to be built and
                 signed on a Mac, and the deb, rpm and AppImage targets have to be assembled on Linux. This
-                alpha was built where it could be, and the cards below say plainly which files exist rather
+                release was built where it could be, and the cards below say plainly which files exist rather
                 than listing all nine and letting you find out by clicking.
               </p>
               <p className="notice__body">
@@ -245,8 +245,8 @@ export function DownloadPage(): JSX.Element {
                 </span>
                 <h3 className="notice__title">About the signing warnings</h3>
                 <p className="notice__body">
-                  The alpha builds are not code signed yet, because a certificate costs money the project does
-                  not have and signing an alpha with a borrowed one would be worse. The warning you see is
+                  These builds are not code signed, because a certificate costs money the project does not
+                  have and signing with a borrowed one would be worse. The warning you see is
                   your operating system telling you the truth: it does not know who built this.
                 </p>
                 <p className="notice__body">

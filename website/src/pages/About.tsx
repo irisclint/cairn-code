@@ -17,7 +17,7 @@ const PRINCIPLES = [
   {
     icon: Bolt,
     title: 'Performance is a budget, not a hope',
-    body: 'Under two seconds cold, under 400 MB idle, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives.'
+    body: 'Under two seconds cold, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives. One budget is missed: idle memory was meant to stay under 400 MB and 1.0.0 sits at 420, which the repository records as a miss rather than quietly moving the target.'
   }
 ];
 
@@ -30,7 +30,7 @@ const STACK = [
     role: 'Interface and state, split so a panel resize never re-renders the editor'
   },
   { name: 'TypeScript', role: 'Strict mode across three projects, no implicit any anywhere' },
-  { name: 'Vitest and Playwright', role: '986 tests over the units, the integrations and the built app' }
+  { name: 'Vitest and Playwright', role: '991 tests over the units, the integrations and the built app' }
 ];
 
 const ROADMAP = [
@@ -184,7 +184,7 @@ export function About(): JSX.Element {
             <span className="eyebrow">Roadmap</span>
             <h2 className="section-title">What is done and what is not</h2>
             <p className="section-lead">
-              cairn-code is at 1.0.0-alpha.1. Inside the application, the panels for unfinished features say
+              cairn-code is at 1.0.0. Inside the application, the panels for unfinished features say
               so rather than showing controls that do nothing, and this page does the same.
             </p>
           </div>

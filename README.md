@@ -178,24 +178,35 @@ three processes fit together and why the boundaries sit where they do.
 
 cairn-code is built against explicit budgets, measured on a mid range laptop:
 
-| Metric | Target |
-| --- | --- |
-| Cold start | under 2 s |
-| Warm start | under 500 ms |
-| Idle memory | under 400 MB |
-| Opening a 50,000 line file | no perceptible lag |
-| Theme switch | under 100 ms |
-| Installer size | under 200 MB |
+| Metric | Target | 1.0.0 |
+| --- | --- | --- |
+| Cold start to a visible window | under 2 s | 1.6 s |
+| Warm start | under 500 ms | met |
+| Idle memory, working set | under 400 MB | 420 MB, over |
+| Opening a 50,000 line file | no perceptible lag | met |
+| Theme switch | under 100 ms | met |
+| Installer size | under 200 MB | 114 MB |
+
+Idle memory is the one budget 1.0.0 misses. The figure is the working set of
+all four processes with no folder open, which includes the Chromium pages
+mapped into each of them; private memory is 258 MB. It is listed as a miss
+rather than reworded, because a budget that moves to meet the result is not a
+budget.
 
 Large files drop the minimap, folding and bracket colouring above 4 MB, which
 is what keeps them responsive.
 
 ## Status
 
-Version 1.0.0-alpha.1. The editor, terminal, themes, search, command palette
-and diagnostics all work. Git integration, the extension host and the debugger
-are the next milestone; the views for them say so rather than showing controls
-that do nothing.
+Version 1.0.0. The editor, terminal, themes, search, command palette,
+diagnostics, source control, the debugger and the sandboxed extension host all
+work, and every one of them is covered by tests that run on each build.
+
+Two things are not done, and the editor says so where you would look for them
+rather than leaving you to find out: no extension registry has been published,
+so the marketplace client has nothing to browse, and the builds are not code
+signed. Binaries are published for Windows; macOS and Linux have to be built
+on macOS and Linux, and can be built from source today.
 
 ## FAQ
 

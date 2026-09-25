@@ -277,11 +277,14 @@ describe('application menu', () => {
     buildApplicationMenu(() => null);
     const items = flatten(menuTemplates[0]);
 
-    for (const [name, chord] of [
+    // Typed as tuples, so name and chord are strings rather than string | undefined.
+    const chords: Array<[name: string, chord: string]> = [
       ['Open Folder...', 'Ctrl+K Ctrl+O'],
       ['Save All', 'Ctrl+K S'],
       ['Color Theme...', 'Ctrl+K Ctrl+T']
-    ]) {
+    ];
+
+    for (const [name, chord] of chords) {
       const item = items.find((candidate) => String(candidate.label ?? '').startsWith(name));
       expect(item, `no menu item starting with ${name}`).toBeDefined();
       expect(item?.label).toBe(`${name}	${chord}`);

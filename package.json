@@ -1,6 +1,6 @@
 {
   "name": "cairn-code",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0",
   "description": "cairn - the next generation code editor. Fast. Beautiful. For every language.",
   "author": "cairn Team",
   "license": "MIT",

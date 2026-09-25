@@ -10,7 +10,7 @@ const UPDATED = '22 September 2026';
  * Short on purpose. The software is MIT licensed, so the licence already says
  * what you may do with it; repeating that in heavier language would only
  * obscure it. What is left is the part the licence does not cover: what this
- * website is, and what the alpha does not promise.
+ * website is, and what this release does not promise.
  */
 export function Terms(): JSX.Element {
   return (
@@ -46,8 +46,9 @@ export function Terms(): JSX.Element {
             <h2>No warranty</h2>
             <p>
               The MIT licence provides the software as is, without warranty of any kind. That is not a
-              formality at this stage: {VERSION} is an alpha. Features are missing, the builds are not code
-              signed, and behaviour will change between versions.
+              formality. Version {VERSION} is built and published for Windows only, the builds are not code
+              signed, and no extension registry has been published for the marketplace client to read. Those
+              gaps are stated on the download page and inside the editor rather than discovered.
             </p>
             <p>
               Keep your work in version control and keep backups, as you would with any editor. The project

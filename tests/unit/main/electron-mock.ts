@@ -233,7 +233,7 @@ export const dialog = {
 
 export const app = {
   getName: vi.fn(() => 'cairn-code'),
-  getVersion: vi.fn(() => '1.0.0-alpha.1'),
+  getVersion: vi.fn(() => '1.0.0'),
   getPath: vi.fn((_name: string) => '/tmp/cairn-userdata'),
   getAppPath: vi.fn(() => '/tmp/cairn-app'),
   isPackaged: false,

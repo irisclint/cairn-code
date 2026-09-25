@@ -8,10 +8,48 @@ All notable changes to cairn-code are documented here. The format follows
 
 ### Planned
 
-- Git integration: status, staging, commit, diff view and branch management
-- Sandboxed extension host with a marketplace client
-- Debug adapter support with breakpoints, stepping and a variables panel
-- ESLint diagnostics from the workspace configuration, in a worker thread
+- A published extension registry, so the marketplace client has a catalogue to
+  read rather than a setting pointing at your own
+- Code signed builds for Windows and macOS
+- Language Server Protocol clients, so the explanation layer reaches past the
+  TypeScript family and whatever ESLint covers
+
+## [1.0.0] - 2026-09-25
+
+Everything the alpha promised as its next milestone has shipped, and the four
+answers now come from the project's own lint configuration as well as from the
+compiler.
+
+### Added
+
+- Source control: status, staging, commits, diffs and branch management, driven
+  through the `git` command line so that your own configuration, hooks,
+  credential helpers and signing keys apply exactly as they do in a terminal
+- Debugging over the Debug Adapter Protocol, with breakpoints in the margin,
+  stepping, the call stack and a variables panel. Adapters are resolved from the
+  project rather than bundled, and `launch.json` is read from where projects
+  already keep it
+- A sandboxed extension host. Extension code runs with no Node, no filesystem
+  and no network, behind a closed permission list shown before installing, and a
+  test suite that tries to escape it and asserts that it cannot
+- A marketplace client that verifies what it downloads. No registry has been
+  published yet, and the panel says so rather than showing an empty store
+- ESLint diagnostics from the workspace's own configuration, resolved from the
+  project and run in a worker thread so the interface never waits on a lint pass
+
+### Fixed
+
+- The packaged application started, loaded its renderer and never showed a
+  window. A window created hidden has no on screen surface, and the compositor
+  does not reliably produce the first frame for one, so `ready-to-show` never
+  arrived and it was the only path to showing the window
+- The update check reported every failure as a connection problem, including
+  the ones that never reached the network. `electron-updater` is CommonJS and
+  the main process is bundled as CommonJS, so `autoUpdater` was reached through
+  an interop shape the code did not handle and was `undefined`
+- Three menu items carried two key sequences as accelerators. Electron has no
+  representation for those, so it warned at every launch and registered nothing,
+  leaving the items without shortcuts
 
 ## [1.0.0-alpha.1] - 2026-09-22
 

@@ -170,7 +170,7 @@ describe('application info', () => {
     );
 
     expect(info.name).toBe('cairn-code');
-    expect(info.version).toBe('1.0.0-alpha.1');
+    expect(info.version).toBe('1.0.0');
     expect(info.node).toBe(process.versions.node);
   });
 });

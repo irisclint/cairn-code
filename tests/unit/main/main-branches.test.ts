@@ -446,7 +446,13 @@ describe('SearchService edge cases', () => {
   });
 
   it('should limit the number of file name results', async () => {
-    for (let i = 0; i < 20; i += 1) await writeFile(join(root, 'file' + i + '.txt'), '');
+    // Written concurrently. Twenty awaited writes in sequence is twenty round
+    // trips to the filesystem, which took over six seconds under a full
+    // parallel run and timed the test out at five. The order they land in has
+    // never mattered to what this asserts.
+    await Promise.all(
+      Array.from({ length: 20 }, (_, i) => writeFile(join(root, 'file' + i + '.txt'), ''))
+    );
 
     expect(await search.searchFileNames(root, 'file', 5)).toHaveLength(5);
   });

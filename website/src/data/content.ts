@@ -10,7 +10,7 @@
 /** The product name, as it is written everywhere on this site. */
 export const PRODUCT = 'cairn-code';
 
-export const VERSION = '1.0.0-alpha.1';
+export const VERSION = '1.0.0';
 
 /**
  * The files actually attached to the release for this version.
@@ -147,7 +147,7 @@ export const DOWNLOADS: DownloadTarget[] = [
       { label: 'ZIP (Intel)', file: `cairn-code-${VERSION}-mac-x64.zip` }
     ],
     pending:
-      'A macOS build has to be produced and notarised on a Mac, which this alpha has not had access to. Building from source works today.'
+      'A macOS build has to be produced and notarised on a Mac, and this release was not built on one. Building from source works today.'
   },
   {
     id: 'linux',
@@ -164,7 +164,7 @@ export const DOWNLOADS: DownloadTarget[] = [
       { label: 'AppImage (ARM64)', file: `cairn-code-${VERSION}-linux-arm64.AppImage` }
     ],
     pending:
-      'The deb, rpm and AppImage targets have to be produced on Linux, which this alpha has not been built on. Building from source works today.'
+      'The deb, rpm and AppImage targets have to be assembled on Linux, and this release was not built there. Building from source works today.'
   }
 ];
 

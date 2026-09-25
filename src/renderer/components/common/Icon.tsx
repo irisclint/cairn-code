@@ -30,6 +30,9 @@ const PATHS: Record<string, string> = {
   'folder-open': 'M1.5 3h4.2l1.4 1.8h6.4v1.7h1.3L13 13H1.5V3zm1 1v7.5l1.5-5h9V5.8H6.6L5.2 4H2.5z',
   add: 'M7.5 3h1v4.5H13v1H8.5V13h-1V8.5H3v-1h4.5V3z',
   minus: 'M3 7.5h10v1H3v-1z',
+  // A shield with a tick: what an extension has been allowed to do.
+  shield:
+    'M8 1.5 13.5 3.8V8c0 3.4-2.3 6.4-5.5 7.2C4.8 14.4 2.5 11.4 2.5 8V3.8L8 1.5zm0 1.1L3.5 4.5V8c0 2.9 1.9 5.4 4.5 6.1 2.6-.7 4.5-3.2 4.5-6.1V4.5L8 2.6zm2.6 3.2.7.7-3.6 3.6L5.7 9l.7-.7 1.3 1.3 2.9-2.8z',
   play: 'M5 3.2 12.5 8 5 12.8V3.2z',
   stop: 'M4 4h8v8H4V4z',
   pause: 'M5 3.5h2v9H5v-9zm4 0h2v9H9v-9z',

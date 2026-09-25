@@ -1,7 +1,7 @@
 import { ipcMain, dialog, BrowserWindow, app } from 'electron';
 import { basename } from 'node:path';
 import { IpcChannel } from '@shared/ipc-channels';
-import { WorkspaceError, guarded } from '@shared/errors';
+import { ExtensionError, WorkspaceError, guarded } from '@shared/errors';
 import type {
   AppInfo,
   DebugConfiguration,
@@ -15,6 +15,7 @@ import type {
   InstalledExtension,
   IpcResult,
   LintOutcome,
+  MarketplaceEntry,
   SearchFileResult,
   SearchQuery,
   SettingKey,
@@ -41,6 +42,7 @@ import type { GitCliService } from './services/git-cli';
 import type { DebugService } from './services/debug-service';
 import type { ExtensionRegistry } from './services/extension-registry';
 import type { ExtensionHost } from './services/extension-host';
+import type { MarketplaceClient } from './services/marketplace';
 import { createLogger } from '@shared/logger';
 
 import { isAbsolute, resolve as resolvePath, sep } from 'node:path';
@@ -62,6 +64,7 @@ export interface IpcContext {
   debug: DebugService;
   extensions: ExtensionRegistry;
   extensionHost: ExtensionHost;
+  marketplace: MarketplaceClient;
   /** Mutable workspace state owned by the main process. */
   workspace: { rootPath: string | null; name: string | null };
 }
@@ -569,6 +572,39 @@ export function registerIpcHandlers(context: IpcContext): void {
     return guarded(async () => {
       context.extensionHost.stop(String(id));
       await context.extensions.uninstall(String(id));
+    });
+  });
+
+  handle<MarketplaceEntry[]>(IpcChannel.ExtensionsMarketplace, () =>
+    guarded(async () => {
+      const url = String(context.settings.get('extensions.registryUrl') ?? '').trim();
+
+      if (url.length === 0) {
+        throw new ExtensionError({
+          code: 'MARKETPLACE_NOT_CONFIGURED',
+          message: 'No extension registry is set',
+          cause:
+            'cairn-code has no registry address built in, because no catalogue has been published yet and requesting one that does not exist would be a network call made for nothing.',
+          solution:
+            'Set extensions.registryUrl in Settings to the address of a catalogue, or install an extension from a file.'
+        });
+      }
+
+      return context.marketplace.browse(url);
+    })
+  );
+
+  handle<void>(IpcChannel.ExtensionsInstall, (_event, ...args) => {
+    const [entry] = args as unknown as [MarketplaceEntry];
+    return guarded(async () => {
+      await context.marketplace.install(entry);
+
+      const installed = (await context.extensions.list()).find(
+        (item) => item.manifest.id === entry.id
+      );
+      if (installed && installed.manifest.main !== undefined) {
+        await context.extensionHost.start(installed);
+      }
     });
   });
 

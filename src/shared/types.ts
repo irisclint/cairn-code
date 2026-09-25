@@ -446,6 +446,8 @@ export interface Settings {
   'terminal.defaultShell': string | null;
   'terminal.cursorBlink': boolean;
   'diagnostics.enableEslint': boolean;
+  /** Where the marketplace catalogue is fetched from. Empty means none. */
+  'extensions.registryUrl': string;
   'diagnostics.enableTypeScript': boolean;
   'telemetry.enabled': boolean;
   'update.checkAutomatically': boolean;

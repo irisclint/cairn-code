@@ -27,6 +27,9 @@ export const DEFAULT_SETTINGS: Settings = {
   'terminal.defaultShell': null,
   'terminal.cursorBlink': true,
   'diagnostics.enableEslint': true,
+  // No default on purpose: no catalogue has been published, and a baked-in
+  // address would make the editor request something that does not exist.
+  'extensions.registryUrl': '',
   'diagnostics.enableTypeScript': true,
   // Telemetry stays off until the user opts in explicitly. See docs/SECURITY.md.
   'telemetry.enabled': false,

@@ -1,0 +1,295 @@
+@use "../variables" as *;
+
+/*
+ * The Extensions panel.
+ *
+ * The permission list is the part that has to read well: it is what someone
+ * looks at before deciding to trust a piece of code, so it is set apart from
+ * the description rather than being one more line of body text.
+ */
+
+.ext {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ext__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.ext__tab {
+  flex: 1;
+  padding: 7px 8px;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--description-foreground);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: color $duration-fast $easing-standard;
+}
+
+.ext__tab:hover {
+  color: var(--side-bar-foreground);
+}
+
+.ext__tab--active {
+  color: var(--side-bar-foreground);
+  border-bottom-color: var(--focus-border);
+}
+
+.ext__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ext__empty {
+  padding: 12px 10px;
+  color: var(--description-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.ext__hint {
+  margin-top: 10px;
+}
+
+.ext__builtin {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+
+  li {
+    padding: 2px 0 2px 12px;
+    position: relative;
+  }
+
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--focus-border);
+    opacity: 0.6;
+  }
+}
+
+.ext__problem-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--side-bar-foreground);
+}
+
+.ext__problem {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.6;
+
+  dt {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Cards                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.ext__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ext__card {
+  padding: 10px;
+  border-bottom: 1px solid var(--side-bar-border);
+}
+
+.ext__card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.ext__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--side-bar-foreground);
+}
+
+.ext__version {
+  flex: 0 0 auto;
+  color: var(--description-foreground);
+  font-size: 10.5px;
+}
+
+.ext__status {
+  flex: 0 0 auto;
+  padding: 0 5px;
+  border-radius: 8px;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--badge-background);
+  color: var(--badge-foreground);
+}
+
+.ext__status--disabled {
+  opacity: 0.6;
+}
+
+.ext__status--failed {
+  background: var(--editor-error-foreground);
+  color: var(--editor-background);
+}
+
+.ext__publisher {
+  margin: 2px 0 0;
+  color: var(--description-foreground);
+  font-size: 10.5px;
+}
+
+.ext__description {
+  margin: 5px 0 0;
+  color: var(--side-bar-foreground);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.ext__failure {
+  margin: 6px 0 0;
+  padding: 5px 7px;
+  border-left: 2px solid var(--editor-error-foreground);
+  background: var(--input-background);
+  color: var(--description-foreground);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Permissions                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.ext__permissions {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  border: 1px solid var(--side-bar-border);
+  border-radius: $radius-sm;
+  background: var(--input-background);
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 2px 0;
+    color: var(--side-bar-foreground);
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--git-decoration-modified-resource-foreground);
+  }
+}
+
+.ext__permissions--none {
+  color: var(--description-foreground);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Actions                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.ext__commands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ext__command {
+  padding: 2px 8px;
+  border: 1px solid var(--side-bar-border);
+  border-radius: 999px;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.ext__command:hover {
+  background: var(--list-hover-background);
+}
+
+.ext__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.ext__action {
+  padding: 3px 10px;
+  border: 1px solid var(--side-bar-border);
+  border-radius: $radius-sm;
+  background: none;
+  color: var(--side-bar-foreground);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: background-color $duration-fast $easing-standard;
+}
+
+.ext__action:hover:not(:disabled) {
+  background: var(--list-hover-background);
+}
+
+.ext__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ext__action--primary {
+  border-color: transparent;
+  background: var(--button-background);
+  color: var(--button-foreground);
+}
+
+.ext__action--primary:hover:not(:disabled) {
+  background: var(--button-hover-background);
+}
+
+.ext__action--danger:hover:not(:disabled) {
+  color: var(--error-foreground);
+}
+
+.ext__installed {
+  color: var(--description-foreground);
+  font-size: 11.5px;
+}

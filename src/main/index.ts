@@ -19,6 +19,7 @@ import { LintService } from './services/lint-service';
 import { GitCliService } from './services/git-cli';
 import { ExtensionRegistry } from './services/extension-registry';
 import { ExtensionHost } from './services/extension-host';
+import { MarketplaceClient } from './services/marketplace';
 import { DebugService } from './services/debug-service';
 
 /**
@@ -164,6 +165,7 @@ async function bootstrap(): Promise<void> {
     debug: debugService,
     extensions,
     extensionHost,
+    marketplace: new MarketplaceClient(extensions),
     workspace
   };
 

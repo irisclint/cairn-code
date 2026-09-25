@@ -25,6 +25,7 @@ const { ShortcutService } = await import('@main/services/shortcut-service');
 const { GitCliService } = await import('@main/services/git-cli');
 const { DebugService } = await import('@main/services/debug-service');
 const { ExtensionRegistry } = await import('@main/services/extension-registry');
+const { MarketplaceClient } = await import('@main/services/marketplace');
 
 import type { IpcResult, LintOutcome } from '@shared/types';
 import type { IpcContext } from '@main/ipc';
@@ -69,6 +70,8 @@ beforeEach(async () => {
     broadcasts.push({ channel, payload });
   };
 
+  const extensionRegistry = new ExtensionRegistry(join(root, 'extensions'));
+
   context = {
     windows,
     files: new FileSystemService(),
@@ -101,7 +104,8 @@ beforeEach(async () => {
     lint: { lint: lintSpy, dispose: vi.fn(async () => undefined) } as unknown as IpcContext['lint'],
     git: new GitCliService(),
     debug: new DebugService(),
-    extensions: new ExtensionRegistry(join(root, 'extensions')),
+    extensions: extensionRegistry,
+    marketplace: new MarketplaceClient(extensionRegistry),
     // The host is never started in these tests; the handlers under test only
     // ask the registry for what is installed.
     extensionHost: { running: () => [], startAll: async () => undefined, stop: () => undefined, dispose: async () => undefined, invokeCommand: () => undefined } as unknown as IpcContext['extensionHost'],

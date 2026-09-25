@@ -25,6 +25,7 @@ export const FALLBACK_SETTINGS: Settings = {
   'terminal.defaultShell': null,
   'terminal.cursorBlink': true,
   'diagnostics.enableEslint': true,
+  'extensions.registryUrl': '',
   'diagnostics.enableTypeScript': true,
   'telemetry.enabled': false,
   'update.checkAutomatically': true,

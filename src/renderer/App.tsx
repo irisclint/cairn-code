@@ -33,6 +33,7 @@ import { api, hasBridge } from './services/api';
 import { outputChannel } from './services/output-channel';
 import { offerDesktopShortcut } from './services/shortcut-prompt';
 import { useDebugStore } from './store/debug-store';
+import { useExtensionStore } from './store/extension-store';
 
 /** Loads settings, applies the theme, registers commands and key bindings. */
 function useBootstrap(): boolean {
@@ -64,11 +65,13 @@ function useBootstrap(): boolean {
     // The debug session lives in the main process and pushes its state, so
     // the store follows it for as long as the workbench is mounted.
     const detachDebug = useDebugStore.getState().connect();
+    const detachExtensions = useExtensionStore.getState().connect();
 
     return () => {
       disposeCommands();
       detachKeyboard();
       detachDebug();
+      detachExtensions();
     };
   }, [loadSettings, initializeTheme]);
 

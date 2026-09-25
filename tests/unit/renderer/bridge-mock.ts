@@ -1,5 +1,7 @@
 import type {
   DebugConfiguration,
+  InstalledExtension,
+  MarketplaceEntry,
   DebugSessionState,
   DebugScope,
   DebugStackFrame,
@@ -41,6 +43,14 @@ export interface BridgeState {
   lint: LintOutcome;
   /** What the fake repository looks like. */
   git: { status: GitStatus; branches: string[]; diff: string | null; commits: string[] };
+  /** What the fake extension registry and catalogue hold. */
+  extensions: {
+    installed: InstalledExtension[];
+    catalogue: MarketplaceEntry[];
+    /** Set to refuse the catalogue with this failure. */
+    catalogueError: { code: string; message: string; cause: string; solution: string } | null;
+    invoked: Array<{ extensionId: string; commandId: string }>;
+  };
   /** What the fake debug adapter reports. */
   debug: {
     configurations: DebugConfiguration[];
@@ -72,6 +82,7 @@ export const state: BridgeState = {
     diff: null,
     commits: []
   },
+  extensions: { installed: [], catalogue: [], catalogueError: null, invoked: [] },
   debug: {
     configurations: [],
     frames: [],
@@ -99,7 +110,8 @@ export const listeners = {
   windowState: [] as Array<(state: unknown) => void>,
   updateStatus: [] as Array<(status: unknown) => void>,
   debugState: [] as Array<(state: DebugSessionState) => void>,
-  debugOutput: [] as Array<(output: unknown) => void>
+  debugOutput: [] as Array<(output: unknown) => void>,
+  extensionsChanged: [] as Array<(change: unknown) => void>
 };
 
 export const calls = {
@@ -312,6 +324,55 @@ export function createBridge(): CairnApi {
 
     lint: {
       run: vi.fn(async () => ok(state.lint))
+    },
+
+    extensions: {
+      list: vi.fn(async () => ok(state.extensions.installed)),
+      marketplace: vi.fn(async () =>
+        state.extensions.catalogueError
+          ? { ok: false as const, error: state.extensions.catalogueError }
+          : ok(state.extensions.catalogue)
+      ),
+      install: vi.fn(async (entry: MarketplaceEntry) => {
+        state.extensions.installed = [
+          ...state.extensions.installed,
+          {
+            manifest: {
+              id: entry.id,
+              name: entry.name,
+              version: entry.version,
+              publisher: entry.publisher,
+              description: entry.description,
+              permissions: entry.permissions,
+              contributes: {}
+            },
+            status: 'enabled' as const,
+            path: '/ext/' + entry.id
+          }
+        ];
+        return ok(undefined);
+      }),
+      setEnabled: vi.fn(async (id: string, enabled: boolean) => {
+        state.extensions.installed = state.extensions.installed.map((entry) =>
+          entry.manifest.id === id
+            ? { ...entry, status: enabled ? ('enabled' as const) : ('disabled' as const) }
+            : entry
+        );
+        return ok(undefined);
+      }),
+      uninstall: vi.fn(async (id: string) => {
+        state.extensions.installed = state.extensions.installed.filter(
+          (entry) => entry.manifest.id !== id
+        );
+        return ok(undefined);
+      }),
+      invokeCommand: vi.fn(async (extensionId: string, commandId: string) => {
+        state.extensions.invoked.push({ extensionId, commandId });
+        return ok(undefined);
+      }),
+      onChanged: vi.fn((listener: (change: unknown) => void) =>
+        subscribe(listeners.extensionsChanged, listener)
+      )
     },
 
     debug: {

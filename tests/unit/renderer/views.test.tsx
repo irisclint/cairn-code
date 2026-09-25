@@ -468,13 +468,15 @@ describe('SourceControlView', () => {
 });
 
 describe('ExtensionsView', () => {
-  it('should list what is already built in', () => {
+  it('should list what needs no extension while nothing is installed', async () => {
     render(<ExtensionsView />);
 
-    expect(screen.getByText(/languages with syntax highlighting/)).toBeInTheDocument();
-    expect(screen.getByText(/color themes/)).toBeInTheDocument();
-    expect(screen.getByText(/planned for the next milestone/)).toBeInTheDocument();
+    expect(await screen.findByText(/languages with syntax highlighting/)).toBeInTheDocument();
+    expect(screen.getByText(/colour themes/)).toBeInTheDocument();
   });
+
+  // Installing, enabling, permissions and the marketplace are covered in
+  // tests/unit/renderer/extensions.test.tsx, which drives the fake registry.
 });
 
 /* -------------------------------------------------------------------------- */

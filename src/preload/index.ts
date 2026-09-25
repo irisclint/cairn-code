@@ -14,6 +14,7 @@ import type {
   DebugVariable,
   GitStatus,
   InstalledExtension,
+  MarketplaceEntry,
   IpcResult,
   SourceBreakpoint,
   LintOutcome,
@@ -154,6 +155,10 @@ const api = {
       ipcRenderer.invoke(IpcChannel.ExtensionsUninstall, id),
     invokeCommand: (extensionId: string, commandId: string): Promise<IpcResult<void>> =>
       ipcRenderer.invoke(IpcChannel.ExtensionsInvokeCommand, extensionId, commandId),
+    marketplace: (): Promise<IpcResult<MarketplaceEntry[]>> =>
+      ipcRenderer.invoke(IpcChannel.ExtensionsMarketplace),
+    install: (entry: MarketplaceEntry): Promise<IpcResult<void>> =>
+      ipcRenderer.invoke(IpcChannel.ExtensionsInstall, entry),
     onChanged: (listener: (change: unknown) => void): Unsubscribe =>
       subscribe(IpcChannel.ExtensionsChanged, listener)
   },

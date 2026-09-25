@@ -11,7 +11,8 @@ import {
   Bolt,
   Branch,
   Bug,
-  Puzzle
+  Puzzle,
+  Settings
 } from './Icons';
 import { Reveal, SpotlightCard } from './Motion';
 
@@ -26,7 +27,8 @@ const ICONS: Record<Feature['icon'], (props: { size?: number }) => JSX.Element> 
   bolt: Bolt,
   branch: Branch,
   bug: Bug,
-  puzzle: Puzzle
+  puzzle: Puzzle,
+  settings: Settings
 };
 
 export function FeatureGrid(): JSX.Element {

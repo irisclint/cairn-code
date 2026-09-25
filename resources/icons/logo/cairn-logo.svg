@@ -2,22 +2,20 @@
   <title id="cairn-logo-title">Cairn</title>
 
   <defs>
-    <!-- The signature pair: blue into violet, bottom-left to top-right. -->
-    <linearGradient id="cairn-stone" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#3B82F6" />
-      <stop offset="100%" stop-color="#8B5CF6" />
-    </linearGradient>
-
-    <!-- Subtle radial lift so the tile does not read as flat at large sizes. -->
+    <!--
+      Subtle radial lift so the tile does not read as flat at large sizes.
+      Neutral rather than blue-black, so the tile stays a surface and the
+      stones are the only thing in the mark carrying colour.
+    -->
     <radialGradient id="cairn-backdrop" cx="30%" cy="22%" r="95%">
-      <stop offset="0%" stop-color="#242636" />
-      <stop offset="60%" stop-color="#1A1B26" />
-      <stop offset="100%" stop-color="#121219" />
+      <stop offset="0%" stop-color="#26262e" />
+      <stop offset="60%" stop-color="#17171b" />
+      <stop offset="100%" stop-color="#101013" />
     </radialGradient>
 
     <linearGradient id="cairn-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.15" />
+      <stop offset="0%" stop-color="#4D87F0" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#4D87F0" stop-opacity="0.08" />
     </linearGradient>
   </defs>
 
@@ -36,11 +34,18 @@
     as balanced stones rather than a bar chart.
   -->
   <g id="stones">
-    <!-- Base: widest, flattest, carries the stack. -->
-    <rect x="112" y="316" width="288" height="88" rx="33" fill="url(#cairn-stone)" />
+    <!--
+      One hue, stepped in tone rather than swept in a gradient. Light reads as
+      coming from above, which is how a real stack looks, and a flat fill per
+      stone survives being scaled to a 16px favicon where a diagonal gradient
+      turns to mud.
+    -->
+
+    <!-- Base: widest, flattest, carries the stack. Darkest, as shadow falls. -->
+    <rect x="112" y="316" width="288" height="88" rx="33" fill="#3A74DD" />
 
     <!-- Middle: offset a touch left, as a real stack settles. -->
-    <rect x="146" y="214" width="220" height="84" rx="31" fill="url(#cairn-stone)" opacity="0.9" />
+    <rect x="146" y="214" width="220" height="84" rx="31" fill="#4D87F0" />
 
     <!-- Crown: smallest and tilted, the piece that says "placed by hand". -->
     <rect

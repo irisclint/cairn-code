@@ -252,6 +252,36 @@
 /* Features                                                                    */
 /* -------------------------------------------------------------------------- */
 
+/*
+ * Fixed column counts rather than auto-fit.
+ *
+ * auto-fit packs as many 210px tracks as fit, which at this container width is
+ * five, and twelve cards over five columns leaves two stranded on the last row.
+ * Four, three, two and one all divide twelve, so every row stays full at every
+ * width the grid is actually used at.
+ */
+.feature-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 720px) {
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .feature-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .feature-grid .card__body {
   font-size: var(--step--1);
   line-height: 1.7;

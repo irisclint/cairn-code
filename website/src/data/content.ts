@@ -133,7 +133,8 @@ export interface Feature {
     | 'bolt'
     | 'branch'
     | 'bug'
-    | 'puzzle';
+    | 'puzzle'
+    | 'settings';
   title: string;
   body: string;
 }
@@ -188,6 +189,11 @@ export const FEATURES: Feature[] = [
     icon: 'bolt',
     title: 'Fast by design',
     body: 'Under two seconds cold. One editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB.'
+  },
+  {
+    icon: 'settings',
+    title: 'Settings you can read',
+    body: 'One JSON file, with every key documented and none of it hidden behind a search box. Copy it between machines, keep it in a repository, or edit it in cairn-code itself.'
   },
   {
     icon: 'shield',

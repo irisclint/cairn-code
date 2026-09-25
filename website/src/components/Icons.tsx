@@ -151,6 +151,17 @@ export const Puzzle = (props: IconProps): JSX.Element => (
   </Svg>
 );
 
+/* Braces around a line: a settings file, rather than the usual cogwheel. */
+export const Settings = (props: IconProps): JSX.Element => (
+  <Svg {...props}>
+    <>
+      <path d="M9 4H7.5A2.5 2.5 0 0 0 5 6.5v3A2.5 2.5 0 0 1 2.5 12 2.5 2.5 0 0 1 5 14.5v3A2.5 2.5 0 0 0 7.5 20H9" />
+      <path d="M15 4h1.5A2.5 2.5 0 0 1 19 6.5v3a2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0-2.5 2.5v3a2.5 2.5 0 0 1-2.5 2.5H15" />
+      <path d="M9 12h6" />
+    </>
+  </Svg>
+);
+
 export const Check = (props: IconProps): JSX.Element => (
   <Svg {...props}>
     <path d="m5 12.5 4.5 4.5L19 7.5" />

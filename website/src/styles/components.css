@@ -35,6 +35,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  flex: none;
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: -0.02em;
@@ -49,6 +50,9 @@
 .brand__name {
   font-family: var(--font-mono);
   letter-spacing: -0.03em;
+  /* The hyphen is a legal break point, and on a narrow header the name split
+     across two lines as "cairn-" over "code". A product name is one word. */
+  white-space: nowrap;
 }
 
 /* The suffix is dimmed so the eye lands on the word, not the compound. */

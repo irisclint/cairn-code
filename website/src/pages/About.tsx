@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, GitHub, Shield, Bolt, Lightbulb } from '../components/Icons';
-import { REPOSITORY_URL, DOCS_URL, LANGUAGE_COUNT, THEME_COUNT } from '../data/content';
+import { REPOSITORY_URL, docsFile, LANGUAGE_COUNT, THEME_COUNT } from '../data/content';
 
 const PRINCIPLES = [
   {
@@ -154,7 +154,7 @@ export function About(): JSX.Element {
               </p>
               <a
                 className="link-arrow"
-                href={DOCS_URL + '/architecture/overview.md'}
+                href={docsFile('architecture/overview.md')}
                 target="_blank"
                 rel="noreferrer noopener"
               >

@@ -1,7 +1,15 @@
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { GitHub } from './Icons';
-import { PRODUCT, REPOSITORY_URL, DOCS_URL, ISSUES_URL, RELEASES_URL, VERSION } from '../data/content';
+import {
+  PRODUCT,
+  REPOSITORY_URL,
+  DOCS_URL,
+  docsFile,
+  ISSUES_URL,
+  RELEASES_URL,
+  VERSION
+} from '../data/content';
 
 const YEAR = new Date().getFullYear();
 
@@ -80,12 +88,12 @@ export function Footer(): JSX.Element {
               </a>
             </li>
             <li>
-              <a href={DOCS_URL + '/CONTRIBUTING.md'} target="_blank" rel="noreferrer noopener">
+              <a href={docsFile('CONTRIBUTING.md')} target="_blank" rel="noreferrer noopener">
                 Contributing
               </a>
             </li>
             <li>
-              <a href={DOCS_URL + '/SECURITY.md'} target="_blank" rel="noreferrer noopener">
+              <a href={docsFile('SECURITY.md')} target="_blank" rel="noreferrer noopener">
                 Security
               </a>
             </li>

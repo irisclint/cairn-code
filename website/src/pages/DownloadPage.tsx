@@ -2,8 +2,9 @@ import type { JSX } from 'react';
 import { Download, Windows, Apple, Linux, ArrowRight, Shield } from '../components/Icons';
 import {
   DOWNLOADS,
+  EXTRA_DOWNLOADS,
   RELEASES_URL,
-  DOCS_URL,
+  docsFile,
   VERSION,
   isPublished,
   type DownloadTarget
@@ -188,6 +189,26 @@ export function DownloadPage(): JSX.Element {
             ))}
           </div>
 
+          {/*
+            Everything on the release that is not a platform build. These exist
+            for the tag itself, so they are here whether or not a given
+            platform was ever built.
+          */}
+          <div className="extra-downloads">
+            <h3 className="extra-downloads__title">Also on this release</h3>
+            <ul className="extra-downloads__list">
+              {EXTRA_DOWNLOADS.map((extra) => (
+                <li key={extra.href}>
+                  <a className="extra-downloads__item" href={extra.href}>
+                    <span className="extra-downloads__label">{extra.label}</span>
+                    <span className="extra-downloads__note">{extra.note}</span>
+                    <ArrowRight size={15} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {ready.length === 0 ? null : (
             <p className="download-footnote">
               Looking for an older version, or the checksums?{' '}
@@ -234,7 +255,7 @@ export function DownloadPage(): JSX.Element {
                 </p>
                 <a
                   className="link-arrow"
-                  href={DOCS_URL + '/CONTRIBUTING.md'}
+                  href={docsFile('CONTRIBUTING.md')}
                   target="_blank"
                   rel="noreferrer noopener"
                 >

@@ -39,10 +39,57 @@ export const SOURCE_IS_PUBLIC = true;
 export const REPOSITORY_URL = 'https://github.com/irisclint/cairn-code';
 export const RELEASES_URL = `${REPOSITORY_URL}/releases`;
 export const DOCS_URL = `${REPOSITORY_URL}/tree/main/docs`;
+
+/**
+ * A link to one documentation file.
+ *
+ * GitHub serves directories under /tree and files under /blob. Appending a
+ * file name to DOCS_URL produced /tree/main/docs/CONTRIBUTING.md, which only
+ * resolves because GitHub quietly corrects it, and which is the wrong URL to
+ * hand anyone who copies it.
+ */
+export function docsFile(path: string): string {
+  return `${REPOSITORY_URL}/blob/main/docs/${path}`;
+}
 export const ISSUES_URL = `${REPOSITORY_URL}/issues`;
 
 export const LANGUAGE_COUNT = 69;
 export const THEME_COUNT = 12;
+
+/** The tag the release for this version sits on. */
+export const TAG = `v${VERSION}`;
+
+/**
+ * Everything on the release that is not a platform build.
+ *
+ * The source archives are produced by GitHub for the tag itself, so they exist
+ * for every version whether or not a binary was ever built for a platform, and
+ * the checksum file is what makes an unsigned download checkable. Leaving them
+ * off the page means the answer to "can I get everything here" is no.
+ */
+export interface ExtraDownload {
+  label: string;
+  note: string;
+  href: string;
+}
+
+export const EXTRA_DOWNLOADS: ExtraDownload[] = [
+  {
+    label: 'Source code (zip)',
+    note: 'The exact tree these builds came from',
+    href: `${REPOSITORY_URL}/archive/refs/tags/${TAG}.zip`
+  },
+  {
+    label: 'Source code (tar.gz)',
+    note: 'The same tree, for anything that prefers a tarball',
+    href: `${REPOSITORY_URL}/archive/refs/tags/${TAG}.tar.gz`
+  },
+  {
+    label: 'SHA256SUMS.txt',
+    note: 'Check a download before you run it',
+    href: `${RELEASES_URL}/download/${TAG}/SHA256SUMS.txt`
+  }
+];
 
 export interface DownloadAsset {
   label: string;

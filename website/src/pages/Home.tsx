@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import { Link } from 'react-router-dom';
 import { LiveDemo } from '../components/LiveDemo';
+import { HeroPreview } from '../components/HeroPreview';
 import { FeatureGrid } from '../components/FeatureGrid';
 import { Comparison } from '../components/Comparison';
 import { Faq } from '../components/Faq';
@@ -23,6 +24,7 @@ export function Home(): JSX.Element {
         <DotField className="hero__dots" />
 
         <div className="container hero__inner">
+          <div className="hero__copy">
           <span className="badge">
             <span className="badge__dot" />
             {VERSION} is out
@@ -71,6 +73,15 @@ export function Home(): JSX.Element {
               <Check size={16} /> Windows, macOS and Linux
             </li>
           </ul>
+          </div>
+
+          {/*
+            The claim, demonstrated rather than stated. It types the mistake in
+            by itself and then hands the keyboard over.
+          */}
+          <div className="hero__demo">
+            <HeroPreview />
+          </div>
         </div>
       </section>
 

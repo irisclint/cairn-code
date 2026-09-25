@@ -30,11 +30,246 @@
   z-index: -1;
 }
 
+/*
+ * The hero is one column until there is room for two.
+ *
+ * Centred text under a full width headline is the right shape on a phone and
+ * the wrong one on a desktop, where the demonstration deserves to sit beside
+ * the claim rather than below the fold. The breakpoint is where the editor
+ * pane stops being too narrow to read code in.
+ */
 .hero__inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__demo {
+  width: 100%;
+  max-width: 560px;
+  margin-top: var(--space-7);
+}
+
+@media (min-width: 1200px) {
+  .hero__inner {
+    display: grid;
+    /*
+     * The copy column takes the larger share. Two equal columns leave the
+     * action row six pixels short of fitting its buttons, which wraps them
+     * onto separate lines and makes the primary action look like a list item.
+     */
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-7);
+    text-align: left;
+  }
+
+  .hero__copy {
+    align-items: flex-start;
+  }
+
+  .hero__copy .hero__actions,
+  .hero__copy .hero__points {
+    justify-content: flex-start;
+  }
+
+  .hero__demo {
+    max-width: none;
+    margin-top: 0;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* The editor in the hero                                                      */
+/* -------------------------------------------------------------------------- */
+
+.hero-preview {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  text-align: left;
+}
+
+.hero-preview__chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 var(--space-4);
+  height: 38px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-inset);
+}
+
+.hero-preview__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.hero-preview__name {
+  margin-left: var(--space-3);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+}
+
+/* "typing" while it demonstrates, "your turn" once it has stopped. */
+.hero-preview__state {
+  margin-left: auto;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-subtle);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-preview--typing .hero-preview__state {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.hero-preview__answers {
+  padding: var(--space-4);
+  border-top: 1px solid var(--line);
+  background: var(--bg-inset);
+  font-size: var(--step--1);
+  line-height: 1.6;
+  /* Holds its height as the text changes, so the page does not jump while the
+     demonstration types. */
+  min-height: 156px;
+}
+
+.hero-preview__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.hero-preview__sev {
+  flex: none;
+  padding: 1px 7px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+.hero-preview__sev--error {
+  background: rgba(229, 112, 124, 0.14);
+  color: var(--error);
+}
+
+.hero-preview__sev--warning {
+  background: rgba(214, 167, 96, 0.14);
+  color: var(--warning);
+}
+
+/* The message jumps to the offending range, so it is a button, not a heading. */
+.hero-preview__message {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hero-preview__message:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hero-preview__row {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+  color: var(--text-muted);
+}
+
+.hero-preview__label {
+  flex: none;
+  width: 2.1rem;
+  color: var(--text-subtle);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-top: 0.28em;
+}
+
+.hero-preview__label--fix {
+  color: var(--accent);
+}
+
+.hero-preview__clear {
+  margin: 0;
+  color: var(--text-subtle);
+}
+
+/*
+ * The handover.
+ *
+ * It occupies its height from the start, so the card does not resize when the
+ * typing stops, and fades in rather than appearing, because a line of text
+ * that pops into place reads as a layout bug.
+ */
+.hero-preview__invite {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line);
+  color: var(--text-subtle);
+  font-size: var(--step--2);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+
+.hero-preview__invite--ready {
+  opacity: 1;
+}
+
+/* The badge draws the eye once, at the moment control changes hands. */
+@keyframes hero-preview-handover {
+  0% {
+    border-color: var(--line-strong);
+    color: var(--text-subtle);
+  }
+  35% {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  100% {
+    border-color: var(--line-strong);
+    color: var(--text-subtle);
+  }
+}
+
+.hero-preview:not(.hero-preview--typing) .hero-preview__state {
+  animation: hero-preview-handover 1400ms var(--ease) 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-preview__invite {
+    transition: none;
+  }
+
+  .hero-preview:not(.hero-preview--typing) .hero-preview__state {
+    animation: none;
+  }
 }
 
 .hero__title {
@@ -932,6 +1167,70 @@
   padding-inline: var(--space-3);
   color: var(--text-subtle);
   font-size: 11px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* The rest of the release                                                     */
+/* -------------------------------------------------------------------------- */
+
+.extra-downloads {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line);
+}
+
+.extra-downloads__title {
+  margin-bottom: var(--space-4);
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+
+.extra-downloads__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-3);
+}
+
+.extra-downloads__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  transition:
+    border-color var(--fast) var(--ease),
+    background-color var(--fast) var(--ease);
+}
+
+.extra-downloads__item:hover {
+  border-color: var(--line-strong);
+  background: var(--bg-elevated);
+}
+
+.extra-downloads__item svg {
+  margin-left: auto;
+  flex: none;
+  color: var(--text-subtle);
+}
+
+.extra-downloads__label {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+.extra-downloads__note {
+  font-size: var(--step--2);
+  color: var(--text-subtle);
+}
+
+@media (max-width: 520px) {
+  .extra-downloads__item {
+    flex-wrap: wrap;
+  }
 }
 
 .download-footnote {

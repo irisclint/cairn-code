@@ -23,6 +23,62 @@
   border-bottom-color: var(--line);
 }
 
+/*
+ * The graded blur below the bar.
+ *
+ * A single backdrop-filter ends where its element ends, which draws a seam
+ * across the page wherever the header stops. Four bands, each blurring more
+ * than the last and masked to its own slice of the height, turn that seam
+ * into a falloff. The mask on each band overlaps its neighbours, which is
+ * what keeps the steps from showing as stripes.
+ */
+.site-header__veil {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 56px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--normal) var(--ease);
+}
+
+.site-header[data-scrolled='true'] .site-header__veil {
+  opacity: 1;
+}
+
+.site-header__veil span {
+  position: absolute;
+  inset: 0;
+}
+
+.site-header__veil span:nth-child(1) {
+  backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 25%, transparent 50%);
+}
+
+.site-header__veil span:nth-child(2) {
+  backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, transparent 15%, #000 35%, #000 55%, transparent 75%);
+}
+
+.site-header__veil span:nth-child(3) {
+  backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to bottom, transparent 40%, #000 60%, #000 78%, transparent 92%);
+}
+
+.site-header__veil span:nth-child(4) {
+  backdrop-filter: blur(1px);
+  mask-image: linear-gradient(to bottom, transparent 65%, #000 85%, transparent 100%);
+}
+
+/* Without backdrop-filter the bands would do nothing but cost layers. */
+@supports not (backdrop-filter: blur(1px)) {
+  .site-header__veil {
+    display: none;
+  }
+}
+
 .site-header__inner {
   display: flex;
   align-items: center;

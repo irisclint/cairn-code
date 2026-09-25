@@ -565,7 +565,9 @@
 .themes__body {
   display: grid;
   grid-template-columns: 34px 120px 1fr;
-  min-height: 230px;
+  /* Sized to the code it actually holds. At 230px the lower half of the pane
+     was empty, which read as a rendering fault rather than as an editor. */
+  min-height: 152px;
 }
 
 .themes__rail {
@@ -607,14 +609,26 @@
   transition: color var(--normal) var(--ease);
 }
 
+/* The status bar really is the accent colour in these themes, so it keeps the
+   colour and loses the weight: a full strength band 14px deep across the whole
+   width pulled the eye off the code it is meant to frame. */
 .themes__status {
-  height: 14px;
+  height: 10px;
   transition: background-color var(--normal) var(--ease);
 }
 
+/*
+ * The picker.
+ *
+ * The columns are wide enough for the longest name on one line. At 152px
+ * "High Contrast Dark" wrapped, which made its row taller than the three
+ * above it, and a grid of tiles where one row is taller than the rest looks
+ * broken rather than dense. Equal rows are then guaranteed regardless.
+ */
 .themes__picker {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(152px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+  grid-auto-rows: 1fr;
   gap: var(--space-2);
 }
 
@@ -623,7 +637,7 @@
   grid-template-columns: auto 1fr;
   grid-template-areas: 'chip name' 'chip kind';
   align-items: center;
-  column-gap: var(--space-3);
+  column-gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -636,6 +650,7 @@
 
 .themes__swatch:hover {
   border-color: var(--line-strong);
+  background: var(--bg-elevated);
 }
 
 .themes__swatch--active {
@@ -649,8 +664,8 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  width: 30px;
-  height: 22px;
+  width: 24px;
+  height: 20px;
   flex: 0 0 auto;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line-strong);
@@ -665,7 +680,7 @@
 .themes__swatch-name {
   grid-area: name;
   min-width: 0;
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 550;
   line-height: 1.35;
 }

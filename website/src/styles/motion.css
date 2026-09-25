@@ -40,7 +40,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .split-word__inner {
-    animation: word-rise 760ms var(--ease) both;
+    animation: word-rise 820ms var(--ease-entrance) both;
   }
 }
 
@@ -62,17 +62,35 @@
 /* -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: no-preference) {
+  /*
+   * Content arriving on scroll.
+   *
+   * The blur is what separates this from a plain fade. An element that only
+   * changes opacity reads as a light being turned up on something already
+   * there; one that also resolves from a blur reads as arriving, and the eye
+   * accepts a much longer, softer travel without it feeling slow.
+   */
   .reveal {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(16px);
+    filter: blur(7px);
     transition:
-      opacity 620ms var(--ease),
-      transform 620ms var(--ease);
+      opacity 700ms var(--ease-entrance),
+      transform 700ms var(--ease-entrance),
+      filter 700ms var(--ease-entrance);
+    /* The blur is the expensive part, so the compositor is told in advance. */
+    will-change: opacity, transform, filter;
   }
 
   .reveal--in {
     opacity: 1;
     transform: none;
+    filter: none;
+  }
+
+  /* Once it has arrived there is nothing left to promote. */
+  .reveal--in {
+    will-change: auto;
   }
 }
 

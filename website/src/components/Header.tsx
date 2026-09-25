@@ -28,6 +28,20 @@ export function Header(): JSX.Element {
 
   return (
     <header className="site-header" data-scrolled={scrolled}>
+      {/*
+        A graded blur under the bar rather than one that stops at an edge.
+        Each band blurs a little more than the one above it and is masked to
+        its own slice, so the content sliding underneath softens instead of
+        crossing a visible line. Purely decorative, so it is hidden from
+        assistive technology and takes no pointer events.
+      */}
+      <div className="site-header__veil" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+        <span />
+      </div>
+
       <div className="container site-header__inner">
         <Link to="/" className="brand" aria-label={`${PRODUCT} home`}>
           <img src="/cairn-logo.svg" alt="" className="brand__mark" width={30} height={30} />

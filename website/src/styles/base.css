@@ -68,7 +68,7 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-8: 4.5rem;
+  --space-8: 4.75rem;
   --space-9: 7rem;
 
   /* Geometry */
@@ -86,6 +86,15 @@
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  /*
+   * For entrances.
+   *
+   * The curve above is the right shape for a control answering a click: it
+   * leaves quickly and settles. Something arriving on screen wants the
+   * opposite emphasis, a long decelerating tail, which is what reads as
+   * smooth rather than merely fast.
+   */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
   --fast: 140ms;
   --normal: 260ms;
   --slow: 600ms;
@@ -236,12 +245,23 @@ pre {
   margin-inline: auto;
 }
 
+/*
+ * Section rhythm.
+ *
+ * Two adjacent sections each contribute their own padding, so what the reader
+ * sees is the sum. At 7rem and 7rem that was 14rem of empty page between one
+ * idea and the next, and mixing in the tight variant made the gaps alternate
+ * between 14rem, 11.5rem and 9rem, which has no rhythm at all.
+ *
+ * The two steps are now closer together, so every meeting lands within a
+ * narrow band and the page reads as evenly spaced rather than randomly so.
+ */
 .section {
-  padding-block: var(--space-9);
+  padding-block: var(--space-8);
 }
 
 .section--tight {
-  padding-block: var(--space-8);
+  padding-block: var(--space-7);
 }
 
 .prose {

@@ -226,7 +226,11 @@ export function ThemeStrip(): JSX.Element {
                 <span style={{ color: current.fn }}>reduce</span>
                 {'((sum, item) =>\n    sum + item.price, '}
                 <span style={{ color: current.string }}>0</span>
-                {');\n}'}
+                {');\n}\n\n'}
+                <span style={{ color: current.keyword }}>const</span>
+                {' label = '}
+                <span style={{ color: current.string }}>{"'Subtotal'"}</span>
+                {';'}
               </code>
             </pre>
           </div>

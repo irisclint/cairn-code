@@ -125,6 +125,31 @@ binary itself and attaches with `chromium.connectOverCDP`.
 Node and `require('electron').protocol` is undefined, clear that variable:
 `env -u ELECTRON_RUN_AS_NODE`.
 
+## Publishing a release
+
+Two things about the Windows build bite every time, so they are written down
+rather than rediscovered.
+
+**electron-builder emits an installer you are not publishing.** Building nsis
+for both architectures produces `cairn-code-<version>-x64-setup.exe`,
+`-arm64-setup.exe` and a third, `-setup.exe`, which carries both and is roughly
+the size of the two together. The generated `latest.yml` names that third file
+in its top level `path`, so uploading the manifest unchanged while publishing
+only the per-architecture installers gives the updater a manifest it can read
+and a file it cannot fetch. Either publish the combined installer too, or edit
+`latest.yml` so `path` and its `sha512` name the x64 installer. The second is
+preferred: it makes an update download 114 MB instead of 220 MB.
+
+**Upload `latest.yml`.** Without it the update check fails with "Cannot find
+latest.yml in the latest release artifacts", and the release also has to be a
+production release rather than a prerelease, or the check fails earlier with
+"please ensure a production release exists".
+
+**A failed check is cached.** electron-updater keeps its state in
+`%LOCALAPPDATA%\cairn-code-updater`. After correcting a release, delete that
+directory before testing again, or the application will keep reporting the
+error it saw the first time even though the release is now correct.
+
 ## Status
 
 Version 1.0.0. The editor, terminal, themes, search, command palette,

@@ -13,7 +13,11 @@ import { vi } from 'vitest';
 export interface FakeWebContents {
   send: ReturnType<typeof vi.fn>;
   setWindowOpenHandler: ReturnType<typeof vi.fn>;
+  /** Spies that also record the listener, so a test can fire the event. */
   on: ReturnType<typeof vi.fn>;
+  once: ReturnType<typeof vi.fn>;
+  /** Fires every listener registered for an event, as Electron would. */
+  emit: (event: string, ...args: unknown[]) => void;
   id: number;
 }
 
@@ -38,10 +42,29 @@ export class FakeBrowserWindow {
 
   constructor(options: Record<string, unknown> = {}) {
     this.options = options;
+    /*
+     * webContents is an emitter here rather than a bag of spies.
+     *
+     * The window only becomes visible in response to one of its events, so a
+     * test that cannot fire them cannot cover the thing most worth covering.
+     * The listeners are still recorded on the spies, which the navigation
+     * tests read.
+     */
+    const contentsListeners = new Map<string, Array<(...args: unknown[]) => void>>();
+    const record = (event: string, listener: (...args: unknown[]) => void): void => {
+      const list = contentsListeners.get(event) ?? [];
+      list.push(listener);
+      contentsListeners.set(event, list);
+    };
+
     this.webContents = {
       send: vi.fn(),
       setWindowOpenHandler: vi.fn(),
-      on: vi.fn(),
+      on: vi.fn(record),
+      once: vi.fn(record),
+      emit: (event, ...args) => {
+        for (const listener of contentsListeners.get(event) ?? []) listener(...args);
+      },
       id: FakeBrowserWindow.instances.length + 1
     };
     FakeBrowserWindow.instances.push(this);
@@ -108,6 +131,10 @@ export class FakeBrowserWindow {
   isMaximized(): boolean {
     return this.maximized;
   }
+  isVisible(): boolean {
+    return this.visible;
+  }
+
   isMinimized(): boolean {
     return this.minimized;
   }

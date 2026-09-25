@@ -64,6 +64,47 @@ describe('WindowManager', () => {
     expect(window.visible).toBe(true);
   });
 
+  /*
+   * The regression this exists for.
+   *
+   * A window created with `show: false` has no on screen surface, and the
+   * compositor does not reliably produce a first frame for one, so
+   * `ready-to-show` can simply never arrive. When showing the window depended
+   * on that event alone, the packaged application started, loaded the whole
+   * renderer, logged nothing wrong, and never appeared: four processes and
+   * 350 MB of memory with no window. Loading the page has to be enough.
+   */
+  it('should show the window even when the first paint is never reported', () => {
+    vi.useFakeTimers();
+    try {
+      const window = asFake(makeManager().createWindow());
+
+      window.webContents.emit('did-finish-load');
+      expect(window.visible, 'the paint should be given its chance first').toBe(false);
+
+      vi.advanceTimersByTime(1000);
+      expect(window.visible).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('should not show a window twice when the paint arrives after the load', () => {
+    vi.useFakeTimers();
+    try {
+      const window = asFake(makeManager().createWindow());
+      window.webContents.emit('did-finish-load');
+      window.emit('ready-to-show');
+      expect(window.visible).toBe(true);
+
+      window.visible = false; // Anything after this would be a second show.
+      vi.advanceTimersByTime(1000);
+      expect(window.visible).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('should keep the renderer out of Node', () => {
     const preferences = asFake(makeManager().createWindow()).options.webPreferences as Record<
       string,
@@ -224,7 +265,35 @@ describe('application menu', () => {
     expect(accelerator('Save')).toBe('CmdOrCtrl+S');
     expect(accelerator('Command Palette...')).toBe('CmdOrCtrl+Shift+P');
     expect(accelerator('Toggle Terminal')).toBe('CmdOrCtrl+`');
-    expect(accelerator('Color Theme...')).toBe('CmdOrCtrl+K CmdOrCtrl+T');
+  });
+
+  /*
+   * Electron's accelerator parser has no representation for a two key
+   * sequence. Handing it one makes it warn at every launch and register
+   * nothing, so the item silently loses its shortcut. These belong in the
+   * label instead, and this test is what keeps one from drifting back.
+   */
+  it('should spell two key sequences in the label rather than registering them', () => {
+    buildApplicationMenu(() => null);
+    const items = flatten(menuTemplates[0]);
+
+    for (const [name, chord] of [
+      ['Open Folder...', 'Ctrl+K Ctrl+O'],
+      ['Save All', 'Ctrl+K S'],
+      ['Color Theme...', 'Ctrl+K Ctrl+T']
+    ]) {
+      const item = items.find((candidate) => String(candidate.label ?? '').startsWith(name));
+      expect(item, `no menu item starting with ${name}`).toBeDefined();
+      expect(item?.label).toBe(`${name}	${chord}`);
+      expect(item?.accelerator).toBeUndefined();
+    }
+
+    // Nothing anywhere in the menu may carry a sequence.
+    for (const item of items) {
+      if (typeof item.accelerator === 'string') {
+        expect(item.accelerator).not.toMatch(/\s/);
+      }
+    }
   });
 
   it('should use a command id from the shared registry for every dispatching item', () => {

@@ -20,10 +20,99 @@
     <meta property="og:image" content="/cairn-logo-512.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#0f1015" />
+    <meta name="theme-color" content="#101013" />
+
+    <!--
+      The page is dark before anything loads.
+
+      Everything that gave this document its colour used to live in the external
+      stylesheet, so the browser painted white until that file arrived, and kept
+      painting white for good if it never did. A stylesheet is a request, and a
+      request can be slow, blocked by a network, or served from a deployment
+      that is missing the file. None of that should be able to produce a blank
+      white page for a site whose whole subject is explaining failures.
+
+      So the background, the text colour and the fallback below are part of the
+      document itself. They cost about a kilobyte and they cannot fail
+      separately from the HTML that carries them.
+    -->
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        background: #101013;
+        color: #ececed;
+      }
+
+      /*
+       * The shell below is what a visitor sees if the script never runs.
+       *
+       * React replaces the contents of #root on its first render, so this
+       * markup is visible exactly when the application has not started: a
+       * blocked or failed bundle, a browser that will not run the module, or a
+       * deployment missing its assets. Saying so, with somewhere to go, beats
+       * an empty page that leaves the visitor to guess.
+       */
+      .boot {
+        box-sizing: border-box;
+        max-width: 34rem;
+        margin: 0 auto;
+        padding: 18vh 1.5rem 4rem;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        line-height: 1.65;
+      }
+
+      .boot h1 {
+        margin: 0 0 0.75rem;
+        font-size: 1.4rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .boot p {
+        margin: 0 0 1rem;
+        color: #a1a1a8;
+      }
+
+      .boot a {
+        color: #4d87f0;
+      }
+
+      .boot code {
+        font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+        font-size: 0.9em;
+        color: #ececed;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot">
+        <h1>cairn-code</h1>
+        <p>
+          This page needs JavaScript to run, and it has not started. That is either because scripts are
+          switched off for this site, or because the page could not load the file it runs from.
+        </p>
+        <p>
+          Reloading is worth one try. If it keeps happening, the editor itself does not depend on any of
+          this: the source and the installers are on
+          <a href="https://github.com/irisclint/cairn-code">GitHub</a>, and the latest build is under
+          <a href="https://github.com/irisclint/cairn-code/releases">Releases</a>.
+        </p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

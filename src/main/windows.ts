@@ -15,6 +15,13 @@ const log = createLogger('windows');
 /** Background painted before the renderer draws, avoids a white flash. */
 const STARTUP_BACKGROUND = '#1e1e1e';
 
+/**
+ * How long to wait for the first paint after the page has loaded before
+ * showing the window anyway. Long enough that the painted frame wins the race
+ * in the normal case, short enough to be imperceptible when it does not.
+ */
+const PAINT_GRACE_MS = 500;
+
 export interface WindowManagerOptions {
   /** Dev server URL injected by electron-vite, absent in packaged builds. */
   rendererUrl: string | undefined;
@@ -70,9 +77,54 @@ export class WindowManager {
       }
     });
 
-    window.once('ready-to-show', () => {
+    /*
+     * Showing the window.
+     *
+     * `ready-to-show` is the fast path: it fires once the renderer has painted
+     * a frame, so the user never sees an unpainted window. It is not a
+     * guarantee. A window created with `show: false` has no on screen surface,
+     * and the compositor does not reliably produce that first frame for one, so
+     * the event can simply never arrive.
+     *
+     * The failure that causes is the worst kind available: the process is
+     * alive, the renderer has loaded, nothing throws, and the application
+     * appears not to start at all. So the paint is preferred and not trusted.
+     * Once the page has loaded, the window is shown with or without it.
+     */
+    let paintGrace: NodeJS.Timeout | undefined;
+
+    const reveal = (reason: string): void => {
+      clearTimeout(paintGrace);
+      if (window.isDestroyed() || window.isVisible()) return;
       window.show();
-      log.info('Window shown');
+      log.info(`Window shown after ${reason}`);
+    };
+
+    window.once('ready-to-show', () => reveal('first paint'));
+
+    window.webContents.once('did-finish-load', () => {
+      paintGrace = setTimeout(() => {
+        if (window.isDestroyed() || window.isVisible()) return;
+        log.warn(
+          'The renderer loaded but never reported a first paint, so the window is being shown ' +
+            'without one. Cause: a window created hidden does not always get a composited frame. ' +
+            'Solution: none needed, this path exists so that a missing paint event cannot leave ' +
+            'the application running with no visible window.'
+        );
+        reveal('a load with no paint');
+      }, PAINT_GRACE_MS);
+    });
+
+    window.on('closed', () => clearTimeout(paintGrace));
+
+    // A window that cannot load its page must say so rather than sitting blank.
+    window.webContents.on('did-fail-load', (_event, code, description, url, isMainFrame) => {
+      if (!isMainFrame) return;
+      log.error(
+        `The window could not load its page: ${description} (${code}) at ${url}. ` +
+          'Cause: the renderer bundle is missing from the application package or is unreadable. ' +
+          'Solution: reinstall cairn-code, or rebuild it with "npm run build" if running from source.'
+      );
     });
 
     // External links open in the user's browser, never inside the app shell.

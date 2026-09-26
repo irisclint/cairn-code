@@ -176,6 +176,12 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   markDirty: (path, isDirty) => {
+    // Typing calls this on every keystroke, and all but the first say the same
+    // thing. Writing anyway replaces the entry, which changes its identity and
+    // re-renders everything watching it, several times a second, for no change.
+    const current = get().editors.find((editor) => editor.path === path);
+    if (!current || current.isDirty === isDirty) return;
+
     set((state) => ({
       editors: state.editors.map((editor) => (editor.path === path ? { ...editor, isDirty } : editor))
     }));

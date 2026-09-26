@@ -184,7 +184,7 @@ export function About(): JSX.Element {
             <span className="eyebrow">Roadmap</span>
             <h2 className="section-title">What is done and what is not</h2>
             <p className="section-lead">
-              Causeway is at 1.1.0. Inside the application, the panels for unfinished features say
+              Causeway is at 1.1.1. Inside the application, the panels for unfinished features say
               so rather than showing controls that do nothing, and this page does the same.
             </p>
           </div>

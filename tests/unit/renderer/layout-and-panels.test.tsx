@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import * as monaco from 'monaco-editor';
 import { installBridge, state, listeners } from './bridge-mock';
 
+import { APP_NAME } from '@shared/constants';
 import { TitleBar } from '@renderer/components/layout/TitleBar';
 import { StatusBar } from '@renderer/components/layout/StatusBar';
 import { EditorArea } from '@renderer/components/layout/EditorArea';
@@ -81,7 +82,7 @@ afterEach(() => {
 describe('TitleBar', () => {
   it('should show the application name when nothing is open', async () => {
     const { container } = render(<TitleBar />);
-    await waitFor(() => expect(container.querySelector('.title-bar__title')).toHaveTextContent('causeway'));
+    await waitFor(() => expect(container.querySelector('.title-bar__title')).toHaveTextContent(APP_NAME));
   });
 
   it('should include the file, the workspace and the app in the title', async () => {
@@ -90,7 +91,9 @@ describe('TitleBar', () => {
     await useEditorStore.getState().openFile('/ws/app.ts');
 
     render(<TitleBar />);
-    await waitFor(() => expect(screen.getByText('app.ts - my-project - causeway')).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(`app.ts - my-project - ${APP_NAME}`)).toBeInTheDocument()
+    );
   });
 
   it('should mark an unsaved file with an asterisk', async () => {

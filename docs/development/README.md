@@ -152,7 +152,7 @@ error it saw the first time even though the release is now correct.
 
 ## Status
 
-Version 1.1.0. The editor, terminal, themes, search, command palette,
+Version 1.1.1. The editor, terminal, themes, search, command palette,
 diagnostics, source control, the debugger and the sandboxed extension host all
 work, and every one of them is covered by tests that run on each build.
 

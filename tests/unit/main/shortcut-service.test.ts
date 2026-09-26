@@ -8,6 +8,9 @@ vi.mock('electron', () => import('./electron-mock'));
 const { resetElectronMock, app: fakeApp, shell: fakeShell } = await import('./electron-mock');
 const { ShortcutService } = await import('@main/services/shortcut-service');
 const { CausewayError } = await import('@shared/errors');
+// Taken from the constant rather than written out, so a rename cannot leave
+// the assertion describing a name the application no longer has.
+const { APP_NAME } = await import('@shared/constants');
 
 let desktop: string;
 let resources: string;
@@ -56,7 +59,7 @@ describe('reporting the state', () => {
     const state = await service.getState();
 
     if (process.platform === 'win32') expect(state.path.endsWith('.lnk')).toBe(true);
-    else if (process.platform === 'darwin') expect(state.path.endsWith('causeway')).toBe(true);
+    else if (process.platform === 'darwin') expect(state.path.endsWith(APP_NAME)).toBe(true);
     else expect(state.path.endsWith('.desktop')).toBe(true);
   });
 
@@ -112,10 +115,10 @@ describe('creating the shortcut', () => {
     async () => {
       const spaced = join(resources, 'Program Files');
       await mkdir(spaced, { recursive: true });
-      fakeApp.getPath = vi.fn((name: string) => (name === 'desktop' ? desktop : join(spaced, 'causeway')));
+      fakeApp.getPath = vi.fn((name: string) => (name === 'desktop' ? desktop : join(spaced, APP_NAME)));
 
       const entry = await readFile(await service.create(), 'utf8');
-      expect(entry).toContain('Exec="' + join(spaced, 'causeway') + '" %U');
+      expect(entry).toContain('Exec="' + join(spaced, APP_NAME) + '" %U');
     }
   );
 
@@ -124,7 +127,7 @@ describe('creating the shortcut', () => {
 
     const path = await service.create();
 
-    expect(path.endsWith('causeway.lnk')).toBe(true);
+    expect(path.endsWith(APP_NAME + '.lnk')).toBe(true);
     expect(fakeShell.writeShortcutLink).toHaveBeenCalledWith(
       path,
       'create',

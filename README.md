@@ -178,7 +178,7 @@ three processes fit together and why the boundaries sit where they do.
 
 causeway is built against explicit budgets, measured on a mid range laptop:
 
-| Metric | Target | 1.1.0 |
+| Metric | Target | 1.1.1 |
 | --- | --- | --- |
 | Cold start to a visible window | under 2 s | 1.6 s |
 | Warm start | under 500 ms | met |
@@ -201,7 +201,7 @@ is what keeps them responsive.
 
 ## Status
 
-Version 1.1.0. The editor, terminal, themes, search, command palette,
+Version 1.1.1. The editor, terminal, themes, search, command palette,
 diagnostics, source control, the debugger and the sandboxed extension host all
 work, and every one of them is covered by tests that run on each build.
 

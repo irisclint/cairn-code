@@ -139,7 +139,21 @@ export function MonacoEditor({ editor }: MonacoEditorProps): JSX.Element {
       if (lintable) forgetLint(model.uri.fsPath);
       if (instanceRef.current) saveViewState(editor.path, instanceRef.current.saveViewState());
     };
-  }, [editor.path, editor.isLarge, markDirty, saveViewState, editor]);
+    /*
+     * `editor` itself must not be in here.
+     *
+     * Every keystroke calls markDirty, which replaces that editor's entry in
+     * the store, so the object identity changes on each character. With the
+     * object as a dependency the effect tore itself down and set itself up
+     * again on every key, and its cleanup writes the view state back to the
+     * store, which produced another new object, which ran the effect again.
+     * That is an unbounded loop, and React ends it by unmounting the region
+     * with "maximum update depth exceeded": typing broke the editor, and the
+     * diagnostics it was meant to produce went with it.
+     *
+     * Nothing in the body reads `editor` beyond the two fields already listed.
+     */
+  }, [editor.path, editor.isLarge, markDirty, saveViewState]);
 
   /* Re-apply options when settings or the theme change. */
   useEffect(() => {

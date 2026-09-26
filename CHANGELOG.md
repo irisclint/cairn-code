@@ -14,6 +14,34 @@ All notable changes to causeway are documented here. The format follows
 - Language Server Protocol clients, so the explanation layer reaches past the
   TypeScript family and whatever ESLint covers
 
+## [1.1.1] - 2026-09-26
+
+### Fixed
+
+- **Typing into the editor crashed it, and the diagnostics went with it.** The
+  effect that owns the Monaco model listed the whole open editor object among
+  its dependencies. Every keystroke calls `markDirty`, which replaces that
+  entry in the store, so the object identity changed on each character and the
+  effect tore itself down and set itself up again; its cleanup writes the view
+  state back to the store, producing another new object, which ran the effect
+  again. React ends that with "maximum update depth exceeded" and unmounts the
+  region, so the editor showed "The editor stopped responding" and the Problems
+  panel reported nothing at all. Nothing in the effect reads the object beyond
+  two fields that were already listed
+- `markDirty` wrote to the store on every keystroke even when the file was
+  already marked dirty, replacing the entry and re-rendering everything
+  watching it several times a second for no change
+- The debug service tests waited up to ten seconds for a spawned adapter while
+  Vitest allowed the test five, so the file went red at random under a full
+  parallel run
+
+### Added
+
+- End to end coverage for typing: that a mistake typed in is reported with its
+  cause and its fix, that correcting it clears the report, and that a second
+  mistake after that is still caught. The suite opened files containing
+  mistakes and never pressed a key, which is how the above shipped
+
 ## [1.1.0] - 2026-09-26
 
 Renamed to Causeway.

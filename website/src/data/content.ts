@@ -10,7 +10,7 @@
 /** The product name, as it is written everywhere on this site. */
 export const PRODUCT = 'Causeway';
 
-export const VERSION = '1.1.1';
+export const VERSION = '1.1.2';
 
 /**
  * The files actually attached to the release for this version.

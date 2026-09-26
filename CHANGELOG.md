@@ -14,6 +14,20 @@ All notable changes to causeway are documented here. The format follows
 - Language Server Protocol clients, so the explanation layer reaches past the
   TypeScript family and whatever ESLint covers
 
+## [1.1.2] - 2026-09-26
+
+### Changed
+
+- The mark is red. The application icon, the welcome screen and the website now
+  share one palette: black, white, grey and a single red taken from the
+  editor's own Crimson theme
+- The test suite no longer fails at random. A handful of tests start real
+  operating system processes, a pseudo terminal or a debug adapter over stdio,
+  and on Windows under a parallel run those exceeded the five second default
+  often enough that a different test failed almost every run, which makes a red
+  run meaningless. The default is twenty seconds and the temporary directory
+  cleanup retries for 720ms rather than 100
+
 ## [1.1.1] - 2026-09-26
 
 ### Fixed

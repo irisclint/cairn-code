@@ -14,8 +14,8 @@
     </radialGradient>
 
     <linearGradient id="causeway-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4D87F0" stop-opacity="0.4" />
-      <stop offset="100%" stop-color="#4D87F0" stop-opacity="0.08" />
+      <stop offset="0%" stop-color="#e11d48" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#e11d48" stop-opacity="0.08" />
     </linearGradient>
   </defs>
 
@@ -41,9 +41,9 @@
     <rect x="56" y="196" width="400" height="62" rx="24" fill="#FFFFFF" opacity="0.94" />
 
     <!-- Piers, descending into the gap. Each a step darker than the deck. -->
-    <rect x="112" y="252" width="58" height="150" rx="22" fill="#4D87F0" />
-    <rect x="227" y="252" width="58" height="150" rx="22" fill="#4D87F0" />
-    <rect x="342" y="252" width="58" height="150" rx="22" fill="#3A74DD" />
+    <rect x="112" y="252" width="58" height="150" rx="22" fill="#e11d48" />
+    <rect x="227" y="252" width="58" height="150" rx="22" fill="#e11d48" />
+    <rect x="342" y="252" width="58" height="150" rx="22" fill="#be123c" />
 
     <!--
       The waterline. One flat bar across the feet of the piers, at low opacity,
@@ -51,6 +51,6 @@
       simply stopping. It is the first thing to disappear at small sizes, which
       is correct: it is the least load bearing part of the mark.
     -->
-    <rect x="56" y="386" width="400" height="16" rx="8" fill="#4D87F0" opacity="0.32" />
+    <rect x="56" y="386" width="400" height="16" rx="8" fill="#e11d48" opacity="0.32" />
   </g>
 </svg>

@@ -1,9 +1,11 @@
 /*
  * The editable code surface, shared by the hero demo and the lessons.
  *
- * Painted with the Dark Modern theme's own colours rather than the site
- * palette, so that what you type here looks the way it will look after
- * installing.
+ * Painted with the Monochrome theme's own colours, taken from the theme file
+ * the editor ships, so that what you type here looks the way it will look
+ * after installing. Monochrome rather than the default, because a page built
+ * from greys and one red should not demonstrate itself in a different palette,
+ * and this is a theme the product actually has rather than a mock up.
  *
  * The whole thing rests on one constraint: the textarea and the highlighted
  * copy behind it must lay text out identically, to the pixel. Every property
@@ -11,12 +13,12 @@
  */
 
 .surface {
-  --s-bg: #1a1b26;
-  --s-fg: #c8d0e0;
-  --s-line: #282a3a;
-  --s-accent: #3b82f6;
-  --s-error: #f45c6a;
-  --s-warning: #e0af68;
+  --s-bg: #161616;
+  --s-fg: #d4d4d4;
+  --s-line: #2a2a2a;
+  --s-accent: #8a8a8a;
+  --s-error: #e06c6c;
+  --s-warning: #c9a227;
 
   /* Shared text metrics. Changing one without the other breaks the alignment
      between what you type and what you see. */
@@ -47,7 +49,7 @@
   font-family: var(--s-font);
   font-size: var(--s-size);
   line-height: var(--s-leading);
-  color: #545a70;
+  color: #5a5a5a;
   user-select: none;
 }
 
@@ -126,7 +128,7 @@
 }
 
 .surface__input::selection {
-  background: rgba(77, 135, 240, 0.32);
+  background: rgba(225, 29, 72, 0.32);
 }
 
 .surface__input:focus-visible {
@@ -134,28 +136,35 @@
   outline-offset: -2px;
 }
 
-/* Token colours, from the Dark Modern theme. */
+/*
+ * Token colours, from the Monochrome theme's own file.
+ *
+ * Syntax highlighting carried by weight and brightness rather than hue. It
+ * reads more slowly than six colours do, which is the trade the theme makes,
+ * and it is the only way a code sample belongs on a page with one colour in it.
+ */
 .tok--keyword {
-  color: #8b5cf6;
+  color: #ffffff;
+  font-weight: 600;
 }
 .tok--type {
-  color: #2dd4bf;
+  color: #d8d8d8;
 }
 .tok--string {
-  color: #9ece6a;
+  color: #b8b8b8;
 }
 .tok--number {
-  color: #ff9e64;
+  color: #c8c8c8;
 }
 .tok--function {
-  color: #7aa2f7;
+  color: #e8e8e8;
 }
 .tok--comment {
-  color: #5c6370;
+  color: #6a6a6a;
   font-style: italic;
 }
 .tok--operator {
-  color: #89ddff;
+  color: #9a9a9a;
 }
 .tok--punct,
 .tok--plain {

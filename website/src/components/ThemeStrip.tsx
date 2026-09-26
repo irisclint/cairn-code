@@ -183,7 +183,16 @@ const THEMES: ThemePreview[] = [
 ];
 
 export function ThemeStrip(): JSX.Element {
-  const [active, setActive] = useState(THEMES[0]?.id ?? 'dark-modern');
+  /*
+   * Opens on Crimson rather than on the first theme in the list.
+   *
+   * The pane paints whichever theme is selected in that theme's real colours,
+   * so the default decides what a reader sees before they touch anything. The
+   * editor's default is Dark Modern, which is blue, and dropping a blue panel
+   * into the middle of a page built from greys and one red looks like a
+   * mistake. Hovering any swatch still shows that theme exactly as it ships.
+   */
+  const [active, setActive] = useState('crimson');
   const current = THEMES.find((theme) => theme.id === active) ?? (THEMES[0] as ThemePreview);
 
   return (

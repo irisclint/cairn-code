@@ -32,15 +32,6 @@ function config(extra: Record<string, unknown> = {}) {
 }
 
 /** Waits for the session to reach a status, or fails with what it reached. */
-/*
- * These tests spawn a real Node process for the fake adapter and wait on a
- * handshake over stdio, which under a full parallel run takes longer than the
- * five seconds Vitest allows a test by default. The helper below asks for ten,
- * so without this the framework killed the test half way through a wait it had
- * been told to make, and the file went red at random.
- */
-vi.setConfig({ testTimeout: 20_000 });
-
 async function waitForStatus(expected: DebugSessionState['status']): Promise<void> {
   await vi.waitFor(() => expect(service.state.status).toBe(expected), { timeout: 10_000 });
 }
@@ -52,7 +43,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
   await service.stop();
-  await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+  await rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
 });
 
 /* -------------------------------------------------------------------------- */

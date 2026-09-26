@@ -7,7 +7,7 @@ import { Comparison } from '../components/Comparison';
 import { Faq } from '../components/Faq';
 import { ThemeStrip } from '../components/ThemeStrip';
 import { ArrowRight, Download, GitHub, Check } from '../components/Icons';
-import { CountUp, DotField, Magnetic, Reveal, SplitText } from '../components/Motion';
+import { CountUp, DotField, Magnetic, Reveal, ScrollSplit, SplitText } from '../components/Motion';
 import { PRODUCT, REPOSITORY_URL, STATS, VERSION, LANGUAGE_COUNT } from '../data/content';
 import { usePlatform } from '../hooks/usePlatform';
 
@@ -108,7 +108,7 @@ export function Home(): JSX.Element {
         <div className="container">
           <Reveal className="demo-intro">
             <span className="eyebrow">Try it here</span>
-            <h2 className="section-title">This is not a screenshot.</h2>
+            <ScrollSplit as="h2" className="section-title" text="This is not a screenshot." />
             <p className="section-lead">
               Edit the code. Break a type, loosen a comparison, leave a variable behind. The panel underneath
               answers with a cause and a fix on every keystroke, the same four answers the editor gives you.
@@ -149,7 +149,7 @@ export function Home(): JSX.Element {
           <div className="split">
             <Reveal className="split__copy stack">
               <span className="eyebrow">The difference</span>
-              <h2 className="section-title">Four answers, not one</h2>
+              <ScrollSplit as="h2" className="section-title" text="Four answers, not one" />
               <p className="section-lead">
                 A type error tells you a fact. It does not tell you what to change, and for anyone who has not
                 hit that exact error before, the difference is an hour.
@@ -209,7 +209,7 @@ export function Home(): JSX.Element {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Everything included</span>
-            <h2 className="section-title">Ready on first launch</h2>
+            <ScrollSplit as="h2" className="section-title" text="Ready on first launch" />
             <p className="section-lead">
               No extension hunt before you can read your own code. {LANGUAGE_COUNT} languages, a terminal,
               search and themes are all there when the window opens.
@@ -227,7 +227,7 @@ export function Home(): JSX.Element {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Themes</span>
-            <h2 className="section-title">Twelve, and none of them filler</h2>
+            <ScrollSplit as="h2" className="section-title" text="Twelve, and none of them filler" />
             <p className="section-lead">
               Dark, light, warm and two high contrast built for accessibility rather than looks. Hover one in
               the picker and it applies to your own code instantly.
@@ -249,7 +249,7 @@ export function Home(): JSX.Element {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Why {PRODUCT}</span>
-            <h2 className="section-title">What is actually different</h2>
+            <ScrollSplit as="h2" className="section-title" text="What is actually different" />
             <p className="section-lead">
               Four honest differences. {PRODUCT} is younger than the editor you use now and does less; these
               are the places where doing less is the point.
@@ -269,7 +269,7 @@ export function Home(): JSX.Element {
         <div className="container">
           <Reveal className="section-head">
             <span className="eyebrow">Questions</span>
-            <h2 className="section-title">Before you download</h2>
+            <ScrollSplit as="h2" className="section-title" text="Before you download" />
           </Reveal>
 
           <Reveal delay={80}>

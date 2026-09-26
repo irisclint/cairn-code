@@ -440,7 +440,7 @@ describe('FileWatcherService', () => {
   });
 
   afterEach(async () => {
-    await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+    await rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
   });
 
   it('should report a created file', async () => {
@@ -523,7 +523,7 @@ describe('GitCliService', () => {
   });
 
   afterEach(async () => {
-    await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+    await rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
   });
 
   it('should report a plain folder as not being a repository', async () => {

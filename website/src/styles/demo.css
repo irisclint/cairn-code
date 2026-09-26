@@ -5,15 +5,15 @@
  */
 
 .demo {
-  --d-bg: #1a1b26;
-  --d-alt: #16161e;
-  --d-deep: #13131a;
-  --d-fg: #c8d0e0;
-  --d-muted: #7a819b;
-  --d-line: #282a3a;
-  --d-accent: #3b82f6;
-  --d-error: #f45c6a;
-  --d-warning: #e0af68;
+  --d-bg: #161616;
+  --d-alt: #121212;
+  --d-deep: #0e0e0e;
+  --d-fg: #d4d4d4;
+  --d-muted: #808080;
+  --d-line: #2a2a2a;
+  --d-accent: #8a8a8a;
+  --d-error: #e06c6c;
+  --d-warning: #c9a227;
 
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -45,7 +45,7 @@
 }
 
 .demo__dot:nth-child(1) {
-  background: #3f4458;
+  background: #3a3a3a;
 }
 
 .demo__title {
@@ -63,9 +63,9 @@
   gap: 6px;
   padding: 2px 9px;
   border-radius: 999px;
-  border: 1px solid rgba(77, 135, 240, 0.35);
-  background: rgba(77, 135, 240, 0.12);
-  color: #a6c4f7;
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  background: rgba(225, 29, 72, 0.12);
+  color: var(--d-fg);
   font-family: var(--font-sans);
   font-size: 10px;
   letter-spacing: 0.06em;
@@ -221,7 +221,7 @@
 
 .demo__chip:hover {
   color: var(--d-fg);
-  border-color: #3b4055;
+  border-color: #3a3a3a;
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -269,7 +269,7 @@
 }
 
 .demo__entry--active {
-  background: rgba(77, 135, 240, 0.16);
+  background: rgba(225, 29, 72, 0.16);
 }
 
 .demo__severity {

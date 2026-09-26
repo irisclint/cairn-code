@@ -118,7 +118,7 @@ beforeEach(async () => {
 
 afterEach(async () => {
   disposeIpcHandlers();
-  await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+  await rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
 });
 
 describe('handler registration', () => {

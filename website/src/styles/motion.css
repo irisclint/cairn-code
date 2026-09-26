@@ -116,7 +116,7 @@
   transition: opacity var(--normal) var(--ease);
   background: radial-gradient(
     240px circle at var(--spot-x, 50%) var(--spot-y, 0),
-    rgba(77, 135, 240, 0.13),
+    rgba(225, 29, 72, 0.13),
     transparent 62%
   );
   pointer-events: none;

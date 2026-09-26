@@ -22,8 +22,8 @@
   height: 720px;
   background: radial-gradient(
     ellipse at center,
-    rgba(77, 135, 240, 0.1) 0%,
-    rgba(77, 135, 240, 0.04) 40%,
+    rgba(225, 29, 72, 0.1) 0%,
+    rgba(225, 29, 72, 0.04) 40%,
     transparent 70%
   );
   pointer-events: none;
@@ -934,7 +934,7 @@
   position: absolute;
   inset: auto 0 -60% 0;
   height: 340px;
-  background: radial-gradient(ellipse at center, rgba(77, 135, 240, 0.09), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(225, 29, 72, 0.09), transparent 70%);
   pointer-events: none;
 }
 

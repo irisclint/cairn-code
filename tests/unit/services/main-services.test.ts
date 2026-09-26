@@ -22,7 +22,7 @@ afterEach(async () => {
   // The settings store writes asynchronously; letting its queue drain first
   // avoids removing the directory out from under an in-flight write.
   await flushWrites();
-  await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+  await rm(root, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
 });
 
 describe('FileSystemService', () => {

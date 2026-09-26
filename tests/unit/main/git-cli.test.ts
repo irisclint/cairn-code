@@ -49,7 +49,7 @@ beforeAll(async () => {
 }, 60_000);
 
 afterAll(async () => {
-  await rm(repo, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+  await rm(repo, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
 });
 
 describe('GitCliService against a real repository', () => {
@@ -303,7 +303,7 @@ describe('when the folder is not a repository', () => {
       expect(failure.userCause.length).toBeGreaterThan(0);
       expect(failure.solution).toContain('git init');
     } finally {
-      await rm(plain, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+      await rm(plain, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
     }
   });
 
@@ -313,6 +313,6 @@ describe('when the folder is not a repository', () => {
 
     expect(status.isRepository).toBe(false);
     expect(status.changes).toEqual([]);
-    await rm(plain, { recursive: true, force: true, maxRetries: 5, retryDelay: 20 });
+    await rm(plain, { recursive: true, force: true, maxRetries: 12, retryDelay: 60 });
   });
 });

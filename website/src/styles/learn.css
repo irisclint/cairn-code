@@ -193,7 +193,7 @@
 .learn__item--done .learn__item-mark {
   border-color: var(--success);
   background: var(--success);
-  color: #06281d;
+  color: #141414;
 }
 
 .learn__note {

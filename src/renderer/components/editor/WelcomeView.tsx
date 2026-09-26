@@ -57,10 +57,10 @@ export function WelcomeView(): JSX.Element {
               whichever of the twelve themes is on.
             */}
             <rect x="9" y="26" width="46" height="7.5" rx="3" fill="var(--editor-foreground)" opacity="0.94" />
-            <rect x="15" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" />
-            <rect x="28.5" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" />
-            <rect x="42" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" opacity="0.78" />
-            <rect x="9" y="48" width="46" height="2.5" rx="1.25" fill="var(--accent, #4d87f0)" opacity="0.32" />
+            <rect x="15" y="33" width="7" height="17" rx="3" fill="var(--accent, #e11d48)" />
+            <rect x="28.5" y="33" width="7" height="17" rx="3" fill="var(--accent, #e11d48)" />
+            <rect x="42" y="33" width="7" height="17" rx="3" fill="var(--accent, #e11d48)" opacity="0.78" />
+            <rect x="9" y="48" width="46" height="2.5" rx="1.25" fill="var(--accent, #e11d48)" opacity="0.32" />
           </svg>
           <div>
             <h1 className="welcome__title">causeway</h1>

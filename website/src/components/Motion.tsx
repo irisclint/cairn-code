@@ -189,6 +189,14 @@ interface SplitTextProps {
  * The words are real text in the document, so the headline is selectable and
  * readable by a crawler whether or not the animation ever runs.
  */
+interface ScrollSplitProps {
+  text: string;
+  className?: string;
+  stagger?: number;
+  /** The element to render, so a heading stays a heading. */
+  as?: 'span' | 'h2' | 'h3';
+}
+
 export function SplitText({ text, className, stagger = 55, delay = 0 }: SplitTextProps): JSX.Element {
   const reduced = useReducedMotion();
   const words = text.split(' ');
@@ -214,6 +222,43 @@ export function SplitText({ text, className, stagger = 55, delay = 0 }: SplitTex
         </Fragment>
       ))}
     </span>
+  );
+}
+
+/**
+ * Reveals a line word by word, but only once it is on screen.
+ *
+ * SplitText starts on mount, which is right for the headline and wrong for
+ * every heading below the fold: those finish animating while the reader is
+ * still three screens above them, so the effect is paid for and never seen.
+ * This waits for the heading to arrive and then runs the same motion.
+ */
+export function ScrollSplit({ text, className, stagger = 42, as = 'span' }: ScrollSplitProps): JSX.Element {
+  const [ref, seen] = useInView<HTMLElement>('0px 0px -8% 0px');
+  const reduced = useReducedMotion();
+  const words = text.split(' ');
+  const Tag = as;
+
+  return (
+    <Tag className={className} ref={ref as never}>
+      {words.map((word, index) => (
+        <Fragment key={`${word}-${index}`}>
+          <span className="split-word">
+            <span
+              className={reduced || !seen ? undefined : 'split-word__inner'}
+              style={
+                reduced || !seen
+                  ? undefined
+                  : ({ animationDelay: `${index * stagger}ms` } as CSSProperties)
+              }
+            >
+              {word}
+            </span>
+          </span>
+          {index < words.length - 1 ? ' ' : null}
+        </Fragment>
+      ))}
+    </Tag>
   );
 }
 

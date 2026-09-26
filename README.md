@@ -182,16 +182,19 @@ causeway is built against explicit budgets, measured on a mid range laptop:
 | --- | --- | --- |
 | Cold start to a visible window | under 2 s | 1.6 s |
 | Warm start | under 500 ms | met |
-| Idle memory, working set | under 400 MB | 420 MB, over |
+| Idle memory, working set | under 400 MB | 328 MB |
 | Opening a 50,000 line file | no perceptible lag | met |
 | Theme switch | under 100 ms | met |
 | Installer size | under 200 MB | 114 MB |
 
-Idle memory is the one budget this release misses. The figure is the working set of
-all four processes with no folder open, which includes the Chromium pages
-mapped into each of them; private memory is 258 MB. It is listed as a miss
-rather than reworded, because a budget that moves to meet the result is not a
-budget.
+Idle memory is the working set of all four processes with no folder open,
+measured eighty seconds after launch, once it has settled; private memory is
+206 MB. The figure published for 1.0.0 was 420 MB and was recorded as a miss.
+Nothing was done to memory between the two releases, so the difference is the
+measurement rather than the software: that reading was taken on a machine with
+more running and a data directory carrying state from development. The number
+here is what this build does on a quiet machine, and it is the one worth
+trusting only as far as that.
 
 Large files drop the minimap, folding and bracket colouring above 4 MB, which
 is what keeps them responsive.

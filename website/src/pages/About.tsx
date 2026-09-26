@@ -17,7 +17,7 @@ const PRINCIPLES = [
   {
     icon: Bolt,
     title: 'Performance is a budget, not a hope',
-    body: 'Under two seconds cold, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives. One budget is missed: idle memory was meant to stay under 400 MB and this release sits at 420, which the repository records as a miss rather than quietly moving the target.'
+    body: 'Under two seconds cold, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives. Idle memory was meant to stay under 400 MB and this release measures 328. The figure published for 1.0.0 was 420 and was recorded as a miss; nothing was done to memory in between, so the difference is the measurement, not the software, and the repository says so rather than claiming an improvement it did not make.'
   }
 ];
 

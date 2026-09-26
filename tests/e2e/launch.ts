@@ -59,7 +59,7 @@ async function waitForDevTools(port: number, timeoutMs: number, describe: () => 
   }
 
   throw new Error(
-    `cairn-code did not expose its DevTools endpoint on port ${port} within ${timeoutMs} ms ` +
+    `causeway did not expose its DevTools endpoint on port ${port} within ${timeoutMs} ms ` +
       `(last error: ${lastError}).\nApplication output:\n${describe()}`
   );
 }
@@ -76,7 +76,7 @@ export async function launchApp(options: LaunchOptions = {}): Promise<LaunchedAp
   const timeoutMs = options.timeoutMs ?? 40_000;
 
   // A throwaway profile means one run cannot inherit settings from another.
-  const userDataDir = await mkdtemp(join(tmpdir(), 'cairn-e2e-profile-'));
+  const userDataDir = await mkdtemp(join(tmpdir(), 'causeway-e2e-profile-'));
 
   const environment = { ...process.env };
   // Set by some Electron based terminals. It would make the binary run as
@@ -111,14 +111,14 @@ export async function launchApp(options: LaunchOptions = {}): Promise<LaunchedAp
 
   if (exited) {
     await rm(userDataDir, { recursive: true, force: true, maxRetries: 3 });
-    throw new Error(`cairn-code exited before the tests could attach.\nApplication output:\n${output()}`);
+    throw new Error(`causeway exited before the tests could attach.\nApplication output:\n${output()}`);
   }
 
   const browser = await chromium.connectOverCDP(`http://127.0.0.1:${port}`);
   const context = browser.contexts()[0];
 
   if (!context) {
-    throw new Error(`cairn-code exposed no browser context.\nApplication output:\n${output()}`);
+    throw new Error(`causeway exposed no browser context.\nApplication output:\n${output()}`);
   }
 
   // The renderer is the page serving index.html; Electron may also expose
@@ -127,7 +127,7 @@ export async function launchApp(options: LaunchOptions = {}): Promise<LaunchedAp
     context.pages().find((candidate) => candidate.url().includes('index.html')) ?? context.pages()[0];
 
   if (!page) {
-    throw new Error(`cairn-code opened no window.\nApplication output:\n${output()}`);
+    throw new Error(`causeway opened no window.\nApplication output:\n${output()}`);
   }
 
   return {

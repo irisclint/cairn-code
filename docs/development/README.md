@@ -2,7 +2,7 @@
 
 Start here before changing anything in this repository.
 
-## What cairn-code is
+## What causeway is
 
 A cross platform code editor built on Electron, Monaco and XTerm. It opens a
 folder, highlights 69 languages, runs a real terminal, and reports every
@@ -54,7 +54,7 @@ Detailed and enforced in review:
 The two that come up most often:
 
 **Every error tells the user what to do.** Message, cause, solution. Use
-`CairnError` in the main process and `notifyError` in the renderer. An error
+`CausewayError` in the main process and `notifyError` in the renderer. An error
 with no cause and no fix is a defect.
 
 **Never hard code a colour.** All colours come from CSS custom properties that
@@ -92,7 +92,7 @@ website/                                 the marketing and download site
 
 ## Gotchas
 
-**Monaco language ids are not always cairn-code language ids.** `.tsx` is
+**Monaco language ids are not always causeway language ids.** `.tsx` is
 tokenized by Monaco's `typescript` grammar, `.jsx` by `javascript`, single file
 component formats by `html`. Always use `toMonacoLanguageId()` when creating a
 model. An id Monaco does not know has no tokenizer, and the file opens
@@ -131,7 +131,7 @@ Two things about the Windows build bite every time, so they are written down
 rather than rediscovered.
 
 **electron-builder emits an installer you are not publishing.** Building nsis
-for both architectures produces `cairn-code-<version>-x64-setup.exe`,
+for both architectures produces `causeway-<version>-x64-setup.exe`,
 `-arm64-setup.exe` and a third, `-setup.exe`, which carries both and is roughly
 the size of the two together. The generated `latest.yml` names that third file
 in its top level `path`, so uploading the manifest unchanged while publishing
@@ -146,13 +146,13 @@ production release rather than a prerelease, or the check fails earlier with
 "please ensure a production release exists".
 
 **A failed check is cached.** electron-updater keeps its state in
-`%LOCALAPPDATA%\cairn-code-updater`. After correcting a release, delete that
+`%LOCALAPPDATA%\causeway-updater`. After correcting a release, delete that
 directory before testing again, or the application will keep reporting the
 error it saw the first time even though the release is now correct.
 
 ## Status
 
-Version 1.0.0. The editor, terminal, themes, search, command palette,
+Version 1.1.0. The editor, terminal, themes, search, command palette,
 diagnostics, source control, the debugger and the sandboxed extension host all
 work, and every one of them is covered by tests that run on each build.
 

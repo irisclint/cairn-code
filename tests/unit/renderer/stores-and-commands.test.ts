@@ -78,7 +78,7 @@ describe('settings store', () => {
   });
 
   it('should report a failed write', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.settings.set).mockResolvedValueOnce({
       ok: false,
       error: { code: 'X', message: 'nope', cause: 'c', solution: 's' }
@@ -130,7 +130,7 @@ describe('terminal store', () => {
   });
 
   it('should warn when the terminal runs without a pseudo terminal', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.terminal.create).mockResolvedValueOnce({
       ok: true,
       value: { id: 'term-x', pid: 1, shellLabel: 'sh (no pty)', cwd: '/', hasPty: false }
@@ -144,7 +144,7 @@ describe('terminal store', () => {
   });
 
   it('should report a failure to start a terminal', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.terminal.create).mockResolvedValueOnce({
       ok: false,
       error: { code: 'TERM_NO_SHELL', message: 'no shell', cause: 'c', solution: 's' }
@@ -200,7 +200,7 @@ describe('terminal store', () => {
 
     expect(first).toBe(second);
     expect(useTerminalStore.getState().tabs).toHaveLength(1);
-    expect(globalThis.window.cairn.terminal.create).toHaveBeenCalledTimes(1);
+    expect(globalThis.window.causeway.terminal.create).toHaveBeenCalledTimes(1);
   });
 
   it('should still open a second terminal when one is already running', async () => {
@@ -255,7 +255,7 @@ describe('workspace store', () => {
   });
 
   it('should report a failure to open a folder', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.workspace.open).mockResolvedValueOnce({
       ok: false,
       error: { code: 'FS_ENOENT', message: 'gone', cause: 'c', solution: 's' }
@@ -276,7 +276,7 @@ describe('workspace store', () => {
   });
 
   it('should cache a directory listing and reload it on force', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     await useWorkspaceStore.getState().loadDirectory('/ws');
     await useWorkspaceStore.getState().loadDirectory('/ws');
     expect(vi.mocked(bridge.fs.readDirectory)).toHaveBeenCalledTimes(1);
@@ -301,7 +301,7 @@ describe('workspace store', () => {
 
   it('should refresh only the directories touched by watcher events', async () => {
     await useWorkspaceStore.getState().openFolder('/ws');
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.fs.readDirectory).mockClear();
 
     await useWorkspaceStore.getState().applyFileEvents([
@@ -329,7 +329,7 @@ describe('workspace store', () => {
   });
 
   it('should report a failed create', async () => {
-    const bridge = globalThis.window.cairn;
+    const bridge = globalThis.window.causeway;
     vi.mocked(bridge.fs.createFile).mockResolvedValueOnce({
       ok: false,
       error: { code: 'FS_EEXIST', message: 'exists', cause: 'c', solution: 's' }
@@ -562,7 +562,7 @@ describe('built-in commands', () => {
 describe('bridge subscriptions', () => {
   it('should deliver a workspace change to its listener', () => {
     const received: unknown[] = [];
-    const unsubscribe = globalThis.window.cairn.workspace.onChanged((info) => received.push(info));
+    const unsubscribe = globalThis.window.causeway.workspace.onChanged((info) => received.push(info));
 
     for (const listener of listeners.workspaceChanged) listener({ rootPath: '/ws', name: 'ws' });
     expect(received).toHaveLength(1);
@@ -575,8 +575,8 @@ describe('bridge subscriptions', () => {
   it('should deliver terminal data and exit events', () => {
     const data: unknown[] = [];
     const exits: unknown[] = [];
-    globalThis.window.cairn.terminal.onData((event) => data.push(event));
-    globalThis.window.cairn.terminal.onExit((event) => exits.push(event));
+    globalThis.window.causeway.terminal.onData((event) => data.push(event));
+    globalThis.window.causeway.terminal.onExit((event) => exits.push(event));
 
     for (const listener of listeners.terminalData) listener({ id: 'term-1', data: 'hello' });
     for (const listener of listeners.terminalExit) listener({ id: 'term-1', exitCode: 0 });

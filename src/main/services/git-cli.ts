@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createLogger } from '@shared/logger';
-import { CairnError } from '@shared/errors';
+import { CausewayError } from '@shared/errors';
 import type { GitChange, GitFileStatus, GitStatus } from '@shared/types';
 
 const execFileAsync = promisify(execFile);
@@ -18,7 +18,7 @@ const EMPTY_STATUS: GitStatus = {
 /**
  * Thin wrapper over the git command line.
  *
- * cairn-code shells out instead of bundling a git implementation so that the
+ * causeway shells out instead of bundling a git implementation so that the
  * user's own configuration (credential helpers, hooks, signing keys) applies
  * exactly as it does in a terminal. Every call passes an argument array, never
  * an interpolated string, so a branch or path containing a space, a quote or a
@@ -108,7 +108,7 @@ export class GitCliService {
     const trimmed = message.trim();
 
     if (trimmed.length === 0) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'GIT_EMPTY_MESSAGE',
         message: 'A commit needs a message',
         cause: 'The message box is empty, and git refuses a commit without one.',
@@ -179,24 +179,24 @@ export class GitCliService {
    * staged. Anything else falls back to git's own message, which is usually
    * the useful part.
    */
-  #explain(error: unknown, intent: string): CairnError {
+  #explain(error: unknown, intent: string): CausewayError {
     const shell = error as { code?: string | number; stderr?: string; stdout?: string };
     const output = `${shell.stderr ?? ''}${shell.stdout ?? ''}`.trim();
     const lower = output.toLowerCase();
 
     if (shell.code === 'ENOENT') {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_NOT_FOUND',
         message: 'git is not installed, or not on the PATH',
-        cause: `cairn-code runs the git command line rather than bundling its own, and could not start it to ${intent}.`,
+        cause: `causeway runs the git command line rather than bundling its own, and could not start it to ${intent}.`,
         solution:
-          'Install git from git-scm.com, then restart cairn-code so it picks up the updated PATH.',
+          'Install git from git-scm.com, then restart causeway so it picks up the updated PATH.',
         original: error
       });
     }
 
     if (lower.includes('not a git repository')) {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_NOT_A_REPOSITORY',
         message: 'This folder is not a git repository',
         cause: `There is no .git directory here, so there is nothing to ${intent} against.`,
@@ -206,7 +206,7 @@ export class GitCliService {
     }
 
     if (lower.includes('please tell me who you are') || lower.includes('empty ident name')) {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_NO_IDENTITY',
         message: 'git does not know who you are yet',
         cause: 'Every commit records an author, and no user.name and user.email are configured for this repository or globally.',
@@ -217,7 +217,7 @@ export class GitCliService {
     }
 
     if (lower.includes('nothing to commit') || lower.includes('no changes added to commit')) {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_NOTHING_STAGED',
         message: 'There is nothing staged to commit',
         cause: 'A commit records what is in the index, and the index currently matches the last commit.',
@@ -227,7 +227,7 @@ export class GitCliService {
     }
 
     if (lower.includes('already exists')) {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_BRANCH_EXISTS',
         message: 'That branch already exists',
         cause: output || 'A branch with this name is already in the repository.',
@@ -237,7 +237,7 @@ export class GitCliService {
     }
 
     if (lower.includes('local changes') || lower.includes('would be overwritten')) {
-      return new CairnError({
+      return new CausewayError({
         code: 'GIT_DIRTY_WORKTREE',
         message: `Uncommitted changes are in the way`,
         cause: output || 'Switching branches here would overwrite work that is not committed.',
@@ -246,7 +246,7 @@ export class GitCliService {
       });
     }
 
-    return new CairnError({
+    return new CausewayError({
       code: 'GIT_FAILED',
       message: `Could not ${intent}`,
       cause: output || `git exited with ${String(shell.code ?? 'an error')} and said nothing.`,

@@ -8,7 +8,7 @@ import type { ShortcutState } from '@shared/types';
  * Offers to create a desktop shortcut, once.
  *
  * A portable build and an AppImage leave nothing behind that a person can
- * click, so cairn-code ends up buried wherever it was unpacked. Creating a shortcut
+ * click, so causeway ends up buried wherever it was unpacked. Creating a shortcut
  * without asking would be writing to someone's desktop uninvited, so this
  * offers instead, remembers the answer, and never asks again either way.
  */
@@ -35,7 +35,7 @@ export async function offerDesktopShortcut(): Promise<void> {
 
   notifications.notify({
     severity: 'info',
-    message: 'Add cairn-code to your desktop?',
+    message: 'Add causeway to your desktop?',
     cause: 'This build was unpacked rather than installed, so there is nothing to click yet.',
     solution: 'A shortcut goes on your desktop and nowhere else. You can remove it at any time.',
     // No timeout: a question that disappears on its own is a question the user

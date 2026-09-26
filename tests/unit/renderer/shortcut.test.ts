@@ -25,7 +25,7 @@ describe('the first-run shortcut offer', () => {
     await offerDesktopShortcut();
 
     const notification = useNotificationStore.getState().notifications[0];
-    expect(notification?.message).toBe('Add cairn-code to your desktop?');
+    expect(notification?.message).toBe('Add causeway to your desktop?');
     expect(notification?.actions?.map((action) => action.label)).toEqual(['Create shortcut', 'No thanks']);
   });
 
@@ -133,13 +133,13 @@ describe('the Create Desktop Shortcut command', () => {
   });
 
   it('should report a failure with a cause and a fix', async () => {
-    vi.mocked(globalThis.window.cairn.shortcut.create).mockResolvedValueOnce({
+    vi.mocked(globalThis.window.causeway.shortcut.create).mockResolvedValueOnce({
       ok: false,
       error: {
         code: 'SHORTCUT_UNAVAILABLE',
         message: 'A desktop shortcut cannot be created for this build',
         cause: 'It would point at the development binary.',
-        solution: 'Install cairn-code with the installer for your platform.'
+        solution: 'Install causeway with the installer for your platform.'
       }
     });
 

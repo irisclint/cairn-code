@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "forest",
   "name": "Forest",
   "type": "dark",
   "description": "Deep green canopy tones with moss and bark accents.",
-  "author": "cairn Team",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

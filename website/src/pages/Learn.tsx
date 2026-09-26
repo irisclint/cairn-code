@@ -8,7 +8,7 @@ import { check, type CheckResult } from '../learn/checker';
 import { PLANNED_TRACKS, TRACKS, type Track } from '../learn/curriculum';
 import { PRODUCT } from '../data/content';
 
-const STORAGE_KEY = 'cairn-code.learn.progress';
+const STORAGE_KEY = 'causeway.learn.progress';
 
 /**
  * The Learn page.

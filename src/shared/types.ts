@@ -112,7 +112,7 @@ export interface DiagnosticQuickFix {
 /**
  * A single problem reported for a file.
  *
- * Beyond the usual message, cairn-code always carries `cause` and `solution` so the
+ * Beyond the usual message, causeway always carries `cause` and `solution` so the
  * user is told why the problem happened and what to do about it, never just
  * that something is wrong.
  */
@@ -248,7 +248,7 @@ export interface MarketplaceEntry {
 /**
  * One entry from the workspace's launch.json.
  *
- * The three fields cairn-code needs are named; everything else is passed to
+ * The three fields causeway needs are named; everything else is passed to
  * the adapter untouched, because each adapter defines its own options and
  * listing them here would mean rejecting valid configurations.
  */

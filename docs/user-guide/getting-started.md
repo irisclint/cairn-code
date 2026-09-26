@@ -1,11 +1,11 @@
 # Getting started
 
-This page takes about five minutes and covers everything you need to use cairn-code
+This page takes about five minutes and covers everything you need to use causeway
 day to day.
 
 ## 1. Open a folder
 
-cairn-code works on a folder, not on loose files. Open one with `Ctrl+K Ctrl+O`, or
+causeway works on a folder, not on loose files. Open one with `Ctrl+K Ctrl+O`, or
 the **Open Folder** button in the Explorer when nothing is open yet.
 
 Once a folder is open you get the file tree, workspace search, and terminals
@@ -28,7 +28,7 @@ You can also open single files with `Ctrl+O` and edit them without a folder.
 "Command Palette", `srcapp` finds `src/App.tsx`. Matched letters are
 highlighted so you can see why something ranked where it did.
 
-The command palette is the fastest way to discover cairn-code. Every command lives
+The command palette is the fastest way to discover causeway. Every command lives
 there with its keyboard shortcut next to it.
 
 ## 3. Edit
@@ -44,7 +44,7 @@ editing shortcuts you already know work:
 - `Shift+Alt+F` formats the document
 - `F2` renames a symbol everywhere it is used
 
-The status bar shows the detected language on the right. cairn-code recognises 69
+The status bar shows the detected language on the right. causeway recognises 69
 languages by extension, by exact file name for things like `Dockerfile` and
 `Makefile`, and by the `#!` line for scripts with no extension at all.
 
@@ -60,7 +60,7 @@ arrow on the left to expand it, and you get three more things:
 - **Why** what actually caused it, in plain language
 - **Fix** the concrete change to make
 
-This is the part of cairn-code that differs most from other editors. A message like
+This is the part of causeway that differs most from other editors. A message like
 "Type 'string' is not assignable to type 'number'" tells you a fact; the Why
 and Fix lines tell you what to do about it.
 
@@ -79,7 +79,7 @@ The plus button opens another terminal, and the dropdown next to it starts one
 with a specific shell when you have more than one. Each terminal is a tab, and
 tabs keep their scrollback when you switch away.
 
-If cairn-code ever tells you the terminal is running "without a pseudo terminal", the
+If causeway ever tells you the terminal is running "without a pseudo terminal", the
 native `node-pty` module could not be loaded for your build. Commands and output
 still work; full screen programs such as `vim` will not render. The notification
 includes the command that fixes it.
@@ -88,7 +88,7 @@ includes the command that fixes it.
 
 Press `Ctrl+K Ctrl+T` for the theme picker. Hovering a theme applies it
 immediately so you can judge it against your own code, and leaving the grid or
-pressing `Escape` puts back what you had. Twelve themes ship with cairn: six
+pressing `Escape` puts back what you had. Twelve themes ship with causeway: six
 dark, two light, two warm and two high contrast.
 
 `Ctrl+,` opens Settings in the sidebar. The ones worth knowing:
@@ -103,9 +103,9 @@ dark, two light, two warm and two high contrast.
 | `terminal.fontSize` | Terminal text size |
 | `telemetry.enabled` | Off by default, and nothing is sent until it is on |
 
-Settings are stored as JSON in the cairn-code user data folder:
-`%APPDATA%/cairn` on Windows, `~/Library/Application Support/cairn` on macOS,
-`~/.config/cairn` on Linux.
+Settings are stored as JSON in the causeway user data folder:
+`%APPDATA%/causeway` on Windows, `~/Library/Application Support/causeway` on macOS,
+`~/.config/causeway` on Linux.
 
 ## 7. Shape the layout
 

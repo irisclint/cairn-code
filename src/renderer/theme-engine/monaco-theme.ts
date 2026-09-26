@@ -134,7 +134,7 @@ const MONACO_COLOR_KEYS = [
   'widget.shadow'
 ] as const;
 
-/** Converts a cairn-code theme into the Monaco theme data structure. */
+/** Converts a causeway theme into the Monaco theme data structure. */
 export function toMonacoTheme(theme: Theme): monaco.editor.IStandaloneThemeData {
   const colors: Record<string, string> = {};
   for (const key of MONACO_COLOR_KEYS) {
@@ -159,7 +159,7 @@ export function toMonacoTheme(theme: Theme): monaco.editor.IStandaloneThemeData 
   };
 }
 
-/** The Monaco theme name cairn-code registers for a given theme id. */
+/** The Monaco theme name causeway registers for a given theme id. */
 export function monacoThemeName(themeId: string): string {
-  return `cairn-${themeId}`;
+  return `causeway-${themeId}`;
 }

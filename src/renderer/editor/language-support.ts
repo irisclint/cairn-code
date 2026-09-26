@@ -1,16 +1,16 @@
 import { extname, basename } from '@shared/utils';
 
 export interface LanguageDefinition {
-  /** cairn-code language id, also the Monaco id unless monacoId overrides it. */
+  /** causeway language id, also the Monaco id unless monacoId overrides it. */
   id: string;
   /**
    * The Monaco language that provides tokenization for this language.
    *
-   * Monaco bundles one grammar for several of the languages cairn-code lists
+   * Monaco bundles one grammar for several of the languages causeway lists
    * separately: .tsx is tokenized by its typescript grammar, .jsx by
    * javascript, and the single file component formats by html. Pointing at the
    * Monaco id is what keeps syntax highlighting, and for TypeScript the
-   * language worker, working for those files, while cairn-code still shows the
+   * language worker, working for those files, while causeway still shows the
    * specific label in the status bar.
    */
   monacoId?: string;
@@ -31,7 +31,7 @@ export interface LanguageDefinition {
 }
 
 /**
- * Every language cairn-code recognises.
+ * Every language causeway recognises.
  *
  * Monaco ships tokenizers for most of these through its `basic-languages`
  * bundle; the ones it does not cover fall back to plain text with the correct

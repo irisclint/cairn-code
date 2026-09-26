@@ -1,13 +1,13 @@
 # Adding a diagnostic explanation
 
-Teaches cairn-code to explain a compiler code or lint rule it currently falls back
-on. This is the smallest useful contribution to the feature cairn-code is built
+Teaches causeway to explain a compiler code or lint rule it currently falls back
+on. This is the smallest useful contribution to the feature causeway is built
 around, and it is a good first change.
 
 ## Find what is missing
 
 Open a file that produces the problem, look at the Problems panel and expand
-the row. If the **Why** line says cairn-code has no detailed explanation for that
+the row. If the **Why** line says causeway has no detailed explanation for that
 code yet, it needs an entry.
 
 ## Add the entry

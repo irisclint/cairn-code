@@ -57,7 +57,7 @@ let watched: string[];
 
 beforeEach(async () => {
   resetElectronMock();
-  root = await mkdtemp(join(tmpdir(), 'cairn-ipc-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-ipc-'));
   broadcasts = [];
   watched = [];
 
@@ -169,7 +169,7 @@ describe('application info', () => {
       await ipcMain.invoke(IpcChannel.AppGetInfo)
     );
 
-    expect(info.name).toBe('cairn-code');
+    expect(info.name).toBe('causeway');
     expect(info.version).toBe('1.0.0');
     expect(info.node).toBe(process.versions.node);
   });

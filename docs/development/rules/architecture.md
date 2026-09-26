@@ -58,7 +58,7 @@ When two places would need the same fact, one of them is wrong:
 
 ## Monaco language ids
 
-A cairn-code language id is not always a Monaco language id. Monaco bundles one
+A causeway language id is not always a Monaco language id. Monaco bundles one
 grammar for several languages: `.tsx` is tokenized by `typescript`, `.jsx` by
 `javascript`, single file components by `html`. Use `toMonacoLanguageId()` when
 creating or retagging a model. A language id Monaco does not know has no

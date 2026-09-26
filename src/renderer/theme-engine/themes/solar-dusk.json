@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "solar-dusk",
   "name": "Solar Dusk",
   "type": "dark",
   "description": "Warm amber and teal on a deep brown base, inspired by low evening sun.",
-  "author": "cairn Team",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

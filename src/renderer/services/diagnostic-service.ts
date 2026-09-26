@@ -5,10 +5,10 @@ import { createLogger } from '@shared/logger';
 
 const log = createLogger('diagnostics');
 
-/** Marker owner used for diagnostics cairn-code produces itself. */
-const OWNER = 'cairn';
+/** Marker owner used for diagnostics causeway produces itself. */
+const OWNER = 'causeway';
 
-/** Maps the cairn-code severity scale onto Monaco's. */
+/** Maps the causeway severity scale onto Monaco's. */
 export function toMonacoSeverity(severity: DiagnosticSeverity): monaco.MarkerSeverity {
   switch (severity) {
     case 0:
@@ -22,7 +22,7 @@ export function toMonacoSeverity(severity: DiagnosticSeverity): monaco.MarkerSev
   }
 }
 
-/** Maps Monaco's severity scale onto the cairn-code one. */
+/** Maps Monaco's severity scale onto the causeway one. */
 export function fromMonacoSeverity(severity: monaco.MarkerSeverity): DiagnosticSeverity {
   switch (severity) {
     case monaco.MarkerSeverity.Error:
@@ -46,7 +46,7 @@ export interface DiagnosticCounts {
 type Listener = (all: ReadonlyMap<string, Diagnostic[]>) => void;
 
 /**
- * Single source of truth for every problem shown in cairn-code.
+ * Single source of truth for every problem shown in causeway.
  *
  * Diagnostics arrive from three places: Monaco's own language workers
  * (TypeScript, JSON, CSS, HTML), the ESLint worker, and future language server
@@ -129,7 +129,7 @@ export class DiagnosticService {
 
   /**
    * Imports the markers Monaco's own language workers produced for a model and
-   * republishes them as cairn-code diagnostics with cause and solution attached.
+   * republishes them as causeway diagnostics with cause and solution attached.
    */
   importMonacoMarkers(model: monaco.editor.ITextModel, ownerFilter?: string[]): Diagnostic[] {
     const uri = model.uri.fsPath;
@@ -216,7 +216,7 @@ export class DiagnosticService {
 
     const markers: monaco.editor.IMarkerData[] = diagnostics
       // Markers Monaco produced itself are already displayed by their own owner;
-      // re-publishing them under the cairn-code owner would double every squiggle.
+      // re-publishing them under the causeway owner would double every squiggle.
       .filter((diagnostic) => diagnostic.source === 'ESLint' || diagnostic.source.startsWith('LSP'))
       .map((diagnostic) => ({
         severity: toMonacoSeverity(diagnostic.severity),

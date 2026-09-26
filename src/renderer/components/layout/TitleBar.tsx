@@ -8,7 +8,7 @@ import { APP_NAME } from '@shared/constants';
 const isMac = globalThis.navigator?.platform?.toLowerCase().includes('mac') ?? false;
 
 /**
- * Custom title bar with the cairn-code mark, the document title and window controls.
+ * Custom title bar with the causeway mark, the document title and window controls.
  *
  * The native frame is hidden (see src/main/windows.ts) so the title bar can be
  * themed. Window controls are omitted on macOS, where the system draws its own
@@ -44,7 +44,7 @@ export function TitleBar(): JSX.Element {
   return (
     <header className="title-bar" data-platform={isMac ? 'mac' : 'other'}>
       <div className="title-bar__brand">
-        <Icon name="logo" size={18} className="title-bar__logo" title="cairn-code" />
+        <Icon name="logo" size={18} className="title-bar__logo" title="causeway" />
       </div>
 
       <div className="title-bar__title">{documentTitle}</div>

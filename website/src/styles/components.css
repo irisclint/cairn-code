@@ -107,7 +107,7 @@
   font-family: var(--font-mono);
   letter-spacing: -0.03em;
   /* The hyphen is a legal break point, and on a narrow header the name split
-     across two lines as "cairn-" over "code". A product name is one word. */
+     across two lines as "causeway-" over "code". A product name is one word. */
   white-space: nowrap;
 }
 

@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 
 /**
- * The cairn-code icon set.
+ * The causeway icon set.
  *
  * Icons are inline SVG paths on a 16x16 grid and inherit `currentColor`, so a
  * theme change recolours them with no extra work and there is no icon font or
@@ -68,8 +68,10 @@ const PATHS: Record<string, string> = {
   'window-maximize': 'M3 3h10v10H3V3zm1 1v8h8V4H4z',
   'window-restore': 'M5 3h8v8h-2v2H3V5h2V3zm1 1v1h6v5h1V4H6zM4 6v6h6V6H4z',
   'window-close': 'M8 8.7 4.5 12.2l-.7-.7L7.3 8 3.8 4.5l.7-.7L8 7.3l3.5-3.5.7.7L8.7 8l3.5 3.5-.7.7L8 8.7z',
-  // Three stacked stones, widest at the base: the cairn-code mark.
-  logo: 'M3.1 10.8h9.8a1.4 1.4 0 0 1 0 2.8H3.1a1.4 1.4 0 0 1 0-2.8zm1.2-4h7.4a1.35 1.35 0 0 1 0 2.7H4.3a1.35 1.35 0 0 1 0-2.7zm1.6-4.3 4.5-.5a1.3 1.3 0 0 1 .3 2.6l-4.5.5a1.3 1.3 0 0 1-.3-2.6z'
+  // The causeway mark: a deck carried on three piers, over a waterline. Drawn
+  // as one path on a 16px grid, so it stays a recognisable silhouette in a tab
+  // strip rather than turning to mush the way a detailed mark would.
+  logo: 'M2.2 4.4h11.6a1.3 1.3 0 0 1 0 2.6H2.2a1.3 1.3 0 0 1 0-2.6zm1.6 3.2h1.6v4.2H3.8V7.6zm3.4 0h1.6v4.2H7.2V7.6zm3.4 0h1.6v4.2h-1.6V7.6zM2.4 12.4h11.2a.7.7 0 0 1 0 1.4H2.4a.7.7 0 0 1 0-1.4z'
 };
 
 export type IconName = keyof typeof PATHS | string;
@@ -87,7 +89,7 @@ export function Icon({ name, size = 16, className, title }: IconProps): JSX.Elem
 
   return (
     <svg
-      className={['cairn-icon', className].filter(Boolean).join(' ')}
+      className={['causeway-icon', className].filter(Boolean).join(' ')}
       width={size}
       height={size}
       viewBox="0 0 16 16"

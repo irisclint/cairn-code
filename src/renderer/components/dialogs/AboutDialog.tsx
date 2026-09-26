@@ -6,7 +6,7 @@ import { LANGUAGE_COUNT } from '../../editor/language-support';
 import { listThemes } from '../../theme-engine/theme-registry';
 
 const UNKNOWN_INFO: AppInfo = {
-  name: 'cairn-code',
+  name: 'causeway',
   version: 'unknown',
   electron: 'unknown',
   chrome: 'unknown',
@@ -42,10 +42,10 @@ export function AboutDialog(): JSX.Element {
         className="about-dialog"
         role="dialog"
         aria-modal="true"
-        aria-label="About cairn-code"
+        aria-label="About causeway"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <h2 className="about-dialog__title">cairn-code</h2>
+        <h2 className="about-dialog__title">causeway</h2>
         <p className="about-dialog__tagline">Fast. Beautiful. For every language.</p>
 
         <dl className="about-dialog__details">

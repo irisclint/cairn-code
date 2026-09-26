@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  CairnError,
+  CausewayError,
   FileSystemError,
   TerminalError,
   fileSystemErrorFor,
@@ -8,9 +8,9 @@ import {
   guarded
 } from '@shared/errors';
 
-describe('CairnError', () => {
+describe('CausewayError', () => {
   it('should carry code, message, cause and solution', () => {
-    const error = new CairnError({
+    const error = new CausewayError({
       code: 'TEST',
       message: 'Something failed',
       cause: 'Because of a reason',
@@ -27,7 +27,7 @@ describe('CairnError', () => {
   it('should take the name of the concrete subclass', () => {
     const error = new TerminalError({ code: 'T', message: 'm', cause: 'c', solution: 's' });
     expect(error.name).toBe('TerminalError');
-    expect(error).toBeInstanceOf(CairnError);
+    expect(error).toBeInstanceOf(CausewayError);
   });
 
   it('should serialise into the IPC error shape', () => {
@@ -72,8 +72,8 @@ describe('fileSystemErrorFor', () => {
 });
 
 describe('toIpcResult', () => {
-  it('should preserve cause and solution for an CairnError', () => {
-    const result = toIpcResult(new CairnError({ code: 'C', message: 'm', cause: 'why', solution: 'how' }));
+  it('should preserve cause and solution for a CausewayError', () => {
+    const result = toIpcResult(new CausewayError({ code: 'C', message: 'm', cause: 'why', solution: 'how' }));
     expect(result.ok).toBe(false);
     expect(result.error).toEqual({ code: 'C', message: 'm', cause: 'why', solution: 'how' });
   });

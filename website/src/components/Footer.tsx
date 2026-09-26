@@ -19,9 +19,9 @@ export function Footer(): JSX.Element {
       <div className="container site-footer__inner">
         <div>
           <Link to="/" className="brand">
-            <img src="/cairn-logo.svg" alt="" className="brand__mark" width={30} height={30} />
+            <img src="/causeway-logo.svg" alt="" className="brand__mark" width={30} height={30} />
             <span className="brand__name">
-              cairn<span className="brand__suffix">-code</span>
+              {PRODUCT}
             </span>
           </Link>
           <p className="site-footer__tagline">

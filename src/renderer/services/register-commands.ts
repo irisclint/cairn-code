@@ -454,7 +454,7 @@ export function registerBuiltInCommands(): () => void {
             severity: 'success',
             message: 'Desktop shortcut created',
             cause: 'It was written to ' + path + '.',
-            solution: 'Double click it to open cairn-code.'
+            solution: 'Double click it to open causeway.'
           });
         } catch (error) {
           notifications.notifyError(error, 'Could not create the desktop shortcut');
@@ -472,7 +472,7 @@ export function registerBuiltInCommands(): () => void {
     },
     {
       id: 'help.about',
-      title: 'About cairn-code',
+      title: 'About causeway',
       category: 'Help',
       run: () => useUiStore.getState().openDialog('about')
     },
@@ -489,7 +489,7 @@ export function registerBuiltInCommands(): () => void {
               severity: 'info',
               message: 'Update check unavailable',
               cause: status.message,
-              solution: 'Download the latest release manually from the cairn-code releases page.'
+              solution: 'Download the latest release manually from the causeway releases page.'
             });
           }
         } catch (error) {

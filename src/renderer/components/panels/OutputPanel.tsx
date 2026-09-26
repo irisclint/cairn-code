@@ -7,7 +7,7 @@ function formatTime(timestamp: number): string {
   return pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
 }
 
-/** Shows the internal log cairn-code produces while it works. */
+/** Shows the internal log causeway produces while it works. */
 export function OutputPanel(): JSX.Element {
   const [entries, setEntries] = useState<OutputEntry[]>(() => outputChannel.entries());
   const [channel, setChannel] = useState<string>('all');

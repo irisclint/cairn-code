@@ -1,6 +1,6 @@
 # Architecture overview
 
-cairn-code is an Electron application with three processes and one rule that shapes
+causeway is an Electron application with three processes and one rule that shapes
 everything else: **the renderer never touches Node directly.**
 
 ```
@@ -17,7 +17,7 @@ everything else: **the renderer never touches Node directly.**
 ┌───────────────────────────────┴──────────────────────────────────────┐
 │                      PRELOAD (contextBridge)                         │
 │                                                                      │
-│  window.cairn = { app, window, dialog, fs, workspace, search,        │
+│  window.causeway = { app, window, dialog, fs, workspace, search,        │
 │                   terminal, settings, update, menu }                 │
 │                                                                      │
 │  One function per allowlisted channel. Nothing else is exposed.      │
@@ -41,7 +41,7 @@ everything else: **the renderer never touches Node directly.**
 
 ## Why the boundary sits there
 
-Electron's default is to let the renderer `require` anything. cairn-code does not,
+Electron's default is to let the renderer `require` anything. causeway does not,
 because the renderer is the process that runs the largest amount of third party
 code: Monaco, XTerm, React, and eventually extensions. Keeping Node out of it
 means a bug in any of them cannot read the user's home directory.
@@ -78,7 +78,7 @@ allowlist, the main handlers and the renderer client cannot drift apart.
 | `windows.ts` | BrowserWindow creation, window state broadcasts |
 | `menu.ts` | Native menu; dispatches command ids, never acts directly |
 | `ipc.ts` | Every handler, wrapped in `guarded()` |
-| `protocol.ts` | `cairn://` scheme, scoped to the workspace |
+| `protocol.ts` | `causeway://` scheme, scoped to the workspace |
 | `updater.ts` | electron-updater, lazily imported and never fatal |
 | `services/fs-service.ts` | All filesystem access |
 | `services/search-service.ts` | File name and content search |

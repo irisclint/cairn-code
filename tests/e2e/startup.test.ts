@@ -24,12 +24,12 @@ const consoleErrors: string[] = [];
 test.describe.configure({ mode: 'serial' });
 
 test.beforeAll(async () => {
-  workspace = await mkdtemp(join(tmpdir(), 'cairn-e2e-'));
+  workspace = await mkdtemp(join(tmpdir(), 'causeway-e2e-'));
   await mkdir(join(workspace, 'src'), { recursive: true });
 
   await writeFile(
     join(workspace, 'hello.ts'),
-    'export const greeting: string = "hello from cairn-code";\n',
+    'export const greeting: string = "hello from causeway";\n',
     'utf8'
   );
   // A deliberate type error, so the diagnostic pipeline has something to report.
@@ -58,16 +58,25 @@ test('the workbench renders its main regions', async () => {
   await expect(page.locator('.activity-bar')).toBeVisible();
   await expect(page.locator('.sidebar')).toBeVisible();
   await expect(page.locator('.status-bar')).toBeVisible();
-  await expect(page.locator('.welcome__title')).toHaveText('cairn-code');
+  await expect(page.locator('.welcome__title')).toHaveText('causeway');
 });
 
 test('the preload bridge exposes exactly the expected surface', async () => {
-  const surface = await page.evaluate(() => Object.keys(window.cairn).sort());
+  const surface = await page.evaluate(() => Object.keys(window.causeway).sort());
 
+  // An allowlist, not a sample. Every name here is a door into the main
+  // process, so a new one has to be added deliberately and reviewed, and this
+  // test is what forces that. It went stale when source control, debugging,
+  // extensions and lint shipped without it being updated, which left the whole
+  // end to end suite red and the eight tests after this one never running.
   expect(surface).toEqual([
     'app',
+    'debug',
     'dialog',
+    'extensions',
     'fs',
+    'git',
+    'lint',
     'menu',
     'search',
     'settings',
@@ -131,7 +140,7 @@ test('opening a folder lists its files with their type icons', async () => {
   // Driven through the public bridge; the renderer adopts the folder from the
   // workspace:changed broadcast, exactly as it does for the native menu.
   await page.evaluate(async (root) => {
-    await window.cairn.workspace.open(root);
+    await window.causeway.workspace.open(root);
   }, workspace);
 
   await expect(page.locator('.explorer__row', { hasText: 'hello.ts' })).toBeVisible({ timeout: 15_000 });

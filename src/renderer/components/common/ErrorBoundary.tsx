@@ -17,7 +17,7 @@ interface ErrorBoundaryState {
  *
  * Every major view is wrapped in its own boundary, so a crash in the terminal
  * panel still leaves the editor usable and the user keeps the chance to save.
- * The fallback follows the cairn-code error contract: what happened, why, and what
+ * The fallback follows the causeway error contract: what happened, why, and what
  * to do next.
  */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <h2 className="error-boundary__title">The {this.props.region} stopped responding</h2>
         <p className="error-boundary__message">{error.message}</p>
         <p className="error-boundary__cause">
-          Cause: an unhandled error was thrown while rendering this region. The rest of cairn-code is unaffected,
+          Cause: an unhandled error was thrown while rendering this region. The rest of causeway is unaffected,
           so any unsaved work can still be saved.
         </p>
         <p className="error-boundary__solution">

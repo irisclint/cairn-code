@@ -1,10 +1,10 @@
 {
-  "name": "cairn-code",
-  "version": "1.0.0",
-  "description": "cairn - the next generation code editor. Fast. Beautiful. For every language.",
-  "author": "cairn Team",
+  "name": "causeway",
+  "version": "1.1.0",
+  "description": "causeway - the next generation code editor. Fast. Beautiful. For every language.",
+  "author": "causeway Team",
   "license": "MIT",
-  "homepage": "https://github.com/irisclint/cairn-code",
+  "homepage": "https://github.com/irisclint/causeway",
   "main": "out/main/index.cjs",
   "type": "module",
   "engines": {

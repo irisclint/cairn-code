@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to cairn-code are documented here. The format follows
+All notable changes to causeway are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
@@ -13,6 +13,42 @@ All notable changes to cairn-code are documented here. The format follows
 - Code signed builds for Windows and macOS
 - Language Server Protocol clients, so the explanation layer reaches past the
   TypeScript family and whatever ESLint covers
+
+## [1.1.0] - 2026-09-26
+
+Renamed to Causeway.
+
+A causeway is a road built up across ground you could not otherwise cross.
+Somebody laid it so that everyone after them could walk over what had stopped
+them, which is what this editor does with an error. The word also contains
+*cause*, one of the four answers every problem here carries.
+
+### Changed
+
+- Renamed from cairn-code to Causeway: the application id, the URL scheme, the
+  preload global, the icons, the installers and the website. The old repository
+  address still redirects, and release 1.0.0 stays where it is
+- New mark: the crossing seen from the side, a deck on three piers over a
+  waterline. At sixteen pixels it reduces to one bar over three legs
+
+### Added
+
+- Settings written under the previous name are inherited on first launch.
+  Electron derives its data directory from the product name, so a rename points
+  every existing installation at an empty folder; without this, upgrading would
+  silently reset the theme, the font and every other preference. The old file is
+  read, not moved, so it is still there if the migration is ever wrong
+- End to end coverage for source control, debugging, extensions and the panel
+  switching between them, which had none
+
+### Fixed
+
+- The end to end suite had been failing since source control, debugging,
+  extensions and lint shipped. Each added a namespace to the preload bridge and
+  none updated the allowlist that asserts on it, so the check failed and the
+  eight tests after it never ran at all
+- The welcome screen and the in-application icon still drew the old mark, in the
+  blue to violet pair that the rest of the interface had already dropped
 
 ## [1.0.0] - 2026-09-25
 
@@ -52,6 +88,10 @@ compiler.
   leaving the items without shortcuts
 
 ## [1.0.0-alpha.1] - 2026-09-22
+
+Released as cairn-code. The project was renamed to causeway in 1.1.0; the
+entries below are left as they were written, because a changelog that edits its
+own history is worth nothing.
 
 The first alpha. The editor, terminal, themes and diagnostics are usable.
 
@@ -105,7 +145,7 @@ The first alpha. The editor, terminal, themes and diagnostics are usable.
 - Holding Ctrl cancelled a pending chord such as Ctrl+K Ctrl+T, since the
   auto-repeating modifier keydown was treated as an unmatched second key
 - .tsx and .jsx files opened without syntax highlighting or diagnostics,
-  because their cairn-code language ids have no tokenizer in Monaco, which serves
+  because their causeway language ids have no tokenizer in Monaco, which serves
   both from its typescript and javascript grammars
 - Clicking a problem could not reopen its file on Windows, because diagnostics
   recorded a URI path with a leading slash before the drive letter
@@ -116,10 +156,10 @@ The first alpha. The editor, terminal, themes and diagnostics are usable.
 
 ### Changed
 
-- Renamed from fcode to cairn-code, including the application id, the URL scheme,
-  the preload global, the theme prefix, the icons and the website. A cairn is
-  the stack of stones that marks a route when the path is not obvious, which
-  is what the editor does with an error
+- Renamed from fcode to cairn-code, including the application id, the URL
+  scheme, the preload global, the theme prefix, the icons and the website. A
+  cairn is the stack of stones that marks a route when the path is not obvious,
+  which is what the editor does with an error
 - New mark: three stacked stones in the blue to violet pair, replacing the
   slanted f. It stays legible down to a 16 pixel favicon
 
@@ -128,4 +168,4 @@ The first alpha. The editor, terminal, themes and diagnostics are usable.
 - Context isolation on, node integration off, and a preload bridge that exposes
   one allowlisted method per IPC channel and nothing else
 - Content Security Policy that forbids remote code in the renderer
-- The `cairn://` protocol resolves only inside the opened workspace
+- The `causeway://` protocol resolves only inside the opened workspace

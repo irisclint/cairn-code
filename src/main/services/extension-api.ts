@@ -121,7 +121,7 @@ export class ExtensionApi {
           code: 'EXTENSION_UNKNOWN_METHOD',
           message: `${manifest.id} called a method that does not exist`,
           cause: `"${method}" is listed as a permission but has no implementation.`,
-          solution: 'Report this as a defect in cairn-code; the table and the switch have drifted apart.'
+          solution: 'Report this as a defect in causeway; the table and the switch have drifted apart.'
         });
     }
   }

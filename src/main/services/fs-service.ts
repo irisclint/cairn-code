@@ -33,7 +33,7 @@ export class FileSystemService {
       throw new FileSystemError({
         code: 'FS_TOO_LARGE',
         message: `File is too large to open: ${basename(path)}`,
-        cause: `The file is ${stats.size} bytes, above the ${MAX_FILE_SIZE_BYTES} byte limit cairn-code can hold in memory.`,
+        cause: `The file is ${stats.size} bytes, above the ${MAX_FILE_SIZE_BYTES} byte limit causeway can hold in memory.`,
         solution: 'Open the file with a streaming viewer, or split it before editing.'
       });
     }

@@ -201,7 +201,7 @@ describe('ExplorerView', () => {
     render(<ExplorerView />);
 
     await userEvent.click(screen.getByLabelText('Refresh Explorer'));
-    await waitFor(() => expect(globalThis.window.cairn.fs.readDirectory).toHaveBeenCalledWith('/ws'));
+    await waitFor(() => expect(globalThis.window.causeway.fs.readDirectory).toHaveBeenCalledWith('/ws'));
   });
 
   it('should say so when the folder is empty', () => {
@@ -234,7 +234,7 @@ describe('SearchView', () => {
 
   it('should run a search and list the matches', async () => {
     useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
-    vi.mocked(globalThis.window.cairn.search.inFiles).mockResolvedValueOnce({
+    vi.mocked(globalThis.window.causeway.search.inFiles).mockResolvedValueOnce({
       ok: true,
       value: [
         {
@@ -263,7 +263,7 @@ describe('SearchView', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
     await waitFor(() =>
-      expect(globalThis.window.cairn.search.inFiles).toHaveBeenCalledWith(
+      expect(globalThis.window.causeway.search.inFiles).toHaveBeenCalledWith(
         expect.objectContaining({ matchCase: true, wholeWord: true, isRegex: true })
       )
     );
@@ -278,7 +278,7 @@ describe('SearchView', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Search' }));
 
     await waitFor(() =>
-      expect(globalThis.window.cairn.search.inFiles).toHaveBeenCalledWith(
+      expect(globalThis.window.causeway.search.inFiles).toHaveBeenCalledWith(
         expect.objectContaining({ includeGlob: 'src/**/*.ts' })
       )
     );
@@ -286,7 +286,7 @@ describe('SearchView', () => {
 
   it('should report a failed search', async () => {
     useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
-    vi.mocked(globalThis.window.cairn.search.inFiles).mockResolvedValueOnce({
+    vi.mocked(globalThis.window.causeway.search.inFiles).mockResolvedValueOnce({
       ok: false,
       error: { code: 'SEARCH_BAD_REGEX', message: 'bad pattern', cause: 'c', solution: 's' }
     });
@@ -305,7 +305,7 @@ describe('SearchView', () => {
     render(<SearchView />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Search' }));
-    expect(globalThis.window.cairn.search.inFiles).not.toHaveBeenCalled();
+    expect(globalThis.window.causeway.search.inFiles).not.toHaveBeenCalled();
   });
 });
 
@@ -372,7 +372,7 @@ describe('SettingsView', () => {
     render(<SettingsView />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Reset all settings' }));
-    await waitFor(() => expect(globalThis.window.cairn.settings.reset).toHaveBeenCalled());
+    await waitFor(() => expect(globalThis.window.causeway.settings.reset).toHaveBeenCalled());
   });
 });
 

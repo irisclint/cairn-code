@@ -72,7 +72,7 @@ export class PtyService {
       throw new TerminalError({
         code: 'TERM_NO_SHELL',
         message: 'No shell is available to start a terminal',
-        cause: 'cairn-code could not find a supported shell executable on this system.',
+        cause: 'causeway could not find a supported shell executable on this system.',
         solution:
           process.platform === 'win32'
             ? 'Install PowerShell 7, or make sure cmd.exe is present in the Windows System32 folder.'
@@ -144,7 +144,7 @@ export class PtyService {
     const env: NodeJS.ProcessEnv = { ...process.env, ...extra };
     env.TERM = 'xterm-256color';
     env.COLORTERM = 'truecolor';
-    env.TERM_PROGRAM = 'cairn';
+    env.TERM_PROGRAM = 'causeway';
     // Electron injects these into child processes and they confuse tooling
     // that expects a plain Node environment.
     delete env.ELECTRON_RUN_AS_NODE;

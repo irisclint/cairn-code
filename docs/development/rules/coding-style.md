@@ -5,13 +5,13 @@ Rules that ESLint and Prettier cannot enforce. Run `npm run lint` and
 
 ## Errors tell the user what to do
 
-This is the rule cairn-code is built around. Every error carries three things:
+This is the rule causeway is built around. Every error carries three things:
 
 - **message** what went wrong
 - **cause** why it happened, in plain language
 - **solution** the concrete next action
 
-In the main process, throw an `CairnError` subclass. In the renderer, report
+In the main process, throw an `CausewayError` subclass. In the renderer, report
 through `useNotificationStore.notifyError`. An error with no cause and no
 solution is a defect, not a style preference.
 

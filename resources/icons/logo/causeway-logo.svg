@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-labelledby="causeway-logo-title">
+  <title id="causeway-logo-title">Causeway</title>
+
+  <defs>
+    <!--
+      A neutral tile. The surfaces stay off the colour axis so the crossing is
+      the only thing in the mark carrying a hue, which is what keeps it legible
+      against both a light and a dark desktop.
+    -->
+    <radialGradient id="causeway-backdrop" cx="30%" cy="22%" r="95%">
+      <stop offset="0%" stop-color="#26262e" />
+      <stop offset="60%" stop-color="#17171b" />
+      <stop offset="100%" stop-color="#101013" />
+    </radialGradient>
+
+    <linearGradient id="causeway-edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4D87F0" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#4D87F0" stop-opacity="0.08" />
+    </linearGradient>
+  </defs>
+
+  <g id="backdrop">
+    <rect x="0" y="0" width="512" height="512" rx="61" fill="url(#causeway-backdrop)" />
+    <rect x="1" y="1" width="510" height="510" rx="60" fill="none" stroke="url(#causeway-edge)" stroke-width="2" />
+  </g>
+
+  <!--
+    A causeway seen from the side: a deck carried on piers across a gap.
+
+    The deck is wider than the span of the piers and its ends are rounded, so
+    it reads as a road passing through rather than a platform that begins and
+    ends here. It stops short of the tile edge because a shape that touches a
+    rounded corner looks clipped rather than continuing.
+
+    The three piers are spaced evenly and step down in tone, so at a 16px
+    favicon the mark reduces to one strong bar over three legs, which is a
+    silhouette nothing else in a dock shares.
+  -->
+  <g id="crossing">
+    <!-- The deck. Lightest, because the light is above it. -->
+    <rect x="56" y="196" width="400" height="62" rx="24" fill="#FFFFFF" opacity="0.94" />
+
+    <!-- Piers, descending into the gap. Each a step darker than the deck. -->
+    <rect x="112" y="252" width="58" height="150" rx="22" fill="#4D87F0" />
+    <rect x="227" y="252" width="58" height="150" rx="22" fill="#4D87F0" />
+    <rect x="342" y="252" width="58" height="150" rx="22" fill="#3A74DD" />
+
+    <!--
+      The waterline. One flat bar across the feet of the piers, at low opacity,
+      which is what tells the eye the legs go down into something rather than
+      simply stopping. It is the first thing to disappear at small sizes, which
+      is correct: it is the least load bearing part of the mark.
+    -->
+    <rect x="56" y="386" width="400" height="16" rx="8" fill="#4D87F0" opacity="0.32" />
+  </g>
+</svg>

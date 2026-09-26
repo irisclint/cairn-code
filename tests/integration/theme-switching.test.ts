@@ -65,7 +65,7 @@ describe('theme switching', () => {
   it('should write every colour of the theme into the document as a custom property', () => {
     useThemeStore.getState().initialize('midnight-violet');
 
-    const css = document.getElementById('cairn-theme')?.textContent ?? '';
+    const css = document.getElementById('causeway-theme')?.textContent ?? '';
     const theme = getTheme('midnight-violet');
 
     for (const key of REQUIRED_COLOR_KEYS) {
@@ -77,7 +77,7 @@ describe('theme switching', () => {
     useThemeStore.getState().initialize('dark-modern');
     for (const theme of listThemes()) useThemeStore.getState().setTheme(theme.id);
 
-    expect(document.querySelectorAll('style#cairn-theme')).toHaveLength(1);
+    expect(document.querySelectorAll('style#causeway-theme')).toHaveLength(1);
   });
 
   it('should switch cleanly between every installed theme', () => {

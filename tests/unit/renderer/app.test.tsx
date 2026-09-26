@@ -75,13 +75,13 @@ afterEach(() => {
 describe('App startup', () => {
   it('should show a loading state until settings arrive', () => {
     render(<App />);
-    expect(screen.getByText('Starting cairn-code...')).toBeInTheDocument();
+    expect(screen.getByText('Starting causeway...')).toBeInTheDocument();
   });
 
   it('should render the whole workbench once settings have loaded', async () => {
     render(<App />);
 
-    await waitFor(() => expect(screen.queryByText('Starting cairn-code...')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('Starting causeway...')).not.toBeInTheDocument());
 
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe('App startup', () => {
 describe('App layout', () => {
   const renderReady = async (): Promise<void> => {
     render(<App />);
-    await waitFor(() => expect(screen.queryByText('Starting cairn-code...')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('Starting causeway...')).not.toBeInTheDocument());
   };
 
   it('should hide the sidebar when it is toggled off', async () => {
@@ -168,14 +168,14 @@ describe('App layout', () => {
 describe('App dialogs', () => {
   const renderReady = async (): Promise<void> => {
     render(<App />);
-    await waitFor(() => expect(screen.queryByText('Starting cairn-code...')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('Starting causeway...')).not.toBeInTheDocument());
   };
 
   it.each([
     ['command-palette', 'Command Palette'],
     ['quick-open', 'Go to File'],
     ['theme-picker', 'Select a color theme'],
-    ['about', 'About cairn-code'],
+    ['about', 'About causeway'],
     ['shortcuts', 'Keyboard shortcuts']
   ] as const)('should render the %s dialog', async (dialog, label) => {
     await renderReady();
@@ -193,7 +193,7 @@ describe('App dialogs', () => {
 describe('App notifications', () => {
   it('should surface a notification over the workbench', async () => {
     render(<App />);
-    await waitFor(() => expect(screen.queryByText('Starting cairn-code...')).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText('Starting causeway...')).not.toBeInTheDocument());
 
     act(() => {
       useNotificationStore.getState().notify({

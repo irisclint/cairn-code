@@ -44,9 +44,9 @@ export function Header(): JSX.Element {
 
       <div className="container site-header__inner">
         <Link to="/" className="brand" aria-label={`${PRODUCT} home`}>
-          <img src="/cairn-logo.svg" alt="" className="brand__mark" width={30} height={30} />
+          <img src="/causeway-logo.svg" alt="" className="brand__mark" width={30} height={30} />
           <span className="brand__name">
-            cairn<span className="brand__suffix">-code</span>
+            {PRODUCT}
           </span>
         </Link>
 

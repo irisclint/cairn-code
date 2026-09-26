@@ -6,10 +6,10 @@ import { createLogger } from '@shared/logger';
 
 const log = createLogger('theme-loader');
 
-const STYLE_ELEMENT_ID = 'cairn-theme';
+const STYLE_ELEMENT_ID = 'causeway-theme';
 
 /**
- * Translates a workbench colour key into the CSS custom property cairn-code uses.
+ * Translates a workbench colour key into the CSS custom property causeway uses.
  *
  * `editor.lineHighlightBackground` becomes `--editor-line-highlight-background`,
  * so SCSS can reference every theme colour without a lookup table.

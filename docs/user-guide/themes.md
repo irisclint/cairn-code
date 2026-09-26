@@ -1,6 +1,6 @@
 # Themes
 
-cairn-code ships twelve colour themes and can load more at runtime.
+causeway ships twelve colour themes and can load more at runtime.
 
 ## Switching themes
 
@@ -12,10 +12,10 @@ it against your own code rather than against a preview image. Leaving the grid
 or pressing `Escape` restores the theme you had. Clicking a card keeps it and
 remembers the choice.
 
-A theme change repaints in a single frame because cairn-code applies themes as CSS
+A theme change repaints in a single frame because causeway applies themes as CSS
 custom properties rather than re-rendering the interface.
 
-## The themes that ship with cairn-code
+## The themes that ship with causeway
 
 | Theme | Type | Character |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ theme, and it is how a theme contribution is reviewed.
 The `colors` and `tokenColors` blocks of a VS Code theme are close enough to
 copy directly. Four things usually need attention:
 
-1. cairn-code requires twelve colour keys that VS Code lets you leave to defaults.
+1. causeway requires twelve colour keys that VS Code lets you leave to defaults.
 2. Add the sixteen `terminal.ansi*` keys if the source has none. A partial
    ANSI palette is rejected, because mixing theme colours with defaults in
    terminal output looks broken.
@@ -60,6 +60,6 @@ copy directly. Four things usually need attention:
    writes `hc` and `hc-light`.
 4. Colours must be hex: `#rgb`, `#rrggbb` or `#rrggbbaa`.
 
-If a theme fails to load, cairn-code tells you exactly which field is wrong, why it
+If a theme fails to load, causeway tells you exactly which field is wrong, why it
 matters and what to change, rather than applying it half way and leaving you
 with an unreadable window.

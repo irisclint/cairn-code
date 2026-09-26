@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="resources/icons/logo/cairn-logo.svg" alt="cairn-code" width="120" height="120">
+<img src="resources/icons/logo/causeway-logo.svg" alt="causeway" width="120" height="120">
 
-# cairn-code
+# causeway
 
 **Fast. Beautiful. For every language.**
 
@@ -15,9 +15,9 @@ diagnostics that tell you *why* something broke and *how* to fix it.
 
 ---
 
-## What is cairn-code
+## What is causeway
 
-cairn-code is a standalone code editor. It opens a folder, gives you syntax
+causeway is a standalone code editor. It opens a folder, gives you syntax
 highlighting for more than sixty languages, a real terminal in the bottom
 panel, and a Problems view that explains every error in plain language instead
 of repeating the compiler at you.
@@ -46,7 +46,7 @@ Windows, macOS and Linux.
 - **File type icons** for every recognised language, in the explorer and on the
   tabs, so a folder is scannable at a glance.
 - **Desktop shortcut on demand.** The installers create one; for a portable
-  build or an AppImage, cairn-code offers once on first run, and the Command
+  build or an AppImage, causeway offers once on first run, and the Command
   Palette and Settings can create or remove it at any time.
 - **No telemetry by default.** Nothing leaves your machine until you opt in.
 
@@ -62,7 +62,7 @@ npm run dev     # http://localhost:5180
 npm run build   # static output in website/dist
 ```
 
-Everything the site claims about cairn-code comes from `website/src/data/content.ts`,
+Everything the site claims about causeway comes from `website/src/data/content.ts`,
 so the language count, the theme count and the download file names cannot drift
 from the product.
 
@@ -71,19 +71,19 @@ from the product.
 ### Download
 
 Prebuilt installers are published on the
-[releases page](https://github.com/irisclint/cairn-code/releases):
+[releases page](https://github.com/irisclint/causeway/releases):
 
 | Platform | File |
 | --- | --- |
-| Windows 10/11 | `cairn-<version>-x64-setup.exe` |
-| macOS 12+ | `cairn-<version>-<arch>.dmg` |
-| Linux | `cairn-<version>-x64.AppImage`, `.deb` or `.rpm` |
+| Windows 10/11 | `causeway-<version>-x64-setup.exe` |
+| macOS 12+ | `causeway-<version>-<arch>.dmg` |
+| Linux | `causeway-<version>-x64.AppImage`, `.deb` or `.rpm` |
 
 ### Build from source
 
 ```bash
-git clone https://github.com/irisclint/cairn-code.git
-cd cairn-code
+git clone https://github.com/irisclint/causeway.git
+cd causeway
 npm install
 npm run assets:icons   # generates every raster icon from the SVG master
 npm run dev            # starts the app with hot reload
@@ -104,7 +104,7 @@ be built, the terminal still works through plain pipes and says so.
 
 1. **Open a folder** with `Ctrl+K Ctrl+O`, or the button in the Explorer.
 2. **Jump to any file** with `Ctrl+P` and start typing part of its name.
-3. **Run anything** with `Ctrl+Shift+P`, the command palette; every cairn-code
+3. **Run anything** with `Ctrl+Shift+P`, the command palette; every causeway
    command lives there with its shortcut next to it.
 4. **Open the terminal** with ``Ctrl+` ``. It starts in your workspace folder.
 5. **See your problems** with `Ctrl+Shift+M`. Expand a row to get the cause and
@@ -114,7 +114,7 @@ be built, the terminal still works through plain pipes and says so.
 
 ## How diagnostics work
 
-Most editors show you what a compiler said. cairn-code adds two lines that the
+Most editors show you what a compiler said. causeway adds two lines that the
 compiler does not give you.
 
 A plain TypeScript error looks like this:
@@ -123,7 +123,7 @@ A plain TypeScript error looks like this:
 Type 'string' is not assignable to type 'number'.
 ```
 
-cairn-code shows the same message, and underneath:
+causeway shows the same message, and underneath:
 
 > **Where** src/config.ts, line 1, column 7
 > **Why** A value of type string was assigned where number is required. The two
@@ -176,9 +176,9 @@ three processes fit together and why the boundaries sit where they do.
 
 ## Performance targets
 
-cairn-code is built against explicit budgets, measured on a mid range laptop:
+causeway is built against explicit budgets, measured on a mid range laptop:
 
-| Metric | Target | 1.0.0 |
+| Metric | Target | 1.1.0 |
 | --- | --- | --- |
 | Cold start to a visible window | under 2 s | 1.6 s |
 | Warm start | under 500 ms | met |
@@ -187,7 +187,7 @@ cairn-code is built against explicit budgets, measured on a mid range laptop:
 | Theme switch | under 100 ms | met |
 | Installer size | under 200 MB | 114 MB |
 
-Idle memory is the one budget 1.0.0 misses. The figure is the working set of
+Idle memory is the one budget this release misses. The figure is the working set of
 all four processes with no folder open, which includes the Chromium pages
 mapped into each of them; private memory is 258 MB. It is listed as a miss
 rather than reworded, because a budget that moves to meet the result is not a
@@ -198,7 +198,7 @@ is what keeps them responsive.
 
 ## Status
 
-Version 1.0.0. The editor, terminal, themes, search, command palette,
+Version 1.1.0. The editor, terminal, themes, search, command palette,
 diagnostics, source control, the debugger and the sandboxed extension host all
 work, and every one of them is covered by tests that run on each build.
 
@@ -211,7 +211,7 @@ on macOS and Linux, and can be built from source today.
 ## FAQ
 
 **Is this a VS Code fork?**
-No. cairn-code is written from scratch on the same public building blocks VS Code
+No. causeway is written from scratch on the same public building blocks VS Code
 uses (Electron and Monaco, both open source). It has its own UI, its own theme
 format, its own logo and its own diagnostic layer.
 
@@ -220,14 +220,14 @@ No. There is no telemetry unless you turn it on in Settings, and no network
 request except the update check, which you can also disable.
 
 **Can I use my VS Code themes?**
-Not directly. cairn-code uses a similar JSON format, so porting one is mostly a
+Not directly. causeway uses a similar JSON format, so porting one is mostly a
 copy of the `colors` and `tokenColors` blocks. See
 [docs/api/theme-api.md](docs/api/theme-api.md).
 
 **Where are my settings stored?**
 In `settings.json` inside the Electron user data folder:
-`%APPDATA%/cairn` on Windows, `~/Library/Application Support/cairn` on macOS,
-`~/.config/cairn` on Linux.
+`%APPDATA%/causeway` on Windows, `~/Library/Application Support/causeway` on macOS,
+`~/.config/causeway` on Linux.
 
 ## Contributing
 

@@ -149,7 +149,7 @@ const SECTIONS: SettingsSection[] = [
       {
         key: 'telemetry.enabled',
         label: 'Send anonymous usage data',
-        description: 'Off by default. cairn-code never sends anything until this is switched on.',
+        description: 'Off by default. causeway never sends anything until this is switched on.',
         kind: 'boolean'
       },
       {
@@ -187,7 +187,7 @@ function ShortcutField(): JSX.Element | null {
         {shortcut.canCreate
           ? shortcut.exists
             ? 'A shortcut is on your desktop.'
-            : 'Put a shortcut on your desktop so cairn-code is one double click away.'
+            : 'Put a shortcut on your desktop so causeway is one double click away.'
           : (shortcut.reason ?? 'Not available for this build.')}
       </p>
 

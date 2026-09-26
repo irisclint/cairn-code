@@ -212,7 +212,7 @@ describe('ThemeLoader', () => {
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark-modern');
     expect(document.documentElement.getAttribute('data-theme-type')).toBe('dark');
 
-    const style = document.getElementById('cairn-theme');
+    const style = document.getElementById('causeway-theme');
     expect(style).toBeInstanceOf(HTMLStyleElement);
     expect(style?.textContent).toContain('--editor-background');
   });
@@ -220,7 +220,7 @@ describe('ThemeLoader', () => {
   it('should reuse one style element across theme changes', () => {
     loader.apply('dark-modern');
     loader.apply('nordic');
-    expect(document.querySelectorAll('style#cairn-theme')).toHaveLength(1);
+    expect(document.querySelectorAll('style#causeway-theme')).toHaveLength(1);
     expect(document.documentElement.getAttribute('data-theme')).toBe('nordic');
   });
 
@@ -288,10 +288,10 @@ describe('ThemeLoader', () => {
 
 describe('Monaco theme conversion', () => {
   it('should namespace the Monaco theme name', () => {
-    expect(monacoThemeName('dark-modern')).toBe('cairn-dark-modern');
+    expect(monacoThemeName('dark-modern')).toBe('causeway-dark-modern');
   });
 
-  it('should map the cairn-code theme type onto a Monaco base', () => {
+  it('should map the causeway theme type onto a Monaco base', () => {
     expect(toMonacoTheme(getTheme('dark-modern') as Theme).base).toBe('vs-dark');
     expect(toMonacoTheme(getTheme('light-modern') as Theme).base).toBe('vs');
     expect(toMonacoTheme(getTheme('high-contrast-dark') as Theme).base).toBe('hc-black');

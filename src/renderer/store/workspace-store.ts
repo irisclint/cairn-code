@@ -175,7 +175,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       api().dialog.confirm({
         title: 'Delete',
         message: 'Delete ' + basename(path) + '?',
-        detail: 'This cannot be undone from within cairn-code.',
+        detail: 'This cannot be undone from within causeway.',
         confirmLabel: 'Delete'
       }),
       false

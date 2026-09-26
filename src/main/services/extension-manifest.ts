@@ -125,7 +125,7 @@ function readPermissions(raw: unknown, source: string): ExtensionPermission[] {
     if (typeof entry !== 'string' || !isPermission(entry)) {
       throw fail(
         source,
-        `"${String(entry)}" is not a permission cairn-code knows`,
+        `"${String(entry)}" is not a permission causeway knows`,
         `The permissions that exist are: ${EXTENSION_PERMISSIONS.join(', ')}. An unknown one is refused rather than ignored, because ignoring it would install an extension whose manifest claims more than the editor understood.`
       );
     }

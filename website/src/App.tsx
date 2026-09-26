@@ -10,12 +10,12 @@ import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
 
 const TITLES: Record<string, string> = {
-  '/': 'cairn-code - a code editor that explains your errors',
-  '/about': 'About cairn-code - how and why it is built',
-  '/download': 'Download cairn-code for Windows, macOS and Linux',
-  '/learn': 'Learn to code with cairn-code',
-  '/privacy': 'Privacy - cairn-code',
-  '/terms': 'Terms - cairn-code'
+  '/': 'Causeway - a code editor that explains your errors',
+  '/about': 'About Causeway - how and why it is built',
+  '/download': 'Download Causeway for Windows, macOS and Linux',
+  '/learn': 'Learn to code with Causeway',
+  '/privacy': 'Privacy - Causeway',
+  '/terms': 'Terms - Causeway'
 };
 
 /**
@@ -29,7 +29,7 @@ function ScrollManager(): null {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    document.title = TITLES[pathname] ?? 'cairn-code';
+    document.title = TITLES[pathname] ?? 'Causeway';
 
     if (hash) {
       const target = document.querySelector(hash);

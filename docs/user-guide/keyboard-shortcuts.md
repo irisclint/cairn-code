@@ -1,16 +1,16 @@
 # Keyboard shortcuts
 
-Every shortcut below is also available inside cairn-code under
+Every shortcut below is also available inside causeway under
 **Help → Keyboard Shortcuts** (`Ctrl+K Ctrl+S`), where you can search them.
 Both this table and that dialog come from the same registry in
 `src/renderer/services/register-commands.ts`, so they cannot disagree.
 
-**On macOS, use `Cmd` wherever this table says `Ctrl`.** cairn-code maps the command
+**On macOS, use `Cmd` wherever this table says `Ctrl`.** causeway maps the command
 key onto the same bindings, so there is one table for every platform.
 
 A shortcut written with a space, such as `Ctrl+K Ctrl+T`, is a chord: press the
 first combination, release it, then press the second. The status bar shows that
-cairn-code is waiting for the second key.
+causeway is waiting for the second key.
 
 ## File
 
@@ -94,7 +94,7 @@ Zoom is also available with `Ctrl` and the mouse wheel inside the editor.
 | ``Ctrl+Shift+` `` | Create New Terminal |
 | - | Kill Active Terminal |
 
-While the terminal has focus, keys go to the shell, not to cairn-code. The
+While the terminal has focus, keys go to the shell, not to causeway. The
 workbench shortcuts above still work.
 
 ## Help
@@ -102,12 +102,12 @@ workbench shortcuts above still work.
 | Shortcut | Command |
 | --- | --- |
 | `Ctrl+K Ctrl+S` | Keyboard Shortcuts Reference |
-| - | About cairn-code |
+| - | About causeway |
 | - | Check for Updates |
 
 ## Editor shortcuts from Monaco
 
-The editor itself brings a large set of standard bindings that cairn-code does not
+The editor itself brings a large set of standard bindings that causeway does not
 override, including:
 
 | Shortcut | Action |

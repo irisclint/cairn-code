@@ -8,7 +8,7 @@ import type { ExtensionManifest, InstalledExtension } from '@shared/types';
 
 const log = createLogger('extensions');
 
-const MANIFEST_NAME = 'cairn.extension.json';
+const MANIFEST_NAME = 'causeway.extension.json';
 const ENABLEMENT_FILE = 'enabled.json';
 
 /** A file inside a bundle may not be larger than this. */

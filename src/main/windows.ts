@@ -59,7 +59,7 @@ export class WindowManager {
       backgroundColor: STARTUP_BACKGROUND,
       title: APP_NAME,
       autoHideMenuBar: true,
-      // cairn-code draws its own title bar so the tab strip and window controls can
+      // causeway draws its own title bar so the tab strip and window controls can
       // share one row, as specified in the layout design.
       titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
       titleBarOverlay:
@@ -123,7 +123,7 @@ export class WindowManager {
       log.error(
         `The window could not load its page: ${description} (${code}) at ${url}. ` +
           'Cause: the renderer bundle is missing from the application package or is unreadable. ' +
-          'Solution: reinstall cairn-code, or rebuild it with "npm run build" if running from source.'
+          'Solution: reinstall causeway, or rebuild it with "npm run build" if running from source.'
       );
     });
 

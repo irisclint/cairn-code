@@ -1,6 +1,6 @@
 # Terminal
 
-cairn-code embeds a real terminal, not a command runner. It is XTerm in the
+causeway embeds a real terminal, not a command runner. It is XTerm in the
 renderer, connected to a pseudo terminal in the main process, so interactive
 programs, colours and control sequences all behave as they do in your normal
 terminal.
@@ -20,7 +20,7 @@ folder is open.
 
 ## Which shell you get
 
-cairn-code detects the shells actually installed and uses the first it finds:
+causeway detects the shells actually installed and uses the first it finds:
 
 **Windows**: PowerShell 7, then Windows PowerShell, then Git Bash, then WSL,
 then Command Prompt.
@@ -32,7 +32,7 @@ can start a specific one.
 
 ## The "without a pseudo terminal" warning
 
-If cairn-code shows this notification, the native `node-pty` module could not be
+If causeway shows this notification, the native `node-pty` module could not be
 loaded for your build of Electron. The terminal falls back to a plain piped
 child process:
 
@@ -57,5 +57,5 @@ which mode you are in.
 
 ## Closing a terminal
 
-Type `exit`, or use the close button on the tab. cairn-code kills every terminal
+Type `exit`, or use the close button on the tab. causeway kills every terminal
 process when the window closes, so nothing is left running in the background.

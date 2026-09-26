@@ -11,12 +11,12 @@ import type {
   SourceBreakpoint
 } from '@shared/types';
 import { vi } from 'vitest';
-import type { CairnApi } from '../../../src/preload';
+import type { CausewayApi } from '../../../src/preload';
 
 /**
  * An in-memory stand-in for the preload bridge.
  *
- * Renderer code reaches the system only through `window.cairn`, so faking it
+ * Renderer code reaches the system only through `window.causeway`, so faking it
  * here lets the stores be tested against their real logic with no Electron and
  * no disk. The fake holds an actual file table, so a write followed by a read
  * behaves the way it does in the product.
@@ -74,7 +74,7 @@ export const state: BridgeState = {
   searchNames: [],
   failNextRead: false,
   failNextWrite: false,
-  shortcut: { exists: false, path: '/home/dev/Desktop/cairn-code.lnk', canCreate: true },
+  shortcut: { exists: false, path: '/home/dev/Desktop/causeway.lnk', canCreate: true },
   lint: { findings: [], ignored: false },
   git: {
     status: { isRepository: false, branch: null, ahead: 0, behind: 0, changes: [] },
@@ -128,12 +128,12 @@ function subscribe<T>(bucket: Array<(payload: T) => void>, listener: (payload: T
   };
 }
 
-export function createBridge(): CairnApi {
+export function createBridge(): CausewayApi {
   const bridge = {
     app: {
       getInfo: vi.fn(async () =>
         ok({
-          name: 'cairn-code',
+          name: 'causeway',
           version: '1.0.0-test',
           electron: '44.0.0',
           chrome: '152.0.0',
@@ -465,7 +465,7 @@ export function createBridge(): CairnApi {
     }
   };
 
-  return bridge as unknown as CairnApi;
+  return bridge as unknown as CausewayApi;
 }
 
 let sessionCounter = 0;
@@ -489,7 +489,7 @@ function createSession(): {
 }
 
 /** Installs the fake bridge on `window` and resets its state. */
-export function installBridge(): CairnApi {
+export function installBridge(): CausewayApi {
   state.files = new Map();
   state.directories = new Map();
   state.settings = {};
@@ -500,7 +500,7 @@ export function installBridge(): CairnApi {
   state.searchNames = [];
   state.failNextRead = false;
   state.failNextWrite = false;
-  state.shortcut = { exists: false, path: '/home/dev/Desktop/cairn-code.lnk', canCreate: true };
+  state.shortcut = { exists: false, path: '/home/dev/Desktop/causeway.lnk', canCreate: true };
   sessionCounter = 0;
 
   for (const bucket of Object.values(listeners)) bucket.length = 0;
@@ -509,12 +509,12 @@ export function installBridge(): CairnApi {
   calls.terminalDispose.length = 0;
 
   const bridge = createBridge();
-  (globalThis as { window?: { cairn?: CairnApi } }).window ??= {};
-  (globalThis.window as unknown as { cairn: CairnApi }).cairn = bridge;
+  (globalThis as { window?: { causeway?: CausewayApi } }).window ??= {};
+  (globalThis.window as unknown as { causeway: CausewayApi }).causeway = bridge;
   return bridge;
 }
 
 /** Removes the bridge, so code that must tolerate its absence can be tested. */
 export function removeBridge(): void {
-  delete (globalThis.window as unknown as { cairn?: CairnApi }).cairn;
+  delete (globalThis.window as unknown as { causeway?: CausewayApi }).causeway;
 }

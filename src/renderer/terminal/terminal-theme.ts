@@ -7,7 +7,7 @@ function pick(theme: Theme, key: string, fallbackKey: string, fallback: string):
 }
 
 /**
- * Converts a cairn-code theme into the XTerm colour set.
+ * Converts a causeway theme into the XTerm colour set.
  *
  * XTerm needs plain six-digit hex values for the ANSI palette; values carrying
  * an alpha channel are truncated because a translucent ANSI colour would blend

@@ -1,6 +1,6 @@
 # Security rules
 
-The user's code and their machine are what cairn-code is trusted with. These rules
+The user's code and their machine are what causeway is trusted with. These rules
 are not negotiable in review.
 
 ## The renderer is untrusted
@@ -26,13 +26,13 @@ Anything crossing from the renderer into the main process is user input, even
 when the renderer is the only caller today.
 
 - Paths are resolved and checked before use.
-- The `cairn://` protocol serves only what is inside the opened workspace or
+- The `causeway://` protocol serves only what is inside the opened workspace or
   the application directory. A path outside that is a 403, and it is logged.
 - Themes and other loaded JSON are validated before anything is applied.
 
 ## Shell commands
 
-The terminal runs whatever the user types; that is its job. What cairn-code itself
+The terminal runs whatever the user types; that is its job. What causeway itself
 runs is different:
 
 - Use `execFile` with an argument array, never `exec` with an interpolated

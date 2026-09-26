@@ -7,7 +7,7 @@ const PRINCIPLES = [
   {
     icon: Lightbulb,
     title: 'An error that does not help is a bug',
-    body: 'Not a style preference, a defect. Every error cairn-code raises carries a message, a cause and a fix, and a change that adds one without the other two does not get merged. The same rule applies to its own failures: when a native module will not load, the editor says which command rebuilds it.'
+    body: 'Not a style preference, a defect. Every error Causeway raises carries a message, a cause and a fix, and a change that adds one without the other two does not get merged. The same rule applies to its own failures: when a native module will not load, the editor says which command rebuilds it.'
   },
   {
     icon: Shield,
@@ -17,7 +17,7 @@ const PRINCIPLES = [
   {
     icon: Bolt,
     title: 'Performance is a budget, not a hope',
-    body: 'Under two seconds cold, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives. One budget is missed: idle memory was meant to stay under 400 MB and 1.0.0 sits at 420, which the repository records as a miss rather than quietly moving the target.'
+    body: 'Under two seconds cold, a 50,000 line file without lag. Those numbers drove real decisions: one editor instance for the whole app, language services in workers, and a reduced feature set above 4 MB where the minimap would start costing more than it gives. One budget is missed: idle memory was meant to stay under 400 MB and this release sits at 420, which the repository records as a miss rather than quietly moving the target.'
   }
 ];
 
@@ -78,7 +78,7 @@ export function About(): JSX.Element {
             what an editor owes you.
           </h1>
           <p className="page-hero__lead">
-            cairn-code started from a small frustration that turns out to be expensive: an editor will happily
+            Causeway started from a small frustration that turns out to be expensive: an editor will happily
             tell you that a type is not assignable, and then leave you to work out what that means for the
             line you are looking at.
           </p>
@@ -184,7 +184,7 @@ export function About(): JSX.Element {
             <span className="eyebrow">Roadmap</span>
             <h2 className="section-title">What is done and what is not</h2>
             <p className="section-lead">
-              cairn-code is at 1.0.0. Inside the application, the panels for unfinished features say
+              Causeway is at 1.1.0. Inside the application, the panels for unfinished features say
               so rather than showing controls that do nothing, and this page does the same.
             </p>
           </div>
@@ -213,15 +213,20 @@ export function About(): JSX.Element {
           <div className="prose stack about-prose">
             <h2>On the name</h2>
             <p>
-              A cairn is a stack of stones left on a trail by whoever walked it first, so that the next person
-              does not have to guess the way. That is the whole idea of the editor in one object: someone has
-              already hit this error, and the fix should be waiting where you stand rather than three search
-              results away.
+              A Causeway is a road built up across ground you could not otherwise cross: a marsh, a tidal
+              flat, a stretch of water. Somebody laid it so that everyone after them could walk over what had
+              stopped them. That is the editor in one object. An error is the ground you cannot cross, and
+              the cause and the fix are the road across it, already built, waiting where you are standing
+              rather than three search results away.
             </p>
             <p>
-              The mark is three stones, widest at the base, with the top one placed slightly off square. It
-              stays legible at sixteen pixels, where it reduces to three bars, which is the size that decides
-              whether a logo works.
+              The word also contains <em>cause</em>, which is one of the four answers every problem here
+              carries, and the one every other editor leaves out.
+            </p>
+            <p>
+              The mark is the crossing seen from the side: a deck on three piers, over a waterline. At
+              sixteen pixels it reduces to one bar over three legs, which is the size that decides whether a
+              logo works at all.
             </p>
 
             <h2>Contributing</h2>
@@ -244,7 +249,7 @@ export function About(): JSX.Element {
               Browse the source
             </a>
             <Link to="/download" className="button button--primary">
-              Download cairn-code
+              Download Causeway
             </Link>
           </div>
         </div>

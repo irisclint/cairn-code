@@ -56,7 +56,7 @@ function useBootstrap(): boolean {
 
     void loadSettings().then(() => {
       initializeTheme(useSettingsStore.getState().settings['workbench.theme']);
-      outputChannel.append('cairn', 'Workbench ready');
+      outputChannel.append('causeway', 'Workbench ready');
       // Asked after the workbench is up, so the first frame is never delayed by
       // a filesystem check the user did not ask for.
       void offerDesktopShortcut();
@@ -134,7 +134,7 @@ export function App(): JSX.Element {
   if (!ready) {
     return (
       <div className="workbench workbench--loading">
-        <p className="workbench__loading-text">Starting cairn-code...</p>
+        <p className="workbench__loading-text">Starting causeway...</p>
       </div>
     );
   }

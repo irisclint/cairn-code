@@ -1,11 +1,11 @@
 import { EventEmitter } from 'node:events';
 import type { Readable, Writable } from 'node:stream';
-import { CairnError } from '@shared/errors';
+import { CausewayError } from '@shared/errors';
 
 /**
  * A Debug Adapter Protocol client.
  *
- * cairn-code speaks the protocol; it does not ship adapters. Debugging Node
+ * causeway speaks the protocol; it does not ship adapters. Debugging Node
  * needs js-debug, Python needs debugpy, and each is large, versioned with its
  * language, and already installed by anyone who debugs that language. Bundling
  * one would pick a winner and bloat the installer; driving whichever the
@@ -85,7 +85,7 @@ export class DapClient extends EventEmitter {
    */
   async send(command: string, args?: unknown): Promise<unknown> {
     if (this.#closed) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'DAP_CLOSED',
         message: 'The debug session has ended',
         cause: `The adapter is no longer running, so the ${command} request could not be sent.`,
@@ -101,7 +101,7 @@ export class DapClient extends EventEmitter {
       const timer = setTimeout(() => {
         this.#pending.delete(seq);
         reject(
-          new CairnError({
+          new CausewayError({
             code: 'DAP_TIMEOUT',
             message: `The debug adapter did not answer the ${command} request`,
             cause: `No response arrived within ${REQUEST_TIMEOUT_MS / 1000} seconds.`,
@@ -180,7 +180,7 @@ export class DapClient extends EventEmitter {
     }
 
     pending.reject(
-      new CairnError({
+      new CausewayError({
         code: 'DAP_REQUEST_FAILED',
         message: response.message ?? `The debug adapter refused the ${pending.command} request`,
         cause:
@@ -199,7 +199,7 @@ export class DapClient extends EventEmitter {
     for (const [, pending] of this.#pending) {
       clearTimeout(pending.timer);
       pending.reject(
-        new CairnError({
+        new CausewayError({
           code: 'DAP_CLOSED',
           message: 'The debug session ended before the adapter answered',
           cause: reason,

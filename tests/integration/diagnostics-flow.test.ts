@@ -12,7 +12,7 @@ import { detectLanguage, toMonacoLanguageId } from '@renderer/editor/language-su
  *
  * Follows a problem from a Monaco marker, through the explainer, into the
  * service, and back out as something the Problems panel can render. This is the
- * path that has to produce a cause and a solution for every problem cairn-code
+ * path that has to produce a cause and a solution for every problem causeway
  * shows, so it is exercised against the real Monaco marker API.
  */
 
@@ -47,7 +47,7 @@ describe('severity mapping', () => {
     }
   });
 
-  it('should map the cairn-code scale onto the Monaco constants', () => {
+  it('should map the causeway scale onto the Monaco constants', () => {
     expect(toMonacoSeverity(0)).toBe(monaco.MarkerSeverity.Error);
     expect(toMonacoSeverity(1)).toBe(monaco.MarkerSeverity.Warning);
     expect(toMonacoSeverity(2)).toBe(monaco.MarkerSeverity.Info);
@@ -250,7 +250,7 @@ describe('editor and diagnostics working together', () => {
       monaco.Uri.file('/workspace/component.tsx')
     );
 
-    // cairn-code labels the file TypeScript React, but the model has to carry the
+    // causeway labels the file TypeScript React, but the model has to carry the
     // Monaco id or the file would get no highlighting and no type checking.
     expect(language.label).toBe('TypeScript React');
     expect(tsxModel.getLanguageId()).toBe('typescript');

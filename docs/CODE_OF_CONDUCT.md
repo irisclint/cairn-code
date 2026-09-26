@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We want contributing to cairn-code to be a good experience for everyone, regardless
+We want contributing to causeway to be a good experience for everyone, regardless
 of experience level, background or identity.
 
 ## Expected behaviour

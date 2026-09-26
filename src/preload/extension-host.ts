@@ -36,6 +36,6 @@ const bridge = {
   }
 };
 
-contextBridge.exposeInMainWorld('cairnHost', bridge);
+contextBridge.exposeInMainWorld('causewayHost', bridge);
 
-export type CairnHostBridge = typeof bridge;
+export type CausewayHostBridge = typeof bridge;

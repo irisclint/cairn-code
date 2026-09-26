@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "monochrome",
   "name": "Monochrome",
   "type": "dark",
   "description": "Pure greyscale. Syntax is carried entirely by weight and brightness.",
-  "author": "cairn Team",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

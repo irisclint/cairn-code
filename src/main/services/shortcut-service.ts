@@ -4,7 +4,7 @@ import { constants } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { APP_NAME } from '@shared/constants';
-import { CairnError } from '@shared/errors';
+import { CausewayError } from '@shared/errors';
 import { createLogger } from '@shared/logger';
 
 const log = createLogger('shortcut');
@@ -24,7 +24,7 @@ export interface ShortcutState {
 }
 
 /**
- * Creates the desktop shortcut that launches cairn-code.
+ * Creates the desktop shortcut that launches causeway.
  *
  * The platform installers cover the common case: the Windows installer writes
  * a desktop and Start menu entry, the macOS disk image offers the Applications
@@ -104,11 +104,11 @@ export class ShortcutService {
     const state = await this.getState();
 
     if (!state.canCreate) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'SHORTCUT_UNAVAILABLE',
         message: 'A desktop shortcut cannot be created for this build',
         cause: state.reason ?? 'The running build does not support shortcut creation.',
-        solution: 'Install cairn-code with the installer for your platform, then try again.'
+        solution: 'Install causeway with the installer for your platform, then try again.'
       });
     }
 
@@ -126,8 +126,8 @@ export class ShortcutService {
         await this.#createLinuxEntry(path, target);
       }
     } catch (error) {
-      if (error instanceof CairnError) throw error;
-      throw new CairnError({
+      if (error instanceof CausewayError) throw error;
+      throw new CausewayError({
         code: 'SHORTCUT_FAILED',
         message: 'Could not create the desktop shortcut',
         cause: `Writing ${path} failed: ${String(error)}`,
@@ -149,11 +149,11 @@ export class ShortcutService {
       icon: target,
       iconIndex: 0,
       description: `${APP_NAME} code editor`,
-      appUserModelId: 'dev.cairn.editor'
+      appUserModelId: 'dev.causeway.editor'
     });
 
     if (!created) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'SHORTCUT_FAILED',
         message: 'Windows refused to write the shortcut',
         cause: 'The shell reported that the shortcut file could not be created.',
@@ -176,8 +176,8 @@ export class ShortcutService {
    * they look at the desktop.
    */
   async #createLinuxEntry(path: string, target: string): Promise<void> {
-    const iconPath = join(process.resourcesPath ?? '', 'icons', 'cairn-logo-512.png');
-    const icon = (await this.#exists(iconPath)) ? iconPath : 'cairn';
+    const iconPath = join(process.resourcesPath ?? '', 'icons', 'causeway-logo-512.png');
+    const icon = (await this.#exists(iconPath)) ? iconPath : 'causeway';
 
     const entry = [
       '[Desktop Entry]',
@@ -203,7 +203,7 @@ export class ShortcutService {
     const applications = join(homedir(), '.local', 'share', 'applications');
     try {
       await mkdir(applications, { recursive: true });
-      await writeFile(join(applications, 'cairn.desktop'), entry, { encoding: 'utf8', mode: 0o755 });
+      await writeFile(join(applications, 'causeway.desktop'), entry, { encoding: 'utf8', mode: 0o755 });
     } catch (error) {
       // The desktop entry is the part the user asked for; the launcher entry is
       // a bonus, and failing to write it must not fail the whole operation.
@@ -221,7 +221,7 @@ export class ShortcutService {
       log.info(`Removed desktop shortcut at ${path}`);
       return true;
     } catch (error) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'SHORTCUT_REMOVE_FAILED',
         message: 'Could not remove the desktop shortcut',
         cause: `Deleting ${path} failed: ${String(error)}`,

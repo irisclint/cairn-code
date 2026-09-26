@@ -14,7 +14,7 @@ const MAX_ENTRIES = 2000;
  * In-memory log shown in the Output panel.
  *
  * Services append here instead of only writing to the developer console, so a
- * user who never opens developer tools can still see what cairn-code is doing.
+ * user who never opens developer tools can still see what causeway is doing.
  */
 export class OutputChannelService {
   #entries: OutputEntry[] = [];

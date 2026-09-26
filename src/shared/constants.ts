@@ -1,8 +1,8 @@
 /** Application-wide constants shared by main, preload and renderer. */
 
-export const APP_NAME = 'cairn-code';
-export const APP_ID = 'dev.cairn.editor';
-export const APP_PROTOCOL = 'cairn';
+export const APP_NAME = 'Causeway';
+export const APP_ID = 'dev.causeway.editor';
+export const APP_PROTOCOL = 'causeway';
 
 /** Files larger than this are opened read-only without tokenization. */
 export const MAX_FILE_SIZE_BYTES = 64 * 1024 * 1024;

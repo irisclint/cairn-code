@@ -325,12 +325,12 @@ describe('application menu', () => {
 /* Protocol                                                                    */
 /* -------------------------------------------------------------------------- */
 
-describe('cairn-code protocol', () => {
+describe('causeway protocol', () => {
   it('should register the scheme as secure and standard before the app is ready', () => {
     registerProtocolSchemes();
     const scheme = privilegedSchemes[0] as { scheme: string; privileges: Record<string, boolean> };
 
-    expect(scheme.scheme).toBe('cairn');
+    expect(scheme.scheme).toBe('causeway');
     expect(scheme.privileges.secure).toBe(true);
     expect(scheme.privileges.standard).toBe(true);
     expect(scheme.privileges.bypassCSP).toBe(false);
@@ -341,8 +341,8 @@ describe('cairn-code protocol', () => {
     handler.allowRoot('/workspace');
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    const response = await serve!(new Request('cairn://file/' + encodeURIComponent('/workspace/image.png')));
+    const serve = protocolHandlers.get('causeway');
+    const response = await serve!(new Request('causeway://file/' + encodeURIComponent('/workspace/image.png')));
 
     expect(response.status).toBe(200);
     expect(fakeNet.fetch).toHaveBeenCalled();
@@ -353,8 +353,8 @@ describe('cairn-code protocol', () => {
     handler.allowRoot('/workspace');
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    const response = await serve!(new Request('cairn://file/' + encodeURIComponent('/etc/passwd')));
+    const serve = protocolHandlers.get('causeway');
+    const response = await serve!(new Request('causeway://file/' + encodeURIComponent('/etc/passwd')));
 
     expect(response.status).toBe(403);
   });
@@ -364,16 +364,16 @@ describe('cairn-code protocol', () => {
     handler.allowRoot('/workspace');
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    expect((await serve!(new Request('cairn://file/relative/path.png'))).status).toBe(403);
+    const serve = protocolHandlers.get('causeway');
+    expect((await serve!(new Request('causeway://file/relative/path.png'))).status).toBe(403);
   });
 
   it('should refuse an unknown host', async () => {
     const handler = new ProtocolHandler();
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    expect((await serve!(new Request('cairn://other/thing'))).status).toBe(404);
+    const serve = protocolHandlers.get('causeway');
+    expect((await serve!(new Request('causeway://other/thing'))).status).toBe(404);
   });
 
   it('should stop serving workspace files after the folder is closed', async () => {
@@ -382,8 +382,8 @@ describe('cairn-code protocol', () => {
     handler.clearWorkspaceRoots();
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    const response = await serve!(new Request('cairn://file/' + encodeURIComponent('/workspace/image.png')));
+    const serve = protocolHandlers.get('causeway');
+    const response = await serve!(new Request('causeway://file/' + encodeURIComponent('/workspace/image.png')));
 
     expect(response.status).toBe(403);
   });
@@ -395,8 +395,8 @@ describe('cairn-code protocol', () => {
     handler.allowRoot('/workspace');
     handler.register();
 
-    const serve = protocolHandlers.get('cairn');
-    const response = await serve!(new Request('cairn://file/' + encodeURIComponent('/workspace/gone.png')));
+    const serve = protocolHandlers.get('causeway');
+    const response = await serve!(new Request('causeway://file/' + encodeURIComponent('/workspace/gone.png')));
 
     expect(response.status).toBe(404);
   });
@@ -436,7 +436,7 @@ describe('FileWatcherService', () => {
   let root: string;
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'cairn-watch-'));
+    root = await mkdtemp(join(tmpdir(), 'causeway-watch-'));
   });
 
   afterEach(async () => {
@@ -519,7 +519,7 @@ describe('GitCliService', () => {
   let root: string;
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'cairn-git-'));
+    root = await mkdtemp(join(tmpdir(), 'causeway-git-'));
   });
 
   afterEach(async () => {

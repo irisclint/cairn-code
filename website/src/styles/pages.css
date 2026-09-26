@@ -324,6 +324,57 @@
 }
 
 /* -------------------------------------------------------------------------- */
+/* What the name means                                                         */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * One line, once, near the top.
+ *
+ * A product named after a real word has to say which meaning it means, or the
+ * reader carries the wrong one through the whole page. It sits between the
+ * hero and the demonstration because that is where someone who has just read
+ * the name is still wondering about it.
+ */
+.namebar {
+  padding-block: var(--space-7);
+  border-block: 1px solid var(--line);
+  background: var(--bg-raised);
+}
+
+.namebar__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  max-width: 74ch;
+  margin: 0 auto;
+}
+
+.namebar__mark {
+  flex: none;
+  margin-top: 0.15em;
+  border-radius: 9px;
+}
+
+.namebar__text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--step-0);
+  line-height: 1.75;
+}
+
+.namebar__text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .namebar__inner {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
 /* The demo section                                                            */
 /* -------------------------------------------------------------------------- */
 

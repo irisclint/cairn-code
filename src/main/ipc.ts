@@ -584,7 +584,7 @@ export function registerIpcHandlers(context: IpcContext): void {
           code: 'MARKETPLACE_NOT_CONFIGURED',
           message: 'No extension registry is set',
           cause:
-            'cairn-code has no registry address built in, because no catalogue has been published yet and requesting one that does not exist would be a network call made for nothing.',
+            'causeway has no registry address built in, because no catalogue has been published yet and requesting one that does not exist would be a network call made for nothing.',
           solution:
             'Set extensions.registryUrl in Settings to the address of a catalogue, or install an extension from a file.'
         });

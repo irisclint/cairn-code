@@ -21,7 +21,7 @@ vi.setConfig({ testTimeout: 30_000, hookTimeout: 60_000 });
  * The porcelain v2 format is what the parser reads, and it changes between git
  * versions, so parsing fixture strings would test the fixture rather than git.
  * These tests create a throwaway repository instead. When git is not installed,
- * they skip rather than fail, since git is optional for cairn-code itself.
+ * they skip rather than fail, since git is optional for causeway itself.
  */
 
 let repo: string;
@@ -33,11 +33,11 @@ async function inRepo(...args: string[]): Promise<void> {
 }
 
 beforeAll(async () => {
-  repo = await mkdtemp(join(tmpdir(), 'cairn-gitrepo-'));
+  repo = await mkdtemp(join(tmpdir(), 'causeway-gitrepo-'));
   try {
     await inRepo('init', '--initial-branch=main');
-    await inRepo('config', 'user.email', 'test@cairn.dev');
-    await inRepo('config', 'user.name', 'cairn test');
+    await inRepo('config', 'user.email', 'test@causeway.dev');
+    await inRepo('config', 'user.name', 'causeway test');
     await inRepo('config', 'commit.gpgsign', 'false');
 
     await writeFile(join(repo, 'committed.txt'), 'original\n');
@@ -172,7 +172,7 @@ describe('GitCliService against a real repository', () => {
   });
 
   it('should treat a folder that is not a repository as empty rather than failing', async () => {
-    const plain = await mkdtemp(join(tmpdir(), 'cairn-plain-'));
+    const plain = await mkdtemp(join(tmpdir(), 'causeway-plain-'));
 
     const status = await git.getStatus(plain);
     expect(status.isRepository).toBe(false);
@@ -292,7 +292,7 @@ describe('branches', () => {
 
 describe('when the folder is not a repository', () => {
   it.runIf(hasGit)('should fail a commit with a cause and a concrete next step', async () => {
-    const plain = await mkdtemp(join(tmpdir(), 'cairn-notrepo-'));
+    const plain = await mkdtemp(join(tmpdir(), 'causeway-notrepo-'));
 
     try {
       await git.commit(plain, 'this cannot work');
@@ -308,7 +308,7 @@ describe('when the folder is not a repository', () => {
   });
 
   it.runIf(hasGit)('should read a status of nothing rather than throwing', async () => {
-    const plain = await mkdtemp(join(tmpdir(), 'cairn-notrepo-'));
+    const plain = await mkdtemp(join(tmpdir(), 'causeway-notrepo-'));
     const status = await git.getStatus(plain);
 
     expect(status.isRepository).toBe(false);

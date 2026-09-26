@@ -104,17 +104,17 @@ const INSTALL_STEPS: Record<DownloadTarget['id'], string[]> = {
   windows: [
     'Run the installer. It installs for your user, so it never asks for an administrator password.',
     'SmartScreen may warn about an unrecognised publisher, because the build is not code signed. Choose More info, then Run anyway.',
-    'cairn-code adds an "Open with cairn-code" entry to the Explorer context menu for files and folders.'
+    'Causeway adds an "Open with Causeway" entry to the Explorer context menu for files and folders.'
   ],
   macos: [
-    'Open the disk image and drag cairn-code into Applications.',
+    'Open the disk image and drag Causeway into Applications.',
     'The first launch is blocked because the build is not code signed. Right click the app, choose Open, then confirm.',
     'Pick the Apple silicon build on an M1 or newer, and the Intel build otherwise.'
   ],
   linux: [
     'AppImage: make it executable with chmod +x, then run it. Nothing is installed system wide.',
-    'Debian and Ubuntu: sudo apt install ./cairn-*.deb',
-    'Fedora and RHEL: sudo dnf install ./cairn-*.rpm'
+    'Debian and Ubuntu: sudo apt install ./causeway-*.deb',
+    'Fedora and RHEL: sudo dnf install ./causeway-*.rpm'
   ]
 };
 
@@ -139,7 +139,7 @@ export function DownloadPage(): JSX.Element {
       <section className="page-hero">
         <div className="container">
           <span className="eyebrow">Download</span>
-          <h1 className="page-hero__title">Get cairn-code {VERSION}</h1>
+          <h1 className="page-hero__title">Get Causeway {VERSION}</h1>
           <p className="page-hero__lead">
             {ready.length === 0
               ? 'Free and MIT licensed. No build has been attached to a release yet, so there is nothing to download from this page today.'
@@ -172,7 +172,7 @@ export function DownloadPage(): JSX.Element {
                 than listing all nine and letting you find out by clicking.
               </p>
               <p className="notice__body">
-                On a platform with no build yet, the way to run cairn-code is to build it. That is one command
+                On a platform with no build yet, the way to run Causeway is to build it. That is one command
                 once the dependencies are in place, and the source is public, so nothing here rests on taking
                 the project's word for anything.
               </p>

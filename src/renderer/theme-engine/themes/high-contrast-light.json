@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "high-contrast-light",
   "name": "High Contrast Light",
   "type": "high-contrast-light",
   "description": "Maximum contrast on white, meeting WCAG AAA for body text.",
-  "author": "cairn Team",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

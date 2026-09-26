@@ -1,6 +1,6 @@
-# cairn-code website
+# causeway website
 
-The marketing and download site for [cairn-code](../README.md).
+The marketing and download site for [causeway](../README.md).
 
 ## Running it
 
@@ -17,19 +17,19 @@ npm run preview  # serve the built output
 src/
   pages/       Home, About, Download
   components/  Header, Footer, the editor still, feature grid, comparison, FAQ
-  data/        content.ts, every fact the site states about cairn-code
+  data/        content.ts, every fact the site states about causeway
   hooks/       usePlatform, which picks the default download
   styles/      base (tokens and reset), components, preview, pages
 ```
 
 **`src/data/content.ts` is the single source of truth.** The language count,
 the theme count, the version and the download file names all live there, so a
-claim on the site cannot quietly drift from the product. When cairn-code gains a
+claim on the site cannot quietly drift from the product. When causeway gains a
 language or a theme, update that file rather than the page that displays it.
 
 ## The editor still in the hero
 
-`components/EditorPreview.tsx` is the cairn-code window rebuilt in markup, painted
+`components/EditorPreview.tsx` is the causeway window rebuilt in markup, painted
 with the Dark Modern theme's real colours. It is not a screenshot: a screenshot
 would be a large image, soft on a high density display, and stale the moment
 the interface changed. The markup version stays sharp at any size, costs a few
@@ -44,7 +44,7 @@ client side routes such as `/download` work when opened directly.
 
 For GitHub Pages, copy `dist/index.html` to `dist/404.html` after building.
 
-The site is live at <https://cairn-theta-wine.vercel.app>.
+The site is live at <https://causeway-theta-wine.vercel.app>.
 
 That deployment was uploaded directly rather than built from this repository,
 so it is a snapshot: pushing here does not update it, and it is missing the two

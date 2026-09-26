@@ -12,7 +12,7 @@ const VALID_TYPES: readonly ThemeType[] = ['dark', 'light', 'high-contrast-dark'
 /** Matches #rgb, #rrggbb and #rrggbbaa. */
 const COLOR_PATTERN = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
 
-/** True when the value is a hex colour cairn-code can parse. */
+/** True when the value is a hex colour causeway can parse. */
 export function isValidColor(value: unknown): value is string {
   return typeof value === 'string' && COLOR_PATTERN.test(value);
 }
@@ -98,7 +98,7 @@ export function validateTheme(candidate: unknown): ThemeValidationResult {
         key,
         message: `Required colour "${key}" is missing`,
         cause:
-          'cairn-code has no safe default for this surface, so leaving it out would make part of the UI invisible.',
+          'causeway has no safe default for this surface, so leaving it out would make part of the UI invisible.',
         solution: `Add "${key}" to the colors object with a hex value such as "#1e1e1e".`
       });
     } else if (!isValidColor(value)) {

@@ -37,7 +37,7 @@ async function waitForStatus(expected: DebugSessionState['status']): Promise<voi
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'cairn-debug-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-debug-'));
   service = new DebugService();
 });
 

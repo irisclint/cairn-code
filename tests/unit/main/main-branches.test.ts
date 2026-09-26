@@ -56,7 +56,7 @@ let root: string;
 
 beforeEach(async () => {
   resetElectronMock();
-  root = await mkdtemp(join(tmpdir(), 'cairn-branch-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-branch-'));
 });
 
 afterEach(async () => {
@@ -256,9 +256,9 @@ describe('PtyService fallback and failure paths', () => {
     );
 
     const session = await pty.create({ cols: 80, rows: 24, cwd: process.cwd() });
-    pty.write(session.id, 'echo cairn-pty-test\r');
+    pty.write(session.id, 'echo causeway-pty-test\r');
 
-    await vi.waitFor(() => expect(chunks.join('')).toContain('cairn-pty-test'), { timeout: 15_000 });
+    await vi.waitFor(() => expect(chunks.join('')).toContain('causeway-pty-test'), { timeout: 15_000 });
 
     pty.dispose(session.id);
   }, 30_000);
@@ -298,7 +298,7 @@ describe('PtyService fallback and failure paths', () => {
       cols: 80,
       rows: 24,
       cwd: process.cwd(),
-      env: { CAIRN_TEST_VARIABLE: 'set' }
+      env: { CAUSEWAY_TEST_VARIABLE: 'set' }
     });
 
     expect(session.pid).toBeGreaterThan(0);

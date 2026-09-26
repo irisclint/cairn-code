@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Question or discussion
-    url: https://github.com/irisclint/cairn-code/discussions
+    url: https://github.com/irisclint/causeway/discussions
     about: Ask how something works, or propose an idea before opening an issue.
   - name: Security issue
-    url: https://github.com/irisclint/cairn-code/security/advisories/new
+    url: https://github.com/irisclint/causeway/security/advisories/new
     about: Report a vulnerability privately. Please do not open a public issue.

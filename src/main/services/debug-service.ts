@@ -2,7 +2,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { EventEmitter } from 'node:events';
-import { CairnError } from '@shared/errors';
+import { CausewayError } from '@shared/errors';
 import { createLogger } from '@shared/logger';
 import { DapClient, type DapEvent } from './dap-client';
 import type {
@@ -19,7 +19,7 @@ const log = createLogger('debug');
 /**
  * Runs a debug session.
  *
- * cairn-code implements the client side of the Debug Adapter Protocol and runs
+ * causeway implements the client side of the Debug Adapter Protocol and runs
  * whichever adapter the workspace configures. Adapters are large, versioned
  * with the language they debug, and already installed by anyone who debugs
  * that language, so bundling one would pick a winner and add more to the
@@ -67,7 +67,7 @@ export class DebugService extends EventEmitter {
       const parsed = JSON.parse(stripJsonComments(text)) as { configurations?: DebugConfiguration[] };
       return Array.isArray(parsed.configurations) ? parsed.configurations : [];
     } catch (error) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'DEBUG_BAD_CONFIG',
         message: 'launch.json could not be read',
         cause: `${path} is not valid JSON, even allowing for comments and trailing commas: ${String(error)}`,
@@ -83,7 +83,7 @@ export class DebugService extends EventEmitter {
   /** Starts a session for one configuration. */
   async start(cwd: string, configuration: DebugConfiguration): Promise<void> {
     if (this.#state.status !== 'inactive') {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'DEBUG_ALREADY_RUNNING',
         message: 'A debug session is already running',
         cause: `The session for ${this.#state.configurationName ?? 'the current configuration'} has not ended.`,
@@ -179,8 +179,8 @@ export class DebugService extends EventEmitter {
     });
 
     this.#capabilities = ((await client.send('initialize', {
-      clientID: 'cairn-code',
-      clientName: 'cairn-code',
+      clientID: 'causeway',
+      clientName: 'causeway',
       adapterID: configuration.type,
       locale: 'en',
       linesStartAt1: true,
@@ -370,7 +370,7 @@ export class DebugService extends EventEmitter {
   #requireClient(command: string): DapClient {
     if (this.#client && !this.#client.closed) return this.#client;
 
-    throw new CairnError({
+    throw new CausewayError({
       code: 'DEBUG_NOT_RUNNING',
       message: 'No debug session is running',
       cause: `${command} needs a running adapter, and the session has ended or was never started.`,
@@ -432,11 +432,11 @@ export class DebugService extends EventEmitter {
     this.#setState({ status: 'inactive', threadId: null, configurationName: null });
   }
 
-  #adapterMissing(command: string, type: string, error: unknown): CairnError {
-    return new CairnError({
+  #adapterMissing(command: string, type: string, error: unknown): CausewayError {
+    return new CausewayError({
       code: 'DEBUG_ADAPTER_MISSING',
       message: `The debug adapter for ${type} could not be started`,
-      cause: `Running "${command}" failed: ${String(error)}. cairn-code speaks the Debug Adapter Protocol but does not ship adapters, so the one for ${type} has to be installed in the workspace or on the PATH.`,
+      cause: `Running "${command}" failed: ${String(error)}. causeway speaks the Debug Adapter Protocol but does not ship adapters, so the one for ${type} has to be installed in the workspace or on the PATH.`,
       solution:
         type === 'python'
           ? 'Install it with pip install debugpy, then start the session again.'

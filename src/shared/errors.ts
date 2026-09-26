@@ -1,14 +1,14 @@
 import type { IpcResult } from './types';
 
 /**
- * Base class for every error cairn-code raises on purpose.
+ * Base class for every error causeway raises on purpose.
  *
- * An CairnError always answers three questions: what happened (`message`),
+ * A CausewayError always answers three questions: what happened (`message`),
  * why it happened (`cause`) and what the user can do (`solution`). Error
  * messages that only state a failure are treated as a defect, see
  * docs/development/rules/coding-style.md.
  */
-export class CairnError extends Error {
+export class CausewayError extends Error {
   readonly code: string;
   readonly userCause: string;
   readonly solution: string;
@@ -40,12 +40,12 @@ export class CairnError extends Error {
   }
 }
 
-export class FileSystemError extends CairnError {}
-export class WorkspaceError extends CairnError {}
-export class TerminalError extends CairnError {}
-export class ThemeError extends CairnError {}
-export class SettingsError extends CairnError {}
-export class ExtensionError extends CairnError {}
+export class FileSystemError extends CausewayError {}
+export class WorkspaceError extends CausewayError {}
+export class TerminalError extends CausewayError {}
+export class ThemeError extends CausewayError {}
+export class SettingsError extends CausewayError {}
+export class ExtensionError extends CausewayError {}
 
 /** Maps a Node.js `errno` code onto an actionable FileSystemError. */
 export function fileSystemErrorFor(error: unknown, path: string): FileSystemError {
@@ -98,7 +98,7 @@ export function fileSystemErrorFor(error: unknown, path: string): FileSystemErro
   const entry = table[code] ?? {
     message: `Filesystem operation failed for ${path}`,
     cause: `The operating system reported the error code ${code}.`,
-    solution: 'Check that the path exists and that cairn-code is allowed to access it.'
+    solution: 'Check that the path exists and that causeway is allowed to access it.'
   };
 
   return new FileSystemError({ code: `FS_${code}`, ...entry, original: error });
@@ -106,7 +106,7 @@ export function fileSystemErrorFor(error: unknown, path: string): FileSystemErro
 
 /** Normalises any thrown value into the IPC error envelope. */
 export function toIpcResult<T>(error: unknown): Extract<IpcResult<T>, { ok: false }> {
-  if (error instanceof CairnError) {
+  if (error instanceof CausewayError) {
     return { ok: false, error: error.toIpcError() };
   }
   if (error instanceof Error) {

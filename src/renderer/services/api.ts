@@ -1,9 +1,9 @@
 import type { IpcResult } from '@shared/types';
-import type { CairnApi } from '../../preload';
+import type { CausewayApi } from '../../preload';
 
 declare global {
   interface Window {
-    cairn: CairnApi;
+    causeway: CausewayApi;
   }
 }
 
@@ -23,18 +23,18 @@ export class ApiError extends Error {
 /**
  * The preload bridge.
  *
- * Accessing it through this function rather than `window.cairn` directly gives
+ * Accessing it through this function rather than `window.causeway` directly gives
  * one place to fail with a clear message when the renderer is loaded outside
  * Electron, which is exactly what happens in unit tests that forget to mock it.
  */
-export function api(): CairnApi {
-  const bridge = globalThis.window?.cairn;
+export function api(): CausewayApi {
+  const bridge = globalThis.window?.causeway;
   if (!bridge) {
     throw new ApiError(
       'BRIDGE_MISSING',
-      'The cairn-code bridge is not available',
+      'The causeway bridge is not available',
       'The renderer is running without the preload script, for example in a plain browser tab or an unmocked test.',
-      'Start cairn-code through "npm run dev", or mock window.cairn in the test setup.'
+      'Start causeway through "npm run dev", or mock window.causeway in the test setup.'
     );
   }
   return bridge;
@@ -42,7 +42,7 @@ export function api(): CairnApi {
 
 /** True when the preload bridge is present. */
 export function hasBridge(): boolean {
-  return Boolean(globalThis.window?.cairn);
+  return Boolean(globalThis.window?.causeway);
 }
 
 /**

@@ -94,7 +94,7 @@ describe('the desktop shortcut control in Settings', () => {
 
   it('should stay usable when the removal fails', async () => {
     state.shortcut = { ...state.shortcut, exists: true };
-    vi.mocked(globalThis.window.cairn.shortcut.remove).mockResolvedValueOnce({
+    vi.mocked(globalThis.window.causeway.shortcut.remove).mockResolvedValueOnce({
       ok: false,
       error: { code: 'SHORTCUT_REMOVE_FAILED', message: 'nope', cause: 'c', solution: 's' }
     });

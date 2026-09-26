@@ -1,4 +1,4 @@
-/** Type contract for cairn-code colour themes. */
+/** Type contract for causeway colour themes. */
 
 export type ThemeType = 'dark' | 'light' | 'high-contrast-dark' | 'high-contrast-light';
 
@@ -15,7 +15,7 @@ export interface TokenColor {
 }
 
 /**
- * Every workbench colour key cairn-code understands.
+ * Every workbench colour key causeway understands.
  *
  * Keys follow the `area.property` convention. A theme may omit any key; the
  * loader fills gaps from the default theme of the same type, so a minimal

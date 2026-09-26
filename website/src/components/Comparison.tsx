@@ -15,7 +15,7 @@ export function Comparison(): JSX.Element {
       <div className="comparison__head" aria-hidden="true">
         <span />
         <span className="comparison__head-ours">
-          <img src="/cairn-logo.svg" alt="" width={18} height={18} />
+          <img src="/causeway-logo.svg" alt="" width={18} height={18} />
           {PRODUCT}
         </span>
         <span className="comparison__head-other">Most editors</span>

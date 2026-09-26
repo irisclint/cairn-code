@@ -49,7 +49,7 @@ function detectWindowsShells(): ShellDescriptor[] {
     shells.push({ id: 'cmd', label: 'Command Prompt', executable: cmd, args: [] });
   }
 
-  // A Windows install without cmd.exe is not something cairn-code can repair, but
+  // A Windows install without cmd.exe is not something causeway can repair, but
   // returning the bare name still lets PATH resolution have a chance.
   if (shells.length === 0) {
     shells.push({ id: 'cmd', label: 'Command Prompt', executable: 'cmd.exe', args: [] });

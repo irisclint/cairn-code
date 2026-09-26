@@ -128,7 +128,7 @@ describe('theme registration', () => {
 
   it('should namespace every theme name', () => {
     for (const theme of listThemes()) {
-      expect(monacoThemeName(theme.id)).toBe('cairn-' + theme.id);
+      expect(monacoThemeName(theme.id)).toBe('causeway-' + theme.id);
     }
   });
 });

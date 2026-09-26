@@ -7,7 +7,7 @@ vi.mock('electron', () => import('./electron-mock'));
 
 const { resetElectronMock, app: fakeApp, shell: fakeShell } = await import('./electron-mock');
 const { ShortcutService } = await import('@main/services/shortcut-service');
-const { CairnError } = await import('@shared/errors');
+const { CausewayError } = await import('@shared/errors');
 
 let desktop: string;
 let resources: string;
@@ -15,12 +15,12 @@ let service: InstanceType<typeof ShortcutService>;
 
 beforeEach(async () => {
   resetElectronMock();
-  desktop = await mkdtemp(join(tmpdir(), 'cairn-desktop-'));
-  resources = await mkdtemp(join(tmpdir(), 'cairn-resources-'));
+  desktop = await mkdtemp(join(tmpdir(), 'causeway-desktop-'));
+  resources = await mkdtemp(join(tmpdir(), 'causeway-resources-'));
 
   fakeApp.getPath = vi.fn((name: string) => {
     if (name === 'desktop') return desktop;
-    if (name === 'exe') return join(resources, 'cairn-code.exe');
+    if (name === 'exe') return join(resources, 'causeway.exe');
     return resources;
   });
   fakeApp.isPackaged = true;
@@ -56,7 +56,7 @@ describe('reporting the state', () => {
     const state = await service.getState();
 
     if (process.platform === 'win32') expect(state.path.endsWith('.lnk')).toBe(true);
-    else if (process.platform === 'darwin') expect(state.path.endsWith('cairn-code')).toBe(true);
+    else if (process.platform === 'darwin') expect(state.path.endsWith('causeway')).toBe(true);
     else expect(state.path.endsWith('.desktop')).toBe(true);
   });
 
@@ -70,7 +70,7 @@ describe('reporting the state', () => {
   it('should fall back to a home directory path when the shell folder is unknown', async () => {
     fakeApp.getPath = vi.fn((name: string) => {
       if (name === 'desktop') throw new Error('no desktop folder configured');
-      return join(resources, 'cairn-code.exe');
+      return join(resources, 'causeway.exe');
     });
 
     // The fallback must still produce a usable path rather than throwing.
@@ -82,11 +82,11 @@ describe('creating the shortcut', () => {
   it('should refuse a development build with a cause and a fix', async () => {
     fakeApp.isPackaged = false;
 
-    await expect(service.create()).rejects.toThrowError(CairnError);
+    await expect(service.create()).rejects.toThrowError(CausewayError);
     try {
       await service.create();
     } catch (error) {
-      const failure = error as InstanceType<typeof CairnError>;
+      const failure = error as InstanceType<typeof CausewayError>;
       expect(failure.code).toBe('SHORTCUT_UNAVAILABLE');
       expect(failure.userCause.length).toBeGreaterThan(0);
       expect(failure.solution).toContain('installer');
@@ -100,7 +100,7 @@ describe('creating the shortcut', () => {
       const entry = await readFile(path, 'utf8');
 
       expect(entry).toContain('[Desktop Entry]');
-      expect(entry).toContain('Name=cairn-code');
+      expect(entry).toContain('Name=causeway');
       expect(entry).toContain('Categories=Development;IDE;TextEditor;');
       // A launcher has to be executable or a file manager treats it as text.
       expect((await stat(path)).mode & 0o111).toBeGreaterThan(0);
@@ -112,10 +112,10 @@ describe('creating the shortcut', () => {
     async () => {
       const spaced = join(resources, 'Program Files');
       await mkdir(spaced, { recursive: true });
-      fakeApp.getPath = vi.fn((name: string) => (name === 'desktop' ? desktop : join(spaced, 'cairn-code')));
+      fakeApp.getPath = vi.fn((name: string) => (name === 'desktop' ? desktop : join(spaced, 'causeway')));
 
       const entry = await readFile(await service.create(), 'utf8');
-      expect(entry).toContain('Exec="' + join(spaced, 'cairn-code') + '" %U');
+      expect(entry).toContain('Exec="' + join(spaced, 'causeway') + '" %U');
     }
   );
 
@@ -124,11 +124,11 @@ describe('creating the shortcut', () => {
 
     const path = await service.create();
 
-    expect(path.endsWith('cairn-code.lnk')).toBe(true);
+    expect(path.endsWith('causeway.lnk')).toBe(true);
     expect(fakeShell.writeShortcutLink).toHaveBeenCalledWith(
       path,
       'create',
-      expect.objectContaining({ appUserModelId: 'dev.cairn.editor' })
+      expect.objectContaining({ appUserModelId: 'dev.causeway.editor' })
     );
   });
 

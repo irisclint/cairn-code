@@ -37,7 +37,7 @@ async function exists(path: string): Promise<boolean> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'cairn-ext-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-ext-'));
   registry = new ExtensionRegistry(root);
 });
 
@@ -62,7 +62,7 @@ describe('installing', () => {
 
     expect(manifest.id).toBe('acme.hello');
     expect(await readFile(join(root, 'acme.hello', 'extension.js'), 'utf8')).toContain('activate');
-    expect(await exists(join(root, 'acme.hello', 'cairn.extension.json'))).toBe(true);
+    expect(await exists(join(root, 'acme.hello', 'causeway.extension.json'))).toBe(true);
   });
 
   it('should create nested folders a bundle asks for', async () => {
@@ -216,7 +216,7 @@ describe('uninstalling', () => {
 describe('an installation that has gone wrong', () => {
   it('should report a broken manifest rather than hiding the extension', async () => {
     await mkdir(join(root, 'acme.broken'), { recursive: true });
-    await writeFile(join(root, 'acme.broken', 'cairn.extension.json'), '{ not json');
+    await writeFile(join(root, 'acme.broken', 'causeway.extension.json'), '{ not json');
 
     const [installed] = await registry.list();
     expect(installed?.status).toBe('failed');
@@ -228,7 +228,7 @@ describe('an installation that has gone wrong', () => {
     // Otherwise one extension could shadow another by folder name alone.
     await mkdir(join(root, 'acme.pretender'), { recursive: true });
     await writeFile(
-      join(root, 'acme.pretender', 'cairn.extension.json'),
+      join(root, 'acme.pretender', 'causeway.extension.json'),
       JSON.stringify({ ...MANIFEST, id: 'acme.hello' })
     );
 

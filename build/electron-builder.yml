@@ -1,6 +1,6 @@
-appId: dev.cairn.editor
-productName: cairn-code
-copyright: Copyright (c) 2026 cairn-code contributors
+appId: dev.causeway.editor
+productName: Causeway
+copyright: Copyright (c) 2026 causeway contributors
 
 directories:
   output: release/${version}
@@ -19,8 +19,8 @@ extraResources:
   - from: resources/icons/logo
     to: icons
     filter:
-      - cairn-logo-*.png
-      - cairn-logo.svg
+      - causeway-logo-*.png
+      - causeway-logo.svg
 
 asar: true
 # node-pty ships a native binding that cannot be loaded from inside an asar
@@ -31,7 +31,7 @@ asarUnpack:
   # ESLint worker has to sit on disk next to it.
   - '**/out/main/eslint-worker.cjs'
 
-# File types cairn-code registers itself for. Keeping this list short means the
+# File types causeway registers itself for. Keeping this list short means the
 # installer does not take over every extension on the user's machine.
 fileAssociations:
   - ext: ts
@@ -54,13 +54,13 @@ fileAssociations:
     role: Editor
 
 protocols:
-  - name: cairn-code
+  - name: causeway
     schemes:
-      # The scheme is a URL prefix and stays lowercase: cairn://
-      - cairn
+      # The scheme is a URL prefix and stays lowercase: causeway://
+      - causeway
 
 win:
-  icon: build/cairn.ico
+  icon: build/causeway.ico
   target:
     - target: nsis
       arch: [x64, arm64]
@@ -70,22 +70,22 @@ win:
   # a file called "setup.zip" would be a lie about what it is. The platform is
   # in the name because every platform builds a zip, and all of them land on one
   # GitHub release, where two files called -x64.zip would overwrite each other.
-  artifactName: ${productName}-${version}-win-${arch}.${ext}
+  artifactName: causeway-${version}-win-${arch}.${ext}
 
 nsis:
-  artifactName: ${productName}-${version}-${arch}-setup.${ext}
+  artifactName: causeway-${version}-${arch}-setup.${ext}
   oneClick: false
   perMachine: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
-  shortcutName: cairn-code
+  shortcutName: causeway
   deleteAppDataOnUninstall: false
-  # Adds "Open with cairn-code" to the Explorer context menu for files and folders.
+  # Adds "Open with causeway" to the Explorer context menu for files and folders.
   include: build/installer.nsh
 
 mac:
-  icon: build/cairn.icns
+  icon: build/causeway.icns
   category: public.app-category.developer-tools
   hardenedRuntime: true
   gatekeeperAssess: false
@@ -96,7 +96,7 @@ mac:
       arch: [x64, arm64]
     - target: zip
       arch: [x64, arm64]
-  artifactName: ${productName}-${version}-mac-${arch}.${ext}
+  artifactName: causeway-${version}-mac-${arch}.${ext}
 
 dmg:
   contents:
@@ -108,18 +108,18 @@ dmg:
       path: /Applications
 
 linux:
-  icon: build/cairn.png
+  icon: build/causeway.png
   category: Development
   synopsis: The next generation code editor
   description: >
-    cairn-code is a fast, cross platform code editor with syntax highlighting for
+    causeway is a fast, cross platform code editor with syntax highlighting for
     more than sixty languages, an integrated terminal, and diagnostics that
     explain why a problem happened and how to fix it.
   desktop:
     entry:
-      Name: cairn-code
-      StartupWMClass: cairn-code
-      MimeType: text/plain;inode/directory;application/x-cairn-workspace;
+      Name: causeway
+      StartupWMClass: causeway
+      MimeType: text/plain;inode/directory;application/x-causeway-workspace;
   target:
     - target: AppImage
       arch: [x64, arm64]
@@ -127,10 +127,10 @@ linux:
       arch: [x64]
     - target: rpm
       arch: [x64]
-  artifactName: ${productName}-${version}-linux-${arch}.${ext}
+  artifactName: causeway-${version}-linux-${arch}.${ext}
 
 publish:
   provider: github
   owner: irisclint
-  repo: cairn-code
+  repo: causeway
   releaseType: draft

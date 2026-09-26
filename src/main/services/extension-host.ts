@@ -118,7 +118,7 @@ export class ExtensionHost extends EventEmitter {
             code: 'EXTENSION_HOST_TIMEOUT',
             message: 'The extension host did not start',
             cause: `The hidden page did not report itself ready within ${START_TIMEOUT_MS / 1000} seconds.`,
-            solution: 'Restart cairn-code. If it keeps happening, start it from a terminal and report what is printed.'
+            solution: 'Restart causeway. If it keeps happening, start it from a terminal and report what is printed.'
           })
         );
       }, START_TIMEOUT_MS);

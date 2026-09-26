@@ -25,7 +25,7 @@ const MANIFEST = {
 
 const BUNDLE_TEXT = JSON.stringify({
   manifest: MANIFEST,
-  files: { 'extension.js': 'cairn.commands.register("hello.say", function () {});' }
+  files: { 'extension.js': 'causeway.commands.register("hello.say", function () {});' }
 });
 
 let root: string;
@@ -58,7 +58,7 @@ async function exists(path: string): Promise<boolean> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'cairn-market-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-market-'));
   registry = new ExtensionRegistry(root);
 
   responses = new Map([

@@ -76,7 +76,7 @@ export const useTerminalStore = create<TerminalState>((set, get) => ({
             cause:
               'The native node-pty module could not be loaded for this build, so the shell runs behind plain pipes.',
             solution:
-              'Run "npx electron-rebuild -f -w node-pty" and restart cairn-code. Commands and their output work either way, but full-screen programs such as vim will not render.'
+              'Run "npx electron-rebuild -f -w node-pty" and restart causeway. Commands and their output work either way, but full-screen programs such as vim will not render.'
           });
         }
 

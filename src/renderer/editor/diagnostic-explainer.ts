@@ -8,7 +8,7 @@
  * Entries are keyed by the diagnostic code. When no entry matches, the
  * heuristic pass derives an explanation from the message text, and the generic
  * fallback still produces something better than a bare compiler string. This is
- * the reason the cairn-code diagnostic contract requires both fields: a message like
+ * the reason the causeway diagnostic contract requires both fields: a message like
  * "Type 'string' is not assignable to type 'number'" states a fact, it does not
  * tell a newcomer what to change.
  */
@@ -369,7 +369,7 @@ export function explainDiagnostic(params: {
   }
 
   return {
-    cause: `${params.source} reported this problem for the marked range, but cairn-code has no detailed explanation for ${key || 'this code'} yet.`,
+    cause: `${params.source} reported this problem for the marked range, but causeway has no detailed explanation for ${key || 'this code'} yet.`,
     solution: `Read the message above and check the ${params.source} documentation for ${key || 'this rule'}. You can contribute an explanation in src/renderer/editor/diagnostic-explainer.ts.`
   };
 }

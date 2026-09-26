@@ -54,7 +54,7 @@ export class UpdateService {
     if (!app.isPackaged) {
       return this.#emit({
         state: 'error',
-        message: 'Update checks are only available in a packaged build of cairn-code.'
+        message: 'Update checks are only available in a packaged build of causeway.'
       });
     }
 

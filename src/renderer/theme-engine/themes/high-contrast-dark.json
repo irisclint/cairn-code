@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "high-contrast-dark",
   "name": "High Contrast Dark",
   "type": "high-contrast-dark",
   "description": "Maximum contrast on black with explicit borders on every surface.",
-  "author": "cairn Team",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

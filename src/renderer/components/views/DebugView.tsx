@@ -97,7 +97,7 @@ export function DebugView(): JSX.Element {
 
       {configurations.length === 0 ? (
         <p className="debug__hint">
-          No launch configuration yet. cairn-code reads <code>.vscode/launch.json</code>, so a
+          No launch configuration yet. causeway reads <code>.vscode/launch.json</code>, so a
           configuration you already use in another editor works here unchanged.
         </p>
       ) : null}

@@ -15,7 +15,7 @@ const flushWrites = (): Promise<void> => new Promise((resolve) => setTimeout(res
 let root: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'cairn-unit-'));
+  root = await mkdtemp(join(tmpdir(), 'causeway-unit-'));
 });
 
 afterEach(async () => {
@@ -30,7 +30,7 @@ describe('FileSystemService', () => {
 
   it('should read a file with its metadata', async () => {
     const path = join(root, 'hello.txt');
-    const contents = 'hello cairn-code';
+    const contents = 'hello causeway';
     await writeFile(path, contents, 'utf8');
 
     const result = await files.readFile(path);

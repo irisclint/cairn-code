@@ -7,7 +7,7 @@
  * in one readable place, which matters because this is the entire surface a
  * sandboxed extension has.
  *
- * What the extension gets is a `cairn` object whose every method returns a
+ * What the extension gets is a `causeway` object whose every method returns a
  * promise and does nothing but post a message. There is no DOM in a worker, no
  * Node, and the page's policy forbids the network, so this really is all of
  * it.
@@ -65,7 +65,7 @@ export const WORKER_RUNTIME = `
 
   var commandHandlers = new Map();
 
-  self.cairn = {
+  self.causeway = {
     commands: {
       register: function (id, handler) {
         if (typeof handler !== 'function') {

@@ -222,6 +222,6 @@ const api = {
   }
 } as const;
 
-export type CairnApi = typeof api;
+export type CausewayApi = typeof api;
 
-contextBridge.exposeInMainWorld('cairn', api);
+contextBridge.exposeInMainWorld('causeway', api);

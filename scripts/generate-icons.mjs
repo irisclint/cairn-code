@@ -1,5 +1,5 @@
 /**
- * Renders every raster icon Cairn ships from the single SVG master.
+ * Renders every raster icon Causeway ships from the single SVG master.
  *
  * Produces:
  *   PNG  16, 32, 48, 64, 128, 256, 512, 1024   application and web icons
@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
-const masterSvg = join(root, 'resources', 'icons', 'logo', 'cairn-logo.svg');
+const masterSvg = join(root, 'resources', 'icons', 'logo', 'causeway-logo.svg');
 const outDir = join(root, 'resources', 'icons', 'logo');
 const buildDir = join(root, 'build');
 
@@ -119,8 +119,8 @@ async function main() {
   // Standard PNG set.
   for (const size of PNG_SIZES) {
     const data = await render(size);
-    await writeFile(join(outDir, 'cairn-logo-' + size + '.png'), data);
-    process.stdout.write('Wrote cairn-logo-' + size + '.png\n');
+    await writeFile(join(outDir, 'causeway-logo-' + size + '.png'), data);
+    process.stdout.write('Wrote causeway-logo-' + size + '.png\n');
   }
 
   // Favicons.
@@ -136,28 +136,28 @@ async function main() {
     .composite([{ input: inner, top: 102, left: 102 }])
     .png({ compressionLevel: 9 })
     .toBuffer();
-  await writeFile(join(outDir, 'cairn-logo-maskable-512.png'), maskable);
-  process.stdout.write('Wrote cairn-logo-maskable-512.png\n');
+  await writeFile(join(outDir, 'causeway-logo-maskable-512.png'), maskable);
+  process.stdout.write('Wrote causeway-logo-maskable-512.png\n');
 
   // Windows ICO.
   const icoImages = [];
   for (const size of ICO_SIZES) icoImages.push({ size, data: await render(size) });
   const ico = buildIco(icoImages);
-  await writeFile(join(outDir, 'cairn-logo.ico'), ico);
-  await writeFile(join(buildDir, 'cairn.ico'), ico);
-  process.stdout.write('Wrote cairn-logo.ico and build/cairn.ico\n');
+  await writeFile(join(outDir, 'causeway-logo.ico'), ico);
+  await writeFile(join(buildDir, 'causeway.ico'), ico);
+  process.stdout.write('Wrote causeway-logo.ico and build/causeway.ico\n');
 
   // macOS ICNS.
   const icnsImages = [];
   for (const size of ICNS_SIZES) icnsImages.push({ size, data: await render(size) });
   const icns = buildIcns(icnsImages);
-  await writeFile(join(outDir, 'cairn-logo.icns'), icns);
-  await writeFile(join(buildDir, 'cairn.icns'), icns);
-  process.stdout.write('Wrote cairn-logo.icns and build/cairn.icns\n');
+  await writeFile(join(outDir, 'causeway-logo.icns'), icns);
+  await writeFile(join(buildDir, 'causeway.icns'), icns);
+  process.stdout.write('Wrote causeway-logo.icns and build/causeway.icns\n');
 
   // Linux build icon.
-  await writeFile(join(buildDir, 'cairn.png'), await render(512));
-  process.stdout.write('Wrote build/cairn.png\n');
+  await writeFile(join(buildDir, 'causeway.png'), await render(512));
+  process.stdout.write('Wrote build/causeway.png\n');
 
   process.stdout.write('\nAll icons generated from ' + masterSvg + '\n');
 }

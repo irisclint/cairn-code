@@ -143,7 +143,7 @@ describe('the marketplace', () => {
     state.extensions.catalogueError = {
       code: 'MARKETPLACE_NOT_CONFIGURED',
       message: 'No extension registry is set',
-      cause: 'cairn-code has no registry address built in.',
+      cause: 'causeway has no registry address built in.',
       solution: 'Set extensions.registryUrl in Settings.'
     };
 
@@ -196,6 +196,6 @@ describe('the marketplace', () => {
 
     // Nothing is requested on its own, which is what keeps the promise that
     // the update check is the only call the editor makes unprompted.
-    expect(globalThis.window.cairn.extensions.marketplace).not.toHaveBeenCalled();
+    expect(globalThis.window.causeway.extensions.marketplace).not.toHaveBeenCalled();
   });
 });

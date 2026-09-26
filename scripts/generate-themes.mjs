@@ -1,7 +1,7 @@
 /**
  * Expands the compact theme palettes below into complete theme JSON files.
  *
- * A full Cairn theme defines roughly 90 workbench colours. Writing each of them
+ * A full Causeway theme defines roughly 90 workbench colours. Writing each of them
  * by hand for twelve themes would guarantee drift, so every theme declares only
  * its palette (backgrounds, accents, syntax colours, ANSI set) and this script
  * derives the rest through one shared layout. Editing the derivation here fixes
@@ -47,7 +47,7 @@ const PALETTES = [
     id: 'dark-modern',
     name: 'Dark Modern',
     type: 'dark',
-    description: 'The Cairn signature theme. Deep neutral greys with a blue to violet accent.',
+    description: 'The Causeway signature theme. Deep neutral greys with a blue to violet accent.',
     bg: '#1a1b26',
     bgAlt: '#16161e',
     bgDeep: '#13131a',
@@ -89,7 +89,7 @@ const PALETTES = [
     id: 'light-modern',
     name: 'Light Modern',
     type: 'light',
-    description: 'The Cairn signature light theme. Warm white with the same blue to violet accent.',
+    description: 'The Causeway signature light theme. Warm white with the same blue to violet accent.',
     bg: '#ffffff',
     bgAlt: '#f5f6f8',
     bgDeep: '#eceef2',
@@ -820,12 +820,12 @@ async function main() {
 
   for (const palette of PALETTES) {
     const theme = {
-      $schema: 'https://cairn.dev/schemas/theme.schema.json',
+      $schema: 'https://causeway.dev/schemas/theme.schema.json',
       id: palette.id,
       name: palette.name,
       type: palette.type,
       description: palette.description,
-      author: 'cairn Team',
+      author: 'causeway Team',
       license: 'MIT',
       semanticHighlighting: true,
       colors: buildColors(palette),

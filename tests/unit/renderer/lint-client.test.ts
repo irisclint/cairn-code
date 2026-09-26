@@ -134,7 +134,7 @@ describe('publishing findings', () => {
 
 describe('when linting fails', () => {
   beforeEach(() => {
-    vi.mocked(globalThis.window.cairn.lint.run).mockResolvedValue({
+    vi.mocked(globalThis.window.causeway.lint.run).mockResolvedValue({
       ok: false,
       error: {
         code: 'ESLINT_NOT_INSTALLED',
@@ -164,7 +164,7 @@ describe('when linting fails', () => {
 
   it('should leave no stale problems behind', async () => {
     state.lint = { findings: [finding()], ignored: false };
-    vi.mocked(globalThis.window.cairn.lint.run).mockResolvedValueOnce({ ok: true, value: state.lint });
+    vi.mocked(globalThis.window.causeway.lint.run).mockResolvedValueOnce({ ok: true, value: state.lint });
     await lintNow(FILE, 'x', 'typescript');
     expect(diagnosticService.get(FILE)).toHaveLength(1);
 
@@ -179,7 +179,7 @@ describe('debouncing', () => {
   });
 
   it('should send one request for a burst of keystrokes', async () => {
-    const run = vi.mocked(globalThis.window.cairn.lint.run);
+    const run = vi.mocked(globalThis.window.causeway.lint.run);
     run.mockClear();
 
     scheduleLint(FILE, 'a', 'typescript');
@@ -196,7 +196,7 @@ describe('debouncing', () => {
   });
 
   it('should keep one file from cancelling another', async () => {
-    const run = vi.mocked(globalThis.window.cairn.lint.run);
+    const run = vi.mocked(globalThis.window.causeway.lint.run);
     run.mockClear();
 
     scheduleLint(FILE, 'a', 'typescript');

@@ -1,7 +1,7 @@
 import { Worker } from 'node:worker_threads';
 import { join, sep } from 'node:path';
 import { existsSync } from 'node:fs';
-import { CairnError } from '@shared/errors';
+import { CausewayError } from '@shared/errors';
 import { createLogger } from '@shared/logger';
 import type { LintOutcome } from '@shared/types';
 import type { LintRequestMessage, LintResponseMessage } from '../workers/eslint-worker';
@@ -45,11 +45,11 @@ export class LintService {
 
     const path = this.#workerPath();
     if (!existsSync(path)) {
-      throw new CairnError({
+      throw new CausewayError({
         code: 'LINT_WORKER_MISSING',
         message: 'The ESLint worker is missing from this build',
         cause: `No worker script was found at ${path}, so linting cannot be started.`,
-        solution: 'Reinstall cairn-code, or run npm run build if you are working from source.'
+        solution: 'Reinstall causeway, or run npm run build if you are working from source.'
       });
     }
 
@@ -68,7 +68,7 @@ export class LintService {
       }
 
       entry.reject(
-        new CairnError({
+        new CausewayError({
           code: response.error.code,
           message: response.error.message,
           cause: response.error.cause,
@@ -100,7 +100,7 @@ export class LintService {
     for (const [, entry] of this.#pending) {
       clearTimeout(entry.timer);
       entry.reject(
-        new CairnError({
+        new CausewayError({
           code: 'LINT_WORKER_STOPPED',
           message: 'Linting stopped unexpectedly',
           cause: `The worker running ESLint ended before it answered: ${String(reason)}`,
@@ -121,7 +121,7 @@ export class LintService {
       const timer = setTimeout(() => {
         this.#pending.delete(id);
         reject(
-          new CairnError({
+          new CausewayError({
             code: 'LINT_TIMEOUT',
             message: 'ESLint took too long and was given up on',
             cause: `No result arrived within ${TIMEOUT_MS / 1000} seconds. A rule caught in a loop on this file is the usual reason.`,
@@ -139,7 +139,7 @@ export class LintService {
 
   /** Stops the worker. Safe to call when it was never started. */
   async dispose(): Promise<void> {
-    this.#failAll(new Error('cairn-code is shutting down.'));
+    this.#failAll(new Error('causeway is shutting down.'));
     const worker = this.#worker;
     this.#worker = null;
     if (worker) await worker.terminate();

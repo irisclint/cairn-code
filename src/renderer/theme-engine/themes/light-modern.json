@@ -1,10 +1,10 @@
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "light-modern",
   "name": "Light Modern",
   "type": "light",
-  "description": "The cairn-code signature light theme. Warm white with the same blue to violet accent.",
-  "author": "cairn Team",
+  "description": "The causeway signature light theme. Warm white with the same blue to violet accent.",
+  "author": "causeway Team",
   "license": "MIT",
   "semanticHighlighting": true,
   "colors": {

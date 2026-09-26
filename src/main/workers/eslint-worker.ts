@@ -86,7 +86,7 @@ function loadEslint(cwd: string): EslintLike {
     throw new LintError({
       code: 'ESLINT_NOT_INSTALLED',
       message: 'ESLint is not installed in this workspace',
-      cause: `Resolving "eslint" from ${cwd} failed: ${describe(error)}. cairn-code deliberately uses the project's own ESLint so that its configuration, plugins and version are the ones that apply.`,
+      cause: `Resolving "eslint" from ${cwd} failed: ${describe(error)}. causeway deliberately uses the project's own ESLint so that its configuration, plugins and version are the ones that apply.`,
       solution:
         'Run npm install --save-dev eslint in the workspace, or switch diagnostics.enableEslint off in Settings if this project does not use ESLint.'
     });
@@ -95,7 +95,7 @@ function loadEslint(cwd: string): EslintLike {
   if (typeof module?.ESLint !== 'function') {
     throw new LintError({
       code: 'ESLINT_UNSUPPORTED',
-      message: 'This workspace has a version of ESLint cairn-code cannot drive',
+      message: 'This workspace has a version of ESLint causeway cannot drive',
       cause: 'The resolved module does not export the ESLint class, which every version since 7 provides.',
       solution: 'Upgrade the workspace to ESLint 8 or newer, or turn diagnostics.enableEslint off in Settings.'
     });

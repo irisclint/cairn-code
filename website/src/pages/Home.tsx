@@ -86,6 +86,22 @@ export function Home(): JSX.Element {
       </section>
 
       {/* ------------------------------------------------------------------ */}
+      {/* What the name means                                                 */}
+      {/* ------------------------------------------------------------------ */}
+      <section className="namebar">
+        <div className="container">
+          <Reveal className="namebar__inner">
+            <img src="/causeway-logo.svg" alt="" className="namebar__mark" width={34} height={34} />
+            <p className="namebar__text">
+              A <strong>causeway</strong> is a road built up across ground you could not otherwise cross.
+              Somebody laid it so that everyone after them could walk over what had stopped them. An error
+              is the ground. The cause and the fix are the road.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
       {/* The demo, which is the argument                                     */}
       {/* ------------------------------------------------------------------ */}
       <section className="section section--demo" id="try">

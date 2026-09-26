@@ -7,7 +7,7 @@ import { createLogger } from '@shared/logger';
 const log = createLogger('protocol');
 
 /**
- * Registers the custom `cairn://` scheme.
+ * Registers the custom `causeway://` scheme.
  *
  * The scheme serves workspace resources (image previews, theme assets) to the
  * renderer without granting it blanket `file://` access. Every request is
@@ -50,7 +50,7 @@ export class ProtocolHandler {
   register(): void {
     protocol.handle(APP_PROTOCOL, async (request) => {
       const url = new URL(request.url);
-      // cairn://file/<absolute-path>
+      // causeway://file/<absolute-path>
       const rawPath = decodeURIComponent(url.pathname.replace(/^\/+/, ''));
 
       if (url.hostname !== 'file' || rawPath.length === 0) {

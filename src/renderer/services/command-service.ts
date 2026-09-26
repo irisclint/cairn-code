@@ -30,7 +30,7 @@ export interface CommandMatch {
 }
 
 /**
- * Central registry of everything cairn-code can do.
+ * Central registry of everything causeway can do.
  *
  * The native menu, the Command Palette and the keyboard shortcuts all dispatch
  * through this registry, so a command has exactly one implementation and every

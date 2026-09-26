@@ -21,7 +21,7 @@ interface HostBridge {
 
 declare global {
   interface Window {
-    cairnHost?: HostBridge;
+    causewayHost?: HostBridge;
   }
 }
 
@@ -32,7 +32,7 @@ interface RunningExtension {
 
 const running = new Map<string, RunningExtension>();
 
-const bridge = window.cairnHost;
+const bridge = window.causewayHost;
 
 if (bridge) {
   bridge.onMessage((message) => handle(message as Record<string, unknown>));

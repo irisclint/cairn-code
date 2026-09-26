@@ -1,5 +1,5 @@
 /**
- * Every fact the site states about cairn-code, in one place.
+ * Every fact the site states about Causeway, in one place.
  *
  * Numbers here are the real ones from the editor: the language count comes
  * from its language table, the theme count from its theme registry. Keeping
@@ -8,9 +8,9 @@
  */
 
 /** The product name, as it is written everywhere on this site. */
-export const PRODUCT = 'cairn-code';
+export const PRODUCT = 'Causeway';
 
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 
 /**
  * The files actually attached to the release for this version.
@@ -24,9 +24,9 @@ export const VERSION = '1.0.0';
  * their own and are not here yet, which the page says in those words.
  */
 export const PUBLISHED_ASSETS: readonly string[] = [
-  `cairn-code-${VERSION}-x64-setup.exe`,
-  `cairn-code-${VERSION}-arm64-setup.exe`,
-  `cairn-code-${VERSION}-win-x64.zip`
+  `causeway-${VERSION}-x64-setup.exe`,
+  `causeway-${VERSION}-arm64-setup.exe`,
+  `causeway-${VERSION}-win-x64.zip`
 ];
 
 /** Whether a given build is on the release and therefore downloadable. */
@@ -36,7 +36,7 @@ export function isPublished(file: string): boolean {
 
 /** Whether the source repository is readable by the public. */
 export const SOURCE_IS_PUBLIC = true;
-export const REPOSITORY_URL = 'https://github.com/irisclint/cairn-code';
+export const REPOSITORY_URL = 'https://github.com/irisclint/causeway';
 export const RELEASES_URL = `${REPOSITORY_URL}/releases`;
 export const DOCS_URL = `${REPOSITORY_URL}/tree/main/docs`;
 
@@ -119,14 +119,14 @@ export const DOWNLOADS: DownloadTarget[] = [
     requirement: 'Windows 10 or 11',
     primary: {
       label: 'Installer',
-      file: `cairn-code-${VERSION}-x64-setup.exe`,
+      file: `causeway-${VERSION}-x64-setup.exe`,
       note: '64-bit, installs per user, no admin needed'
     },
     others: [
-      { label: 'Installer (ARM64)', file: `cairn-code-${VERSION}-arm64-setup.exe` },
+      { label: 'Installer (ARM64)', file: `causeway-${VERSION}-arm64-setup.exe` },
       {
         label: 'Portable ZIP',
-        file: `cairn-code-${VERSION}-win-x64.zip`,
+        file: `causeway-${VERSION}-win-x64.zip`,
         note: 'Unpack and run, nothing written to the registry'
       }
     ],
@@ -138,13 +138,13 @@ export const DOWNLOADS: DownloadTarget[] = [
     requirement: 'macOS 12 Monterey or newer',
     primary: {
       label: 'Apple silicon',
-      file: `cairn-code-${VERSION}-mac-arm64.dmg`,
+      file: `causeway-${VERSION}-mac-arm64.dmg`,
       note: 'M1 and later'
     },
     others: [
-      { label: 'Intel', file: `cairn-code-${VERSION}-mac-x64.dmg` },
-      { label: 'ZIP (Apple silicon)', file: `cairn-code-${VERSION}-mac-arm64.zip` },
-      { label: 'ZIP (Intel)', file: `cairn-code-${VERSION}-mac-x64.zip` }
+      { label: 'Intel', file: `causeway-${VERSION}-mac-x64.dmg` },
+      { label: 'ZIP (Apple silicon)', file: `causeway-${VERSION}-mac-arm64.zip` },
+      { label: 'ZIP (Intel)', file: `causeway-${VERSION}-mac-x64.zip` }
     ],
     pending:
       'A macOS build has to be produced and notarised on a Mac, and this release was not built on one. Building from source works today.'
@@ -155,13 +155,13 @@ export const DOWNLOADS: DownloadTarget[] = [
     requirement: 'A 64-bit distribution with glibc 2.31 or newer',
     primary: {
       label: 'AppImage',
-      file: `cairn-code-${VERSION}-linux-x64.AppImage`,
+      file: `causeway-${VERSION}-linux-x64.AppImage`,
       note: 'Runs anywhere, no installation'
     },
     others: [
-      { label: 'Debian and Ubuntu', file: `cairn-code-${VERSION}-linux-x64.deb` },
-      { label: 'Fedora and RHEL', file: `cairn-code-${VERSION}-linux-x64.rpm` },
-      { label: 'AppImage (ARM64)', file: `cairn-code-${VERSION}-linux-arm64.AppImage` }
+      { label: 'Debian and Ubuntu', file: `causeway-${VERSION}-linux-x64.deb` },
+      { label: 'Fedora and RHEL', file: `causeway-${VERSION}-linux-x64.rpm` },
+      { label: 'AppImage (ARM64)', file: `causeway-${VERSION}-linux-arm64.AppImage` }
     ],
     pending:
       'The deb, rpm and AppImage targets have to be assembled on Linux, and this release was not built there. Building from source works today.'
@@ -240,7 +240,7 @@ export const FEATURES: Feature[] = [
   {
     icon: 'settings',
     title: 'Settings you can read',
-    body: 'One JSON file, with every key documented and none of it hidden behind a search box. Copy it between machines, keep it in a repository, or edit it in cairn-code itself.'
+    body: 'One JSON file, with every key documented and none of it hidden behind a search box. Copy it between machines, keep it in a repository, or edit it in Causeway itself.'
   },
   {
     icon: 'shield',

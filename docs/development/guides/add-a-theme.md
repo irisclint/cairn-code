@@ -1,10 +1,10 @@
 # Adding a theme
 
-Adds a colour theme to cairn-code.
+Adds a colour theme to causeway.
 
 ## Why themes are generated
 
-A complete cairn-code theme defines about ninety workbench colours. Writing those by
+A complete causeway theme defines about ninety workbench colours. Writing those by
 hand for every theme guarantees drift: one theme ends up with a tab border
 nobody else has, and a new UI surface is added to eleven themes but not the
 twelfth.

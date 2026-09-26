@@ -206,13 +206,13 @@ export function buildApplicationMenu(getWindow: () => BrowserWindow | null): Men
         {
           label: 'Documentation',
           click: (): void => {
-            void shell.openExternal('https://github.com/irisclint/cairn-code/tree/main/docs');
+            void shell.openExternal('https://github.com/irisclint/causeway/tree/main/docs');
           }
         },
         {
           label: 'Report an Issue',
           click: (): void => {
-            void shell.openExternal('https://github.com/irisclint/cairn-code/issues/new/choose');
+            void shell.openExternal('https://github.com/irisclint/causeway/issues/new/choose');
           }
         },
         { type: 'separator' },

@@ -184,7 +184,7 @@ describe('workspace store', () => {
 
   it('should adopt a workspace reported by the main process', async () => {
     const readDirectory = vi.fn().mockResolvedValue({ ok: true, value: [] });
-    vi.stubGlobal('window', { cairn: { fs: { readDirectory } } });
+    vi.stubGlobal('window', { causeway: { fs: { readDirectory } } });
 
     await useWorkspaceStore.getState().syncWorkspace({ rootPath: '/ws', name: 'ws' });
 
@@ -206,7 +206,7 @@ describe('workspace store', () => {
 
   it('should ignore a broadcast for the folder that is already open', async () => {
     const readDirectory = vi.fn().mockResolvedValue({ ok: true, value: [] });
-    vi.stubGlobal('window', { cairn: { fs: { readDirectory } } });
+    vi.stubGlobal('window', { causeway: { fs: { readDirectory } } });
 
     useWorkspaceStore.setState({ rootPath: '/ws', name: 'ws' });
     await useWorkspaceStore.getState().syncWorkspace({ rootPath: '/ws', name: 'ws' });

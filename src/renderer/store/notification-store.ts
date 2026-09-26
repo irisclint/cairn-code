@@ -47,7 +47,7 @@ const DEFAULT_TIMEOUTS: Record<NotificationSeverity, number> = {
  * User facing notifications.
  *
  * Errors never auto dismiss: a message the user did not read is a message that
- * did not happen, and cairn-code's error contract promises the user always learns
+ * did not happen, and causeway's error contract promises the user always learns
  * what went wrong and what to do about it.
  */
 export const useNotificationStore = create<NotificationState>((set) => ({
@@ -82,7 +82,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
             id,
             severity: 'error',
             message: error instanceof Error ? error.message : fallbackMessage,
-            cause: 'An unexpected error occurred inside cairn-code.',
+            cause: 'An unexpected error occurred inside causeway.',
             solution: 'Try the action again. If it keeps failing, report it with the developer tools log.',
             createdAt: Date.now(),
             timeoutMs: 0

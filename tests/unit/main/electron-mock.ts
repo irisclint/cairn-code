@@ -232,10 +232,10 @@ export const dialog = {
 };
 
 export const app = {
-  getName: vi.fn(() => 'cairn-code'),
+  getName: vi.fn(() => 'causeway'),
   getVersion: vi.fn(() => '1.0.0'),
-  getPath: vi.fn((_name: string) => '/tmp/cairn-userdata'),
-  getAppPath: vi.fn(() => '/tmp/cairn-app'),
+  getPath: vi.fn((_name: string) => '/tmp/causeway-userdata'),
+  getAppPath: vi.fn(() => '/tmp/causeway-app'),
   isPackaged: false,
   quit: vi.fn(),
   on: vi.fn(),

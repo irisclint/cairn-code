@@ -1,6 +1,6 @@
-# Contributing to cairn-code
+# Contributing to causeway
 
-Thanks for wanting to help. This document covers how to set cairn-code up, what the
+Thanks for wanting to help. This document covers how to set causeway up, what the
 code has to look like, and how changes get reviewed.
 
 ## Good first contributions
@@ -20,8 +20,8 @@ Three kinds of change are self contained and genuinely useful:
 ## Setup
 
 ```bash
-git clone https://github.com/irisclint/cairn-code.git
-cd cairn-code
+git clone https://github.com/irisclint/causeway.git
+cd causeway
 npm install
 npm run assets:icons
 npm run dev
@@ -71,9 +71,9 @@ structural change.
 The rules are enforced by ESLint and Prettier, so run them before pushing.
 What the tooling cannot check:
 
-**Every error tells the user what to do.** This is the rule that makes cairn-code
+**Every error tells the user what to do.** This is the rule that makes causeway
 different, and it is not negotiable. An error carries a message, a cause and a
-solution. Use `CairnError` and its subclasses in the main process,
+solution. Use `CausewayError` and its subclasses in the main process,
 `notifyError` in the renderer. A message like "Failed to open file" without a
 cause and a fix will be sent back in review.
 

@@ -81,11 +81,11 @@ export function setupMonaco(): void {
 }
 
 /**
- * Registers cairn-code's language table with Monaco.
+ * Registers causeway's language table with Monaco.
  *
  * Monaco already knows most of these ids from its basic-languages bundle;
  * registering again is a no-op for those but adds the extensions and comment
- * configuration cairn-code defines, and it makes unknown languages selectable so the
+ * configuration causeway defines, and it makes unknown languages selectable so the
  * status bar and the comment command still work on them.
  */
 function registerLanguages(): void {
@@ -105,7 +105,7 @@ function registerLanguages(): void {
       known.add(monacoId);
     }
 
-    // Several cairn-code languages share one Monaco grammar; the first of them
+    // Several causeway languages share one Monaco grammar; the first of them
     // supplies the comment configuration and the rest must not overwrite it,
     // or Vue would end up commenting with the Svelte tokens.
     if ((language.lineComment || language.blockComment) && !configured.has(monacoId)) {
@@ -146,7 +146,7 @@ function registerLanguages(): void {
  *
  * Strict mode is enabled so that the editor reports the same errors the project
  * build would, which is the whole point of showing diagnostics inline. Module
- * resolution is set to bundler because that is what the cairn-code toolchain and
+ * resolution is set to bundler because that is what the causeway toolchain and
  * most modern projects use.
  */
 function configureTypeScriptDefaults(): void {
@@ -188,7 +188,7 @@ function configureTypeScriptDefaults(): void {
   monaco.typescript.javascriptDefaults.setEagerModelSync(true);
 }
 
-/** Registers every installed cairn-code theme with Monaco. */
+/** Registers every installed causeway theme with Monaco. */
 export function registerThemes(): void {
   for (const theme of listThemes()) {
     try {

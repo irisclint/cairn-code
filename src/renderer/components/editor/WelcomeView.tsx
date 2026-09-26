@@ -48,38 +48,22 @@ export function WelcomeView(): JSX.Element {
       <div className="welcome__content">
         <div className="welcome__header">
           <svg className="welcome__logo" viewBox="0 0 64 64" width="72" height="72" aria-hidden="true">
-            <defs>
-              <linearGradient id="welcome-logo-gradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" />
-                <stop offset="100%" stopColor="#8b5cf6" />
-              </linearGradient>
-            </defs>
             <rect x="2" y="2" width="60" height="60" rx="14" fill="var(--editor-background)" />
             <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="var(--border, #282a3a)" />
-            {/* The stack, at the same proportions as the application icon. */}
-            <rect x="14" y="39.5" width="36" height="11" rx="4.1" fill="url(#welcome-logo-gradient)" />
-            <rect
-              x="18.3"
-              y="26.8"
-              width="27.5"
-              height="10.5"
-              rx="3.9"
-              fill="url(#welcome-logo-gradient)"
-              opacity="0.9"
-            />
-            <rect
-              x="23.3"
-              y="14.3"
-              width="17.5"
-              height="9.8"
-              rx="3.6"
-              fill="var(--editor-foreground)"
-              opacity="0.94"
-              transform="rotate(-8 32 19.1)"
-            />
+            {/*
+              The crossing, at the same proportions as the application icon: a
+              deck on three piers over a waterline. It takes its colours from
+              the active theme rather than fixed ones, so the mark belongs to
+              whichever of the twelve themes is on.
+            */}
+            <rect x="9" y="26" width="46" height="7.5" rx="3" fill="var(--editor-foreground)" opacity="0.94" />
+            <rect x="15" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" />
+            <rect x="28.5" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" />
+            <rect x="42" y="33" width="7" height="17" rx="3" fill="var(--accent, #4d87f0)" opacity="0.78" />
+            <rect x="9" y="48" width="46" height="2.5" rx="1.25" fill="var(--accent, #4d87f0)" opacity="0.32" />
           </svg>
           <div>
-            <h1 className="welcome__title">cairn-code</h1>
+            <h1 className="welcome__title">causeway</h1>
             <p className="welcome__tagline">Fast. Beautiful. For every language.</p>
           </div>
         </div>

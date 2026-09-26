@@ -1,8 +1,8 @@
 {
-  "name": "cairn-website",
+  "name": "causeway-website",
   "version": "1.0.0",
   "private": true,
-  "description": "Marketing and download site for the cairn-code editor",
+  "description": "Marketing and download site for the causeway editor",
   "type": "module",
   "scripts": {
     "dev": "vite",

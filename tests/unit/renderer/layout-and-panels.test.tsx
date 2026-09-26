@@ -81,7 +81,7 @@ afterEach(() => {
 describe('TitleBar', () => {
   it('should show the application name when nothing is open', async () => {
     const { container } = render(<TitleBar />);
-    await waitFor(() => expect(container.querySelector('.title-bar__title')).toHaveTextContent('cairn-code'));
+    await waitFor(() => expect(container.querySelector('.title-bar__title')).toHaveTextContent('causeway'));
   });
 
   it('should include the file, the workspace and the app in the title', async () => {
@@ -90,7 +90,7 @@ describe('TitleBar', () => {
     await useEditorStore.getState().openFile('/ws/app.ts');
 
     render(<TitleBar />);
-    await waitFor(() => expect(screen.getByText('app.ts - my-project - cairn-code')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('app.ts - my-project - causeway')).toBeInTheDocument());
   });
 
   it('should mark an unsaved file with an asterisk', async () => {
@@ -109,9 +109,9 @@ describe('TitleBar', () => {
     await userEvent.click(screen.getByLabelText('Maximize window'));
     await userEvent.click(screen.getByLabelText('Close window'));
 
-    expect(globalThis.window.cairn.window.minimize).toHaveBeenCalled();
-    expect(globalThis.window.cairn.window.toggleMaximize).toHaveBeenCalled();
-    expect(globalThis.window.cairn.window.close).toHaveBeenCalled();
+    expect(globalThis.window.causeway.window.minimize).toHaveBeenCalled();
+    expect(globalThis.window.causeway.window.toggleMaximize).toHaveBeenCalled();
+    expect(globalThis.window.causeway.window.close).toHaveBeenCalled();
   });
 
   it('should follow the window state reported by the main process', async () => {
@@ -467,26 +467,26 @@ describe('OutputPanel', () => {
   });
 
   it('should show log entries with their channel', () => {
-    outputChannel.append('cairn', 'Workbench ready');
+    outputChannel.append('causeway', 'Workbench ready');
     render(<OutputPanel />);
 
     expect(screen.getByText('Workbench ready')).toBeInTheDocument();
-    expect(screen.getByText('[cairn]')).toBeInTheDocument();
+    expect(screen.getByText('[causeway]')).toBeInTheDocument();
   });
 
   it('should filter by channel', async () => {
-    outputChannel.append('cairn', 'from cairn');
+    outputChannel.append('causeway', 'from causeway');
     outputChannel.append('git', 'from git');
 
     render(<OutputPanel />);
     await userEvent.selectOptions(screen.getByLabelText('Output channel'), 'git');
 
     expect(screen.getByText('from git')).toBeInTheDocument();
-    expect(screen.queryByText('from cairn')).not.toBeInTheDocument();
+    expect(screen.queryByText('from causeway')).not.toBeInTheDocument();
   });
 
   it('should clear the log', async () => {
-    outputChannel.append('cairn', 'noise');
+    outputChannel.append('causeway', 'noise');
     render(<OutputPanel />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Clear' }));

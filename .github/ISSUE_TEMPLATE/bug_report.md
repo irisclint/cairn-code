@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Something in cairn-code does not behave the way it should
+about: Something in causeway does not behave the way it should
 title: ''
 labels: bug
 assignees: ''
@@ -22,9 +22,9 @@ What you thought would happen.
 
 ## Error message
 
-If cairn-code showed a notification or a problem in the Problems panel, paste it
+If causeway showed a notification or a problem in the Problems panel, paste it
 here including the Cause and Fix lines. Those two lines usually point straight
-at the part of cairn-code that went wrong.
+at the part of causeway that went wrong.
 
 ```
 paste here
@@ -32,7 +32,7 @@ paste here
 
 ## Environment
 
-Open the Command Palette (Ctrl+Shift+P), run "About cairn-code", and use the
+Open the Command Palette (Ctrl+Shift+P), run "About causeway", and use the
 "Copy details" button. Paste the result here.
 
 ```

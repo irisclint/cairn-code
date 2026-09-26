@@ -1,6 +1,6 @@
 # Theme API
 
-A cairn-code theme is a JSON file. This page documents the format, how to add a
+A causeway theme is a JSON file. This page documents the format, how to add a
 theme to the repository, and how a theme reaches the screen.
 
 ## How a theme reaches the screen
@@ -13,7 +13,7 @@ theme JSON ──> validateTheme ──> ThemeLoader ──┬──> CSS custom
               the fields named
 ```
 
-Applying a theme writes one `<style id="cairn-theme">` element containing
+Applying a theme writes one `<style id="causeway-theme">` element containing
 custom properties, and sets `data-theme` and `data-theme-type` on the document
 element. Nothing in the UI reads a colour from JavaScript, which is why a theme
 switch repaints in a single frame.
@@ -30,7 +30,7 @@ Each colour key becomes a custom property by lowercasing and inserting dashes:
 
 ```jsonc
 {
-  "$schema": "https://cairn.dev/schemas/theme.schema.json",
+  "$schema": "https://causeway.dev/schemas/theme.schema.json",
   "id": "midnight-violet",           // kebab-case, unique, used in CSS selectors
   "name": "Midnight Violet",         // shown in the picker
   "type": "dark",                    // dark | light | high-contrast-dark | high-contrast-light
@@ -66,11 +66,11 @@ Only hex is accepted: `#rgb`, `#rrggbb` or `#rrggbbaa`. Named colours,
 
 The alpha form is useful for overlays such as `list.hoverBackground`. It is
 **not** usable for the ANSI palette: XTerm cannot blend a translucent colour
-against scrolled output, so cairn-code truncates alpha there.
+against scrolled output, so causeway truncates alpha there.
 
 ### Required keys
 
-A theme is rejected if any of these is missing or invalid, because cairn-code has no
+A theme is rejected if any of these is missing or invalid, because causeway has no
 safe default for them and leaving one out would make part of the UI invisible:
 
 ```
@@ -151,7 +151,7 @@ required list above.
 
 ### Token colours
 
-TextMate scopes mapped onto colours. cairn-code translates the leading scope segment
+TextMate scopes mapped onto colours. causeway translates the leading scope segment
 onto the token names Monaco emits, so common scopes work out of the box:
 
 ```jsonc
@@ -165,9 +165,9 @@ onto the token names Monaco emits, so common scopes work out of the box:
 `fontStyle` is `italic`, `bold`, `underline`, a space separated combination, or
 an empty string to clear an inherited style.
 
-Monaco rejects alpha in token rules, so cairn-code truncates it there too.
+Monaco rejects alpha in token rules, so causeway truncates it there too.
 
-## Adding a theme to cairn-code
+## Adding a theme to causeway
 
 The built-in themes are generated, not hand written. A full theme defines about
 ninety colours; writing those by hand for twelve themes would guarantee drift,
@@ -242,7 +242,7 @@ to change.
 The `colors` and `tokenColors` blocks are close enough to copy directly. What
 usually needs attention:
 
-- cairn-code requires the twelve keys listed above; a VS Code theme that relies on
+- causeway requires the twelve keys listed above; a VS Code theme that relies on
   defaults for any of them needs those filled in.
 - Add the sixteen ANSI keys if the source theme has none.
 - `type` uses `high-contrast-dark` and `high-contrast-light` where VS Code

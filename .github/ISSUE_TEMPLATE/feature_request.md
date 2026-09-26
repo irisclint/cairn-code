@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest something cairn-code should be able to do
+about: Suggest something causeway should be able to do
 title: ''
 labels: enhancement
 assignees: ''
@@ -8,11 +8,11 @@ assignees: ''
 
 ## The problem
 
-What are you trying to do that cairn-code makes hard or impossible today?
+What are you trying to do that causeway makes hard or impossible today?
 
 ## The change you would like
 
-What should cairn-code do instead. Be concrete: which menu, which panel, which
+What should causeway do instead. Be concrete: which menu, which panel, which
 shortcut.
 
 ## Alternatives you considered

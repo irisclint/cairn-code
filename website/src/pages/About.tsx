@@ -213,7 +213,7 @@ export function About(): JSX.Element {
           <div className="prose stack about-prose">
             <h2>On the name</h2>
             <p>
-              A Causeway is a road built up across ground you could not otherwise cross: a marsh, a tidal
+              A causeway is a road built up across ground you could not otherwise cross: a marsh, a tidal
               flat, a stretch of water. Somebody laid it so that everyone after them could walk over what had
               stopped them. That is the editor in one object. An error is the ground you cannot cross, and
               the cause and the fix are the road across it, already built, waiting where you are standing
